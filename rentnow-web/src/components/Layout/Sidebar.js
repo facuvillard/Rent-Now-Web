@@ -95,10 +95,10 @@ const Sidebar = (props) => {
           <ListItemText primary="Login" />
         </ListItem>
         </Link>
-        <Link to='/admin'>
+        <Link to='/complejos'>
         <ListItem button>
           <ListItemIcon>{<MailIcon />}</ListItemIcon>
-          <ListItemText primary="Admin" />
+          <ListItemText primary="Complejos" />
         </ListItem>
         </Link>
       </List>

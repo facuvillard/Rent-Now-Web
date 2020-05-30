@@ -32,11 +32,10 @@ export const Layout = (props) => {
             <Navbar sideBarOpenHandler={sideBarOpenHandler} isSideBarOpen={isSBOpen} />
             <Sidebar sideBarOpenHandler={sideBarOpenHandler} isSideBarOpen={isSBOpen} />
             <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <Container maxWidth='lg' >
-
-            {props.children}
-            </Container>
+              <div className={classes.toolbar} />
+              <Container maxWidth='lg' >
+                {props.children}
+              </Container>
             </main>
         </div>
     )
