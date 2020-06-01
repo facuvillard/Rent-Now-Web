@@ -1,22 +1,16 @@
-import React, {useState} from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Drawer,
-  IconButton,
   Divider,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
 } from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
-import clsx from 'clsx'
-import zIndex from "@material-ui/core/styles/zIndex";
-import {Link} from 'react-router-dom';
+import clsx from "clsx";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -28,43 +22,47 @@ const useStyles = makeStyles((theme) => ({
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: "nowrap",
+    zIndex: theme.zIndex.drawer + 2,
   },
   drawerOpen: {
     width: drawerWidth,
+    boxShadow: "6px 10px 5px 0px rgba(0,0,0,0.2)",
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
   drawerClose: {
-    transition: theme.transitions.create('width', {
+    transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    overflowX: 'hidden',
+    overflowX: "hidden",
     width: theme.spacing(7) + 1,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down("xs")]: {
       width: theme.spacing(7) + 1,
-      display:  "none"
-     
-    }
+      display: "none",
     },
-    toolbar: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-      padding: theme.spacing(0, 1),
-      // necessary for content to be below app bar
-      ...theme.mixins.toolbar,
-    },
+  },
+  toolbar: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+  },
+  paper: {
+    backgroundColor: theme.palette.secondary.dark,
+  },
+  link: {
+    color: theme.palette.grey[50],
+    textDecoration: "none",
+  },
 }));
 
 const Sidebar = (props) => {
   const classes = useStyles();
-
- 
-
- 
 
   return (
     <Drawer
@@ -75,31 +73,28 @@ const Sidebar = (props) => {
       })}
       classes={{
         paper: clsx({
+          [classes.paper]: true,
           [classes.drawerOpen]: props.isSideBarOpen,
           [classes.drawerClose]: !props.isSideBarOpen,
-        })
+        }),
       }}
     >
-      <div className={classes.toolbar}>
-        <IconButton onClick={props.sideBarOpenHandler}>
-          
-            <ChevronLeftIcon />
-          
-        </IconButton>
-      </div>
+
       <Divider />
       <List>
-        <Link to='/login'>
-        <ListItem button>
-          <ListItemIcon>{<MailIcon />}</ListItemIcon>
-          <ListItemText primary="Login" />
-        </ListItem>
+        <Link to="/login" className={classes.link}>
+          <ListItem button>
+            <ListItemIcon color="primary">
+              {<MailIcon className={classes.link} />}
+            </ListItemIcon>
+            <ListItemText primary="Login" />
+          </ListItem>
         </Link>
-        <Link to='/complejos'>
-        <ListItem button>
-          <ListItemIcon>{<MailIcon />}</ListItemIcon>
-          <ListItemText primary="Complejos" />
-        </ListItem>
+        <Link to="/complejos" className={classes.link}>
+          <ListItem button>
+            <ListItemIcon>{<MailIcon className={classes.link} />}</ListItemIcon>
+            <ListItemText primary="Complejos" />
+          </ListItem>
         </Link>
       </List>
     </Drawer>

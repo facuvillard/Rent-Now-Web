@@ -20,7 +20,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import {OutlinedInput, InputLabel,FormControl} from "@material-ui/core"
-
+import loginImg from "../../assets/img/login-img.png"
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -40,12 +40,12 @@ const useStyles = makeStyles((theme) => ({
     height: "100vh",
   },
   image: {
-    backgroundImage: "url(https://source.unsplash.com/random)",
-    backgroundRepeat: "no-repeat",
-    backgroundColor:
-      theme.palette.type === "light"
-        ? theme.palette.grey[50]
-        : theme.palette.grey[900],
+    backgroundImage: `url(${loginImg})`,
+    backgroundRepeat: "repeat",
+    backgroundColor: theme.palette.secondary.light,
+      // theme.palette.type === "light"
+      //   ? theme.palette.grey[50]
+      //   : theme.palette.grey[900],
     backgroundSize: "cover",
     backgroundPosition: "center",
   },
@@ -134,14 +134,14 @@ const Login = (props) => {
               value={formik.values.email}
               onChange={formik.handleChange}
             />
-            <FormControl variant='outlined' marginTop fullWidth className={clsx(classes.margin, classes.textField)}>
+            <FormControl variant='outlined'  fullWidth className={clsx(classes.margin, classes.textField)}>
               <InputLabel htmlFor="standard-adornment-password">
                 Contraseña
               </InputLabel>
 
               <OutlinedInput
                 variant="outlined"
-                margin="normal"
+          
                 required
                 fullWidth
                 name="password"
