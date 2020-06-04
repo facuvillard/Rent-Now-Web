@@ -3,11 +3,30 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+const theme = createMuiTheme({
+  palette: { 
+    primary:{
+      main: "#FCC931"
+    },
+    secondary:{
+      main: "#3F4652"
+    }
+  },
+  typography: {
+    fontFamily: ['-apple-system',
+    'BlinkMacSystemFont',
+    '"Segoe UI"',
+    'Roboto'].join(",")
+  }
+})
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  
+    <ThemeProvider theme={theme} >
+      <App />
+    </ThemeProvider>,
+
   document.getElementById('root')
 );
 
