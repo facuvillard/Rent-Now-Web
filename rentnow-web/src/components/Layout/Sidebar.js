@@ -9,6 +9,7 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import MailIcon from "@material-ui/icons/Mail";
+import GroupIcon from "@material-ui/icons/Group";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 
@@ -79,7 +80,6 @@ const Sidebar = (props) => {
         }),
       }}
     >
-
       <Divider />
       <List>
         <Link to="/login" className={classes.link}>
@@ -94,6 +94,14 @@ const Sidebar = (props) => {
           <ListItem button>
             <ListItemIcon>{<MailIcon className={classes.link} />}</ListItemIcon>
             <ListItemText primary="Complejos" />
+          </ListItem>
+        </Link>
+        <Link to="/usuarios" className={classes.link}>
+          <ListItem button>
+            <ListItemIcon>
+              {<GroupIcon className={classes.link} />}
+            </ListItemIcon>
+            <ListItemText primary="Usuarios" />
           </ListItem>
         </Link>
       </List>
