@@ -10,7 +10,7 @@ export default function Modal(props) {
   };
 
   return (
-    <DialogMaterial open={open} onClose={handleClose}>
+    <DialogMaterial fullWidth maxWidth="md" open={open} onClose={handleClose}>
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>{children}</DialogContent>
     </DialogMaterial>
