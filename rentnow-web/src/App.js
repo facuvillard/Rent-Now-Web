@@ -9,21 +9,24 @@ import AuthProvider from "./Auth/Auth";
 import PrivateRoute from "./Auth/PrivateRoute";
 import Complejos from "./components/App/Complejos/Complejos";
 import Users from "./components/Admin/Users/Users";
+import Landing from "./components/Landing/Landing"      
+
 function App() {
   return (
     <div className="App">
       <AuthProvider>
         <Router>
           <Switch>
-            <Route path={Routes.LOGIN} exact component={() => <Login />} />
-            <Layout>
+            
+            <Route path={Routes.LOGIN} exact  component={() => <Login />} />
               <Route
                 path={Routes.LANDING}
                 exact
                 component={() => (
-                  <Typography>Estas es la landing page</Typography>
+                  <Landing />
                 )}
               />
+            <Layout>
               <PrivateRoute
                 path={Routes.COMPLEJOS}
                 component={() => <Complejos />}
@@ -34,6 +37,7 @@ function App() {
                 component={() => <Users />}
               />
             </Layout>
+            <Route path="*" exact component={() => <Login />} /> //Se redirecciona aca en caso de no encontrar la ruta.
           </Switch>
         </Router>
       </AuthProvider>
