@@ -4,12 +4,19 @@ import Dialog from "../../utils/Dialog/Dialog";
 import RegisterUserForm from "./RegisterUserForm";
 import EditUserForm from "./EditUserForm";
 import ViewUser from "./ViewUser";
+import { Typography } from "@material-ui/core";
+import { getUsersApi } from "../../../Api/Usuarios";
 
 export default function Users() {
   return <ListUser />;
 }
 
 function ListUser(props) {
+  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    getUsersApi().then((resp) => setUsers(resp));
+  }, []);
+
   const [open, setOpen] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
   const [dialogContent, setDialogContent] = useState(null);
@@ -34,52 +41,18 @@ function ListUser(props) {
 
   return (
     <>
+      <Typography variant="h3" align="center">
+        Usuarios
+      </Typography>
       <MaterialTable
-        title="Usuarios"
+        title=""
         columns={[
-          { title: "Nombres", field: "name" },
-          { title: "Apellidos", field: "lastname" },
+          { title: "Nombres", field: "nombres" },
+          { title: "Apellidos", field: "apellidos" },
           { title: "Email", field: "email" },
-          { title: "Rol", field: "role" },
+          { title: "Provincia", field: "provincia" },
         ]}
-        data={[
-          {
-            name: "Facundo",
-            lastname: "Villard",
-            email: "facuvillard@gmail.com",
-            role: "Administrador",
-          },
-          {
-            name: "Juan",
-            lastname: "Bergues",
-            email: "jpbergues@gmail.com",
-            role: "Adm. Complejos",
-          },
-          {
-            name: "Facundo",
-            lastname: "Villard",
-            email: "facuvillard@gmail.com",
-            role: "Administrador",
-          },
-          {
-            name: "Juan",
-            lastname: "Bergues",
-            email: "jpbergues@gmail.com",
-            role: "Adm. Complejos",
-          },
-          {
-            name: "Facundo",
-            lastname: "Villard",
-            email: "facuvillard@gmail.com",
-            role: "Administrador",
-          },
-          {
-            name: "Juan",
-            lastname: "Bergues",
-            email: "jpbergues@gmail.com",
-            role: "Adm. Complejos",
-          },
-        ]}
+        data={users}
         actions={[
           {
             icon: "person_add",
