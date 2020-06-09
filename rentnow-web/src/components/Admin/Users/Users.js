@@ -13,8 +13,13 @@ export default function Users() {
 
 function ListUser(props) {
   const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
-    getUsersApi().then((resp) => setUsers(resp));
+    setIsLoading(true);
+    getUsersApi().then((resp) => {
+      setIsLoading(false);
+      setUsers(resp);
+    });
   }, []);
 
   const [open, setOpen] = useState(false);
@@ -27,9 +32,9 @@ function ListUser(props) {
     setOpen(true);
   };
 
-  const editUserDialog = () => {
+  const editUserDialog = (editUser) => {
     setDialogTitle("Editar usuario");
-    setDialogContent(<EditUserForm setOpen={setOpen} />);
+    setDialogContent(<EditUserForm setOpen={setOpen} editUser={editUser} />);
     setOpen(true);
   };
 
@@ -44,7 +49,9 @@ function ListUser(props) {
       <Typography variant="h3" align="center">
         Usuarios
       </Typography>
-      <MaterialTable
+      {
+        isLoading ? <Typography> Cargando... </Typography> :
+        <MaterialTable
         title=""
         columns={[
           { title: "Nombres", field: "nombres" },
@@ -68,7 +75,9 @@ function ListUser(props) {
           {
             icon: "edit",
             tooltip: "Edit User",
-            onClick: editUserDialog,
+            onClick: (event, row) => {
+              editUserDialog(row);
+            },
           },
           {
             icon: "delete",
@@ -81,7 +90,8 @@ function ListUser(props) {
         options={{
           actionsColumnIndex: -1,
         }}
-      />
+        />
+      }
       <Dialog title={dialogTitle} open={open} setOpen={setOpen}>
         {dialogContent}
       </Dialog>

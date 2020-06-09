@@ -7,6 +7,18 @@ export default function RegisterUserForm(props) {
   const { setOpen } = props;
   const [provinces, setProvinces] = useState();
   const [cities, setCities] = useState([]);
+  const [userData, setUserData] = useState({
+    nombres: "",
+    apellidos: "",
+    email: "",
+    rol: "",
+    nroTelefono: "",
+    provincia: "",
+    ciudad: "",
+    direccion: "",
+    contraseña: "",
+    repetirContraseña: "",
+  });
 
   useEffect(() => {
     getProvincesApi().then((response) => {
@@ -16,6 +28,7 @@ export default function RegisterUserForm(props) {
 
   const handleAddUser = (e) => {
     e.preventDefault();
+    console.log(userData);
   };
 
   const handleProvince = (provinceName) => {
@@ -32,22 +45,65 @@ export default function RegisterUserForm(props) {
     <form onSubmitCapture={handleAddUser}>
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <TextField variant="outlined" fullWidth label="Nombres" />
+          <TextField
+            variant="outlined"
+            fullWidth
+            label="Nombres"
+            onChange={(e) => {
+              setUserData({ ...userData, nombres: e.target.value });
+            }}
+          />
         </Grid>
         <Grid item xs={6}>
-          <TextField variant="outlined" fullWidth label="Apellidos" />
+          <TextField
+            variant="outlined"
+            fullWidth
+            label="Apellidos"
+            onChange={(e) => {
+              setUserData({ ...userData, apellidos: e.target.value });
+            }}
+          />
+        </Grid>
+      </Grid>
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <TextField
+            type="email"
+            variant="outlined"
+            fullWidth
+            label="Email"
+            onChange={(e) => {
+              setUserData({ ...userData, email: e.target.value });
+            }}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <TextField
+            variant="outlined"
+            label="Rol"
+            select
+            fullWidth
+            onChange={(e) => {
+              setUserData({ ...userData, rol: e.target.value });
+            }}
+          >
+            <MenuItem value="Administrador">Administrador</MenuItem>
+            <MenuItem value="Adm. Complejos">Adm. Complejos</MenuItem>
+          </TextField>
         </Grid>
       </Grid>
 
       <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <TextField variant="outlined" fullWidth label="Email" />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField variant="outlined" label="Rol" select fullWidth>
-            <MenuItem value="1">Administrador</MenuItem>
-            <MenuItem value="2">Adm. Complejos</MenuItem>
-          </TextField>
+        <Grid item xs={12}>
+          <TextField
+            type="number"
+            variant="outlined"
+            fullWidth
+            label="Numero de Telefono"
+            onChange={(e) => {
+              setUserData({ ...userData, nroTelefono: e.target.value });
+            }}
+          />
         </Grid>
       </Grid>
 
@@ -60,6 +116,7 @@ export default function RegisterUserForm(props) {
             fullWidth
             onChange={(e) => {
               handleProvince(e.target.value);
+              setUserData({ ...userData, provincia: e.target.value });
             }}
           >
             {provinces !== undefined ? (
@@ -81,13 +138,23 @@ export default function RegisterUserForm(props) {
             renderInput={(params) => (
               <TextField {...params} label="Ciudad" variant="outlined" />
             )}
+            onInputChange={(e, inputValue) => {
+              setUserData({ ...userData, ciudad: inputValue });
+            }}
           />
         </Grid>
       </Grid>
 
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <TextField variant="outlined" fullWidth label="Dirección" />
+          <TextField
+            variant="outlined"
+            fullWidth
+            label="Dirección"
+            onChange={(e) => {
+              setUserData({ ...userData, direccion: e.target.value });
+            }}
+          />
         </Grid>
       </Grid>
 
@@ -98,6 +165,9 @@ export default function RegisterUserForm(props) {
             variant="outlined"
             fullWidth
             label="Contraseña"
+            onChange={(e) => {
+              setUserData({ ...userData, contraseña: e.target.value });
+            }}
           />
         </Grid>
         <Grid item xs={6}>
@@ -106,6 +176,9 @@ export default function RegisterUserForm(props) {
             variant="outlined"
             fullWidth
             label="Repetir contraseña"
+            onChange={(e) => {
+              setUserData({ ...userData, repetirContraseña: e.target.value });
+            }}
           />
         </Grid>
       </Grid>
