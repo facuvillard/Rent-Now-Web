@@ -25,22 +25,28 @@ function ListUser(props) {
   const [open, setOpen] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
   const [dialogContent, setDialogContent] = useState(null);
+  const [dialogSize, setDialogSize] = useState("sm");
 
   const addUserDialog = () => {
     setDialogTitle("Nuevo Usuario");
     setDialogContent(<RegisterUserForm setOpen={setOpen} />);
+    setDialogSize("md");
     setOpen(true);
   };
 
   const editUserDialog = (editUser) => {
-    setDialogTitle("Editar usuario");
+    setDialogTitle(
+      "Editar usuario " + editUser.nombres + " " + editUser.apellidos
+    );
     setDialogContent(<EditUserForm setOpen={setOpen} editUser={editUser} />);
+    setDialogSize("md");
     setOpen(true);
   };
 
-  const viewUserDialog = () => {
-    setDialogTitle("TITULO VISTA DE USUARIO");
-    setDialogContent(<ViewUser setOpen={setOpen} />);
+  const viewUserDialog = (user) => {
+    setDialogTitle("Usuario: " + user.nombres + " " + user.apellidos);
+    setDialogContent(<ViewUser setOpen={setOpen} user={user} />);
+    setDialogSize("sm");
     setOpen(true);
   };
 
@@ -49,50 +55,58 @@ function ListUser(props) {
       <Typography variant="h3" align="center">
         Usuarios
       </Typography>
-      {
-        isLoading ? <Typography> Cargando... </Typography> :
+      {isLoading ? (
+        <Typography> Cargando... </Typography>
+      ) : (
         <MaterialTable
-        title=""
-        columns={[
-          { title: "Nombres", field: "nombres" },
-          { title: "Apellidos", field: "apellidos" },
-          { title: "Email", field: "email" },
-          { title: "Provincia", field: "provincia" },
-        ]}
-        data={users}
-        actions={[
-          {
-            icon: "person_add",
-            tooltip: "Agregar Usuario",
-            isFreeAction: true,
-            onClick: addUserDialog,
-          },
-          {
-            icon: "visibility",
-            tooltip: "Ver usuario",
-            onClick: viewUserDialog,
-          },
-          {
-            icon: "edit",
-            tooltip: "Edit User",
-            onClick: (event, row) => {
-              editUserDialog(row);
+          title=""
+          columns={[
+            { title: "Nombres", field: "nombres" },
+            { title: "Apellidos", field: "apellidos" },
+            { title: "Email", field: "email" },
+            { title: "Provincia", field: "provincia" },
+          ]}
+          data={users}
+          actions={[
+            {
+              icon: "person_add",
+              tooltip: "Agregar Usuario",
+              isFreeAction: true,
+              onClick: addUserDialog,
             },
-          },
-          {
-            icon: "delete",
-            tooltip: "Eliminar Usuario",
-            onClick: (event) => {
-              console.log("Clickeaste eliminar usuario");
+            {
+              icon: "visibility",
+              tooltip: "Ver usuario",
+              onClick: (event, row) => {
+                viewUserDialog(row);
+              },
             },
-          },
-        ]}
-        options={{
-          actionsColumnIndex: -1,
-        }}
+            {
+              icon: "edit",
+              tooltip: "Edit User",
+              onClick: (event, row) => {
+                editUserDialog(row);
+              },
+            },
+            {
+              icon: "delete",
+              tooltip: "Eliminar Usuario",
+              onClick: (event) => {
+                console.log("Clickeaste eliminar usuario");
+              },
+            },
+          ]}
+          options={{
+            actionsColumnIndex: -1,
+          }}
         />
-      }
-      <Dialog title={dialogTitle} open={open} setOpen={setOpen}>
+      )}
+      <Dialog
+        title={dialogTitle}
+        open={open}
+        setOpen={setOpen}
+        size={dialogSize}
+      >
         {dialogContent}
       </Dialog>
     </>

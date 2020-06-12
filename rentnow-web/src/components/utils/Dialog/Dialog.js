@@ -15,13 +15,13 @@ const useStyles = makeStyles({
 
 export default function Modal(props) {
   const classes = useStyles();
-  const { children, title, open, setOpen } = props;
+  const { children, title, open, setOpen, size } = props;
   const handleClose = () => {
     setOpen(false);
   };
 
   return (
-    <DialogMaterial fullWidth maxWidth="md" open={open} onClose={handleClose}>
+    <DialogMaterial fullWidth maxWidth={size} open={open} onClose={handleClose}>
       <DialogTitle disableTypography className={classes.dialogTitle}>
         <Typography variant="h4">{title}</Typography>
       </DialogTitle>
