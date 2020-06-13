@@ -1,49 +1,178 @@
 import React from 'react'
 import { Container, makeStyles, Grid, Typography } from '@material-ui/core'
-import Paper from '@material-ui/core/Paper';
+import promocionImage from "../../../assets/img/Landing/promocion-image.png"
+import estadisticaImage from "../../../assets/img/Landing/estadistica-image.png"
+import calendarioImage from "../../../assets/img/Landing/calendario-image.png"
+import usuarioImage from "../../../assets/img/Landing/usuario-image.png"
+import comentarioImage from "../../../assets/img/Landing/comentario-image.png"
+import facilImage from "../../../assets/img/Landing/facil-image.png"
+import imagenFondo from "../../../assets/img/Landing/fondo-image.png"
+
 
 
 const useStyles = makeStyles(theme => ({
-    container: {
-        height: "50vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center"
-    },
     root: {
-        flexGrow: 1,
+        display: 'flex',
+        overflow: 'hidden',
+        backgroundColor: '#f5f5f5',
     },
-    paper: {
-        height: 200,
-        width: 200,
+    container: {
+        marginTop: theme.spacing(10),
+        marginBottom: theme.spacing(15),
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    item: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: theme.spacing(0, 5),
+    },
+    image: {
+        height: 150,
+        marginTop: theme.spacing(4),
+        marginBottom: theme.spacing(2),
     },
     title: {
-        marginBottom: "70px",
-        textAlign : "center",
-    }, 
+        marginBottom: theme.spacing(5),
+    },
+    imagenFondo: {
+        pointerEvents: 'none',
+        position: 'absolute',
+        top: -180,
+        opacity: 0.20,
+    },
+    subrayado: {
+        height: 5,
+        width: 100,
+        display: 'block',
+        margin: `${theme.spacing(1)}px auto 0`,
+        background: "rgb(255,191,0) linear-gradient(90deg, rgba(255,191,0,0.7517401392111369) 29%, rgba(255,255,191,1) 100%)",
+    },
 }))
+
 const Features = () => {
     const classes = useStyles()
     return (
-
-        
-        <Grid container className={classes.root}>
-            <Grid item xs={12} >
-                <Typography className={classes.title} variant="h2"> Caracteristicas </Typography>
+        <section className={classes.root}>
+          
+        <Container className={classes.container}>
+          <img
+            src={imagenFondo}
+            className={classes.imagenFondo}
+            alt=""
+          />
+          <Typography variant="h4" marked="center" className={classes.title} component="h2">
+            <b>VENTAJAS DE SUMAR TU COMPLEJO</b>
+            <span className={classes.subrayado} />
+          </Typography>
+          <div>
+            <Grid container spacing={5}>
+              <Grid item xs={12} md={4}>
+                <div className={classes.item}>
+                  
+                  <img
+                    src={usuarioImage}
+                    alt="usuarios"
+                    className={classes.image}
+                  />
+                  <Typography variant="h5" className={classes.title}>
+                       <b>LLEGA A MUCHOS MAS CLIENTES</b>
+                   </Typography>
+                  <Typography variant="h6" align="center">
+                    {'Los usuarios de Rent Now podrán ver ubicación, fotos, tipo de canchas que contiene'}
+                    {' y comentarios de otros usuarios sobre tu complejo.'}
+                  </Typography>
+                </div>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <div className={classes.item}>
+                  <img
+                    src={calendarioImage}
+                    alt="calendario"
+                    className={classes.image}
+                  />
+                  <Typography variant="h5"  className={classes.title}>
+                        <b>MANTEN TU CALENDARIO MAS ORGANIZADO</b>
+                  </Typography>
+                  <Typography variant="h6" align="center">
+                        {'En Rent Now los turnos se registran automáticamente a través de la aplicación,'}
+                        {' ademas, permite registrar los turnos hechos fuera de la aplicación, como los presenciales y llamadas telefonicas.'}
+                  </Typography>
+                </div>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <div className={classes.item}>
+                  <img
+                    src={comentarioImage}
+                    alt="comentarios"
+                    className={classes.image}
+                  />
+                  <Typography variant="h5"  className={classes.title}>
+                       <b>CONOCE VALORACIONES Y COMENTARIOS</b>
+                    </Typography>
+                  <Typography variant="h6" align="center">
+                        {' Tus clientes podrán hacer valoraciones y comentarios sobre que piensan de tu complejo.'}
+                  </Typography>
+                </div>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <div className={classes.item}>
+                  
+                  <img
+                    src={estadisticaImage}
+                    alt="estadisticas"
+                    className={classes.image}
+                  />
+                  <Typography variant="h5"  className={classes.title}>
+                       <b>VISUALIZA ESTADISTICAS</b>
+                   </Typography>
+                  <Typography variant="h6" align="center">
+                    {'Podrás obtener estadísticas de los horarios más y menos concurridos, de'}
+                    {' los espacios más utilizados, clientes mas frecuentes, y mucho mas.'}
+                  </Typography>
+                </div>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <div className={classes.item}>
+                  
+                  <img
+                    src={promocionImage}
+                    alt="promociones"
+                    className={classes.image}
+                  />
+                  <Typography variant="h5" className={classes.title}>
+                       <b>INCLUI PROMOCIONES</b>
+                   </Typography>
+                  <Typography variant="h6" align="center">
+                    {'¡Observa las estadísticas e incluí promociones para lograr'}
+                    {' mayores beneficios paratu complejo!'} 
+                  </Typography>
+                </div>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <div className={classes.item}>
+                  
+                  <img
+                    src={facilImage}
+                    alt="facil"
+                    className={classes.image}
+                  />
+                  <Typography variant="h5" className={classes.title}>
+                       <b>FACIL DE USAR</b>
+                   </Typography>
+                  <Typography variant="h6" align="center">
+                    {'RentNow esta pensada para sus usuarios. Buscando siempre'} 
+                    {' reducir el tiempo y el trabajo manual'}
+                  </Typography>
+                </div>
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-                <Grid container justify="center" spacing={5}>
-                    {[0, 1, 2, 3, 4].map((value) => (
-                        <Grid key={value} item>
-                            <Paper className={classes.paper} />
-                        </Grid>
-                    ))}
-                </Grid>
-            </Grid>
-
-        </Grid>
-
+          </div>
+        </Container>
+      </section>
     )
 }
 
