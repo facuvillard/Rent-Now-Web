@@ -26,22 +26,6 @@ const useStyles = makeStyles((theme) => ({
 export default function ViewUser(props) {
   const { setOpen, user } = props;
   const classes = useStyles();
-  const [userData, setUserData] = useState({
-    nombres: "...",
-    apellidos: "...",
-    email: "...",
-    roles: ["..."],
-    provincia: "...",
-    nroTelefono: "...",
-    ciudad: "...",
-    direccion: "...",
-  });
-
-  useEffect(() => {
-    setUserData({ ...user });
-  }, [user]);
-
-  console.log(userData);
 
   return (
     <Grid container spacing={2}>
@@ -53,7 +37,7 @@ export default function ViewUser(props) {
                 <AccountCircleOutlinedIcon />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText primary="Nombres" secondary={userData.nombres} />
+            <ListItemText primary="Nombres" secondary={user.nombres ? user.nombres : "..."} />
           </ListItem>
           <ListItem>
             <ListItemAvatar>
@@ -61,7 +45,7 @@ export default function ViewUser(props) {
                 <MailOutlineOutlinedIcon />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText primary="Email" secondary={userData.email} />
+            <ListItemText primary="Email" secondary={user.email ? user.email : "..."} />
           </ListItem>
           <ListItem>
             <ListItemAvatar>
@@ -69,7 +53,7 @@ export default function ViewUser(props) {
                 <LocationCityOutlinedIcon />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText primary="Provincia" secondary={userData.provincia} />
+            <ListItemText primary="Provincia" secondary={user.provincia ? user.provincia : "..."} />
           </ListItem>
           <ListItem>
             <ListItemAvatar>
@@ -77,7 +61,7 @@ export default function ViewUser(props) {
                 <LocationOnOutlinedIcon />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText primary="Direccion" secondary={userData.direccion} />
+            <ListItemText primary="Direccion" secondary={user.direccion ? user.direccion : "..."} />
           </ListItem>
         </List>
       </Grid>
@@ -89,7 +73,7 @@ export default function ViewUser(props) {
                 <AccountCircleOutlinedIcon />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText primary="Apellidos" secondary={userData.apellidos} />
+            <ListItemText primary="Apellidos" secondary={user.apellidos ? user.apellidos : "..."} />
           </ListItem>
           <ListItem>
             <ListItemAvatar>
@@ -97,7 +81,7 @@ export default function ViewUser(props) {
                 <AccountBoxOutlinedIcon />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText primary="Rol" secondary={userData.roles[0]} />
+            <ListItemText primary="Rol" secondary={user.roles[0] ? user.roles : "..."} />
           </ListItem>
           <ListItem>
             <ListItemAvatar>
@@ -105,7 +89,7 @@ export default function ViewUser(props) {
                 <LocationCityOutlinedIcon />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText primary="Ciudad" secondary={userData.ciudad} />
+            <ListItemText primary="Ciudad" secondary={user.ciudad ? user.ciudad : "..."} />
           </ListItem>
           <ListItem>
             <ListItemAvatar>
@@ -113,7 +97,7 @@ export default function ViewUser(props) {
                 <PhoneOutlinedIcon />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText primary="Telefono" secondary={userData.nroTelefono} />
+            <ListItemText primary="Telefono" secondary={user.nroTelefono ? user.nroTelefono : "..."} />
           </ListItem>
         </List>
       </Grid>

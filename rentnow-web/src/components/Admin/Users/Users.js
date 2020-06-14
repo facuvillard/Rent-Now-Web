@@ -5,7 +5,7 @@ import RegisterUserForm from "./RegisterUserForm";
 import EditUserForm from "./EditUserForm";
 import ViewUser from "./ViewUser";
 import { Typography } from "@material-ui/core";
-import { getUsersApi } from "../../../Api/Usuarios";
+import { getUsersApi } from "../../../api/usuarios";
 
 export default function Users() {
   return <ListUser />;
@@ -17,8 +17,8 @@ function ListUser(props) {
   useEffect(() => {
     setIsLoading(true);
     getUsersApi().then((resp) => {
-      setIsLoading(false);
       setUsers(resp);
+      setIsLoading(false);
     });
   }, []);
 
@@ -34,11 +34,9 @@ function ListUser(props) {
     setOpen(true);
   };
 
-  const editUserDialog = (editUser) => {
-    setDialogTitle(
-      "Editar usuario " + editUser.nombres + " " + editUser.apellidos
-    );
-    setDialogContent(<EditUserForm setOpen={setOpen} editUser={editUser} />);
+  const editUserDialog = (user) => {
+    setDialogTitle("Editar usuario " + user.nombres + " " + user.apellidos);
+    setDialogContent(<EditUserForm setOpen={setOpen} user={user} />);
     setDialogSize("md");
     setOpen(true);
   };

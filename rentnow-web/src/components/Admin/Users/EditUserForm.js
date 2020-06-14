@@ -7,37 +7,52 @@ import {
   Typography,
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import { getProvincesApi, getCitiesByProvincesApi } from "../../../Api/GeoApi";
+import { getProvincesApi, getCitiesByProvincesApi } from "../../../api/geoApi";
+import { editUserApi } from "../../../api/usuarios";
 
 export default function EditUserForm(props) {
-  const { setOpen, editUser } = props;
+  const { setOpen, user } = props;
+
   const [isLoading, setIsLoading] = useState(false);
   const [provinces, setProvinces] = useState();
   const [cities, setCities] = useState([]);
   const [userData, setUserData] = useState({
-    nombres: "",
-    apellidos: "",
-    email: "",
-    roles: "",
-    provincia: "",
-    nroTelefono: "",
-    ciudad: "",
-    direccion: "",
+    nombres: user.nombres,
+    apellidos: user.apellidos,
+    email: user.email,
+    roles: user.roles,
+    nroTelefono: user.nroTelefono,
+    provincia: user.provincia,
+    ciudad: user.ciudad,
+    direccion: user.direccion,
   });
 
   useEffect(() => {
-    getCitiesByProvincesApi(editUser.provincia).then((response) => {
+    getCitiesByProvincesApi(user.provincia).then((response) => {
       setCities(response.localidades);
+      setIsLoading(true);
     });
     getProvincesApi().then((response) => {
       setProvinces(response.provincias);
-      setIsLoading(true);
     });
-    setUserData({ ...editUser });
   }, []);
 
   const handleEditUser = (e) => {
     e.preventDefault();
+    if (
+      userData.nombres === "" ||
+      userData.apellidos === "" ||
+      userData.email === "" ||
+      userData.roles === [] ||
+      userData.nroTelefono === "" ||
+      userData.provincia === "" ||
+      userData.direccion === ""
+    ) {
+      alert("Todos los campos son obligatorios");
+    } else {
+      editUserApi(userData, user.id);
+      //TO DO: Notificar a usuario
+    }
   };
 
   const handleProvince = (provinceName) => {
@@ -63,9 +78,9 @@ export default function EditUserForm(props) {
                 variant="outlined"
                 fullWidth
                 label="Nombres"
-                defaultValue={userData.nombres}
+                defaultValue={user.nombres}
                 onChange={(e) => {
-                  // setUserData({ ...userData, nombres: e.target.value });
+                  setUserData({ ...userData, nombres: e.target.value });
                 }}
               />
             </Grid>
@@ -74,9 +89,9 @@ export default function EditUserForm(props) {
                 variant="outlined"
                 fullWidth
                 label="Apellidos"
-                defaultValue={userData.apellidos}
+                defaultValue={user.apellidos}
                 onChange={(e) => {
-                  // setUserData({ ...userData, apellidos: e.target.value });
+                  setUserData({ ...userData, apellidos: e.target.value });
                 }}
               />
             </Grid>
@@ -88,9 +103,9 @@ export default function EditUserForm(props) {
                 variant="outlined"
                 fullWidth
                 label="Email"
-                defaultValue={userData.email}
+                defaultValue={user.email}
                 onChange={(e) => {
-                  // setUserData({ ...userData, email: e.target.value });
+                  setUserData({ ...userData, email: e.target.value });
                 }}
               />
             </Grid>
@@ -100,9 +115,9 @@ export default function EditUserForm(props) {
                 label="Rol"
                 select
                 fullWidth
-                defaultValue={userData.roles[0]}
+                defaultValue={user.roles[0]}
                 onChange={(e) => {
-                  // setUserData({ ...userData, rol: e.target.value });
+                  setUserData({ ...userData, roles: [e.target.value] });
                 }}
               >
                 <MenuItem value="Administrador">Administrador</MenuItem>
@@ -117,9 +132,9 @@ export default function EditUserForm(props) {
                 variant="outlined"
                 fullWidth
                 label="Numero de Telefono"
-                defaultValue={userData.nroTelefono}
+                defaultValue={user.nroTelefono}
                 onChange={(e) => {
-                  // setUserData({ ...userData, nroTelefono: e.target.value });
+                  setUserData({ ...userData, nroTelefono: e.target.value });
                 }}
               />
             </Grid>
@@ -134,9 +149,9 @@ export default function EditUserForm(props) {
                 fullWidth
                 onChange={(e) => {
                   handleProvince(e.target.value);
-                  // setUserData({ ...userData, provincia: e.target.value });
+                  setUserData({ ...userData, provincia: e.target.value });
                 }}
-                defaultValue={userData.provincia}
+                defaultValue={user.provincia}
               >
                 {provinces !== undefined ? (
                   provinces.map((province) => (
@@ -151,14 +166,15 @@ export default function EditUserForm(props) {
             </Grid>
             <Grid item xs={6}>
               <Autocomplete
-                disabled={cities? true : false}
+                disabled={cities.length === 0 ? true : false}
                 options={cities}
                 getOptionLabel={(option) => option.nombre}
+                value={cities.find((city) => city.nombre === user.ciudad) || {}}
                 renderInput={(params) => (
                   <TextField {...params} label="Ciudad" variant="outlined" />
                 )}
                 onInputChange={(e, inputValue) => {
-                  // setUserData({ ...userData, ciudad: inputValue });
+                  setUserData({ ...userData, ciudad: inputValue });
                 }}
               />
             </Grid>
@@ -170,34 +186,9 @@ export default function EditUserForm(props) {
                 variant="outlined"
                 fullWidth
                 label="Dirección"
-                defaultValue={userData.direccion}
+                defaultValue={user.direccion}
                 onChange={(e) => {
-                  // setUserData({ ...userData, direccion: e.target.value });
-                }}
-              />
-            </Grid>
-          </Grid>
-
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <TextField
-                type="password"
-                variant="outlined"
-                fullWidth
-                label="Contraseña"
-                onChange={(e) => {
-                  // setUserData({ ...userData, contraseña: e.target.value });
-                }}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                type="password"
-                variant="outlined"
-                fullWidth
-                label="Repetir contraseña"
-                onChange={(e) => {
-                  // setUserData({ ...userData, repetirContraseña: e.target.value });
+                  setUserData({ ...userData, direccion: e.target.value });
                 }}
               />
             </Grid>
