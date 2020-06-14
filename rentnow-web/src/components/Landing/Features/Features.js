@@ -36,13 +36,14 @@ const useStyles = makeStyles(theme => ({
         marginBottom: theme.spacing(2),
     },
     title: {
-        marginBottom: theme.spacing(5),
+        marginBottom: theme.spacing(4),
     },
     imagenFondo: {
         pointerEvents: 'none',
         position: 'absolute',
         top: -180,
         opacity: 0.20,
+        backgroundRepeat: "repeat-y",
     },
     subrayado: {
         height: 5,
@@ -56,7 +57,7 @@ const useStyles = makeStyles(theme => ({
 const Features = () => {
     const classes = useStyles()
     return (
-        <section className={classes.root}>
+        <section id="Features" className={classes.root}>
           
         <Container className={classes.container}>
           <img

@@ -13,18 +13,25 @@ const useStyles = makeStyles(theme => ({
     },
     background: {
         backgroundImage: `url(${heroBgImage})`,
-        backgroundPositionX:'37%',
-        backgroundPositionY: '20%',
+        backgroundColor: "#FAFAFA",
+        backgroundPositionX:'30%',
+        backgroundPositionY: '50%',
         height: "100%",
         width: "100%",
         filter: "brightness(50%)",
-        position: "absolute"
-    },
-    toFront:{
-        zIndex: 1
+        position: "absolute",
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        zIndex: -1,
     },
     button: {
-        marginTop: theme.spacing(8),
+        marginTop: theme.spacing(6),
+        color: "#424242"
+        
     },
 }))
 
@@ -33,9 +40,9 @@ const Hero = () => {
     return (
         <Container className={classes.hero} maxWidth="xl">
             <div className={classes.background}></div>
-        <Typography variant="h2" display="block" style={{color: "#FAFAFA" }} className={classes.toFront} gutterBottom> <b>BIENVENIDOS A RENTNOW</b> </Typography> 
-        <Typography variant="h4" display="block" style={{color: "#FAFAFA" }} className={classes.toFront} gutterBottom> Administra tu complejo de forma simple y rapida </Typography> 
-        <Button color="primary" size="large" variant="contained" className={classes.button} href="">Conoce más</Button>
+        <Typography variant="h2" display="block" style={{color: "#FAFAFA" }} gutterBottom> <b>BIENVENIDOS A RENTNOW</b> </Typography> 
+        <Typography variant="h4" display="block" style={{color: "#FAFAFA" }} gutterBottom> Administra tu complejo de forma simple y rapida </Typography> 
+        <Button color="primary" size="large" variant="contained" className={classes.button} href="#Features"><b>Conoce más</b></Button>
         </Container>
     )
 }

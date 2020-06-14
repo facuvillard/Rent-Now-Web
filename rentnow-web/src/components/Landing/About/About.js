@@ -1,6 +1,7 @@
 import React from 'react'
-import { Container, makeStyles, Grid, Typography } from '@material-ui/core'
+import { Container, makeStyles, Grid, Typography, Button } from '@material-ui/core'
 import AboutImg from "../../../assets/img/logos/logo-amarillo.png"
+import ContactIcon from '@material-ui/icons/ContactMailOutlined';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -25,11 +26,11 @@ const useStyles = makeStyles(theme => ({
     image: {
         backgroundImage: `url(${AboutImg})`,
         backgroundRepeat: "repeat",
-        // theme.palette.type === "light"
-        //   ? theme.palette.grey[50]
-        //   : theme.palette.grey[900],
         backgroundSize: "cover",
         backgroundPosition: "center",
+        minHeight: "500px",
+        height: "100%",
+        width: "100%",
     },
     title: {
         marginBottom: theme.spacing(5),
@@ -41,6 +42,8 @@ const useStyles = makeStyles(theme => ({
         margin: `${theme.spacing(1)}px auto 0`,
         background: "rgb(255,191,0) linear-gradient(90deg, rgba(255,191,0,0.7517401392111369) 29%, rgba(255,255,191,1) 100%)",
     },
+    
+    
 }))
 
 const About = () => {
@@ -56,7 +59,7 @@ const About = () => {
                                 <b>SOBRE NOSOTROS</b>
                                 <span className={classes.subrayado} />
                             </Typography>
-                            <Typography variant="h6" align="center">
+                            <Typography align="center" className={classes.title}>
                                 {'Nosotros somos Rent Now, 4 chicos de Córdoba inspirados en utilizar la tecnología para facilitarnos la vida.'}
                                 <br></br>
                                 {'¿Sentís que tus clientes no se renuevan? ¿Estás interesado en aumentar tu cantidad de turnos '}
@@ -68,6 +71,14 @@ const About = () => {
                                 {'piensan los usuarios de tu complejo, y lanzar promociones para los días en que el complejo no '}
                                 {'tiene el éxito esperado. Con Rent Now tus días serán mucho más fáciles.'}
                             </Typography>
+                            <Button
+                            variant="contained"
+                            color="primary"
+                            className={classes.button}
+                            startIcon={<ContactIcon />}
+                            >
+                            <b>CONTACTANOS</b>
+                            </Button>
                         </div>
                     </Grid>
                 </Grid>

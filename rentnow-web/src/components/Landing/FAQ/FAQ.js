@@ -43,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
     expansionPanel: {
         width: '100%',
         border: '1px solid rgba(0, 0, 0, .125)',
+        backgroundColor: '#FAFAFA',
     },
     heading: {
 
@@ -57,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
 const Pregunta = (props) => {
     const classes = useStyles();
     return (
-        <ExpansionPanel>
+        <ExpansionPanel className={classes.expansionPanel} >
             <ExpansionPanelSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1a-content"
@@ -129,7 +130,7 @@ const FAQ = () => {
                     <b>PREGUNTAS FRECUENTES</b>
                     <span className={classes.subrayado} />
                 </Typography>
-                <List component="nav" className={classes.tab} aria-label="mailbox folders">
+                <List component="nav" className={classes.tab} aria-label="">
                     <ListItem>
                         <ListItemAvatar>
                             <Avatar>
