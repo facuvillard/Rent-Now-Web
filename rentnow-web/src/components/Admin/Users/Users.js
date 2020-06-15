@@ -4,6 +4,7 @@ import Dialog from "../../utils/Dialog/Dialog";
 import RegisterUserForm from "./RegisterUserForm";
 import EditUserForm from "./EditUserForm";
 import ViewUser from "./ViewUser";
+import DeleteUser from "./DeleteUser"
 import { Typography } from "@material-ui/core";
 import { getUsersApi } from "../../../api/usuarios";
 
@@ -35,8 +36,10 @@ function ListUser(props) {
   };
 
   const editUserDialog = (user) => {
+    const {id , ...rest} = user
+
     setDialogTitle("Editar usuario " + user.nombres + " " + user.apellidos);
-    setDialogContent(<EditUserForm setOpen={setOpen} user={user} />);
+    setDialogContent(<EditUserForm setOpen={setOpen} user={rest} userId={id} />);
     setDialogSize("md");
     setOpen(true);
   };
@@ -46,6 +49,13 @@ function ListUser(props) {
     setDialogContent(<ViewUser setOpen={setOpen} user={user} />);
     setDialogSize("sm");
     setOpen(true);
+  };
+
+  const deleteUserDialog = ({id,...rest})=>{
+  setDialogTitle("Eliminar Usuario: " + rest.nombres + " " + rest.apellidos);
+  setDialogContent(<DeleteUser setOpen={setOpen} user={rest} userId={id} />);
+  setDialogSize("sm");
+  setOpen(true);
   };
 
   return (
@@ -89,8 +99,8 @@ function ListUser(props) {
             {
               icon: "delete",
               tooltip: "Eliminar Usuario",
-              onClick: (event) => {
-                console.log("Clickeaste eliminar usuario");
+              onClick: (event,row) => {
+                deleteUserDialog(row);
               },
             },
           ]}

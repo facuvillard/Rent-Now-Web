@@ -5,13 +5,15 @@ import {
   MenuItem,
   Button,
   Typography,
+  CircularProgress
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { getProvincesApi, getCitiesByProvincesApi } from "../../../api/geoApi";
 import { editUserApi } from "../../../api/usuarios";
+import AlertCustom from "../../utils/AlertCustom/AlertCustom";
 
 export default function EditUserForm(props) {
-  const { setOpen, user } = props;
+  const { setOpen, user, userId } = props;
 
   const [isLoading, setIsLoading] = useState(false);
   const [provinces, setProvinces] = useState();
@@ -26,19 +28,22 @@ export default function EditUserForm(props) {
     ciudad: user.ciudad,
     direccion: user.direccion,
   });
+  const [alertCustomOpen, setAlertCustomOpen] = useState(false);
+  const [alertCustomType, setAlertCustomType] = useState();
+  const [alertCustomText, setAlertCustomText] = useState();
 
   useEffect(() => {
+    setIsLoading(true);
     getCitiesByProvincesApi(user.provincia).then((response) => {
       setCities(response.localidades);
-      setIsLoading(true);
+      setIsLoading(false);
     });
     getProvincesApi().then((response) => {
       setProvinces(response.provincias);
     });
   }, []);
 
-  const handleEditUser = (e) => {
-    e.preventDefault();
+  const validateUserData = (e) => {
     if (
       userData.nombres === "" ||
       userData.apellidos === "" ||
@@ -48,11 +53,12 @@ export default function EditUserForm(props) {
       userData.provincia === "" ||
       userData.direccion === ""
     ) {
-      alert("Todos los campos son obligatorios");
-    } else {
-      editUserApi(userData, user.id);
-      //TO DO: Notificar a usuario
-    }
+      setAlertCustomText("Todos los campos son obligatorios.");
+      setAlertCustomType("error");
+      setAlertCustomOpen(true);
+      return false
+    } 
+    return true
   };
 
   const handleProvince = (provinceName) => {
@@ -66,10 +72,36 @@ export default function EditUserForm(props) {
     }
   };
 
+  const handleEditUser = (e) => {
+    e.preventDefault();
+    if(!validateUserData()) return;
+    setIsLoading(true);
+    consumeEditApi().then(() => {
+      setIsLoading(false)
+    })
+  }
+
+  const  consumeEditApi = async () => {
+    const result = await editUserApi(userData, userId)
+    if(result.status === 'OK'){
+      setAlertCustomText(result.message);
+      setAlertCustomType("success");
+      setAlertCustomOpen(true);
+    } else {
+      setAlertCustomText(result.message);
+      setAlertCustomType("error");
+      setAlertCustomOpen(true);
+    }
+  }
+
   return (
     <>
-      {!isLoading ? (
-        <Typography>Cargando...</Typography>
+      {isLoading ? (
+      <Grid container justify='center'>
+        <Grid item>
+           <CircularProgress />
+        </Grid>
+      </Grid> 
       ) : (
         <form onSubmitCapture={handleEditUser}>
           <Grid container spacing={2}>
@@ -219,7 +251,15 @@ export default function EditUserForm(props) {
             </Grid>
           </Grid>
         </form>
-      )}
+        
+      )
+      }
+       <AlertCustom
+        type={alertCustomType}
+        text={alertCustomText}
+        open={alertCustomOpen}
+        setOpen={setAlertCustomOpen}
+      />
     </>
   );
 }

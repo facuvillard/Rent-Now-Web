@@ -5,6 +5,8 @@ import {
   MenuItem,
   Button,
   Typography,
+  Container,
+  CircularProgress
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { getProvincesApi, getCitiesByProvincesApi } from "../../../api/geoApi";
@@ -34,14 +36,16 @@ export default function RegisterUserForm(props) {
   const [alertCustomText, setAlertCustomText] = useState();
 
   useEffect(() => {
+    setIsLoading(true)
     getProvincesApi().then((response) => {
       setProvinces(response.provincias);
-      setIsLoading(true);
-    });
+      setIsLoading(false);
+    }).catch(err => {
+      setIsLoading(false)
+    })
   }, []);
 
-  const handleAddUser = (e) => {
-    e.preventDefault();
+  const validateUserData =  () => { 
     if (
       userData.nombres === "" ||
       userData.apellidos === "" ||
@@ -56,23 +60,47 @@ export default function RegisterUserForm(props) {
       setAlertCustomText("Todos los campos son obligatorios.");
       setAlertCustomType("error");
       setAlertCustomOpen(true);
+      return false
     } else {
       if (userData.contraseña !== userData.repetirContraseña) {
         setAlertCustomText("Has ingresado contraseñas distintas");
         setAlertCustomType("error");
         setAlertCustomOpen(true);
+        return false
       } else {
         if (userData.contraseña.length < 6) {
           setAlertCustomText("La contraseña debe ser de minimo 6 caracteres");
           setAlertCustomType("error");
           setAlertCustomOpen(true);
-        } else {
-          delete userData.repetirContraseña;
-          createUserApi(userData);
-        }
+          return false
+        } 
       }
     }
+    return true
   };
+
+  const consumeUserApi = async ()=> {
+    const result = await createUserApi(userData)
+    console.log('Dentro de la funcionm',result)
+    if(result && result.status === 'OK'){
+      setAlertCustomText(result.message);
+      setAlertCustomType("success");
+      setAlertCustomOpen(true);
+    } else {
+      setAlertCustomText(result.message);
+      setAlertCustomType("error");
+      setAlertCustomOpen(true);
+    }
+  }
+
+  const handleAddUser = (e) => {
+    e.preventDefault();
+    if (!validateUserData()) return;
+    setIsLoading(true);
+    consumeUserApi().then(() =>{
+      setIsLoading(false);
+    })
+  }
 
   const handleProvince = (provinceName) => {
     if (provinceName) {
@@ -86,8 +114,12 @@ export default function RegisterUserForm(props) {
 
   return (
     <>
-      {!isLoading ? (
-        <Typography>Cargando...</Typography>
+      {isLoading ? (
+       <Grid container justify='center'>
+         <Grid item>
+            <CircularProgress />
+         </Grid>
+       </Grid> 
       ) : (
         <form onSubmitCapture={handleAddUser}>
           <Grid container spacing={2}>

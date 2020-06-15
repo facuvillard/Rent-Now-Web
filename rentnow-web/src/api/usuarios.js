@@ -1,39 +1,45 @@
 import firebase from "firebase";
 
+
 export function getUsersApi() {
   return firebase
     .firestore()
     .collection("usuarios")
+    .where("habilitado", "==", true)
     .get()
     .then((response) => {
       return response.docs.map((user) => ({id: user.id, ...user.data()}))
     });
 }
 
-export function createUserApi(userToRegister) {
-  try { 
-    const email = userToRegister.email
-    const password = userToRegister.contraseña
-    delete userToRegister.contraseña
-    firebase.auth().createUserWithEmailAndPassword(email,password).catch(function(error){
-      console.log(error.code, error.message)
-    })
+export  async function  createUserApi   (userToRegister) {
+ 
+    const createUsuario = firebase.functions().httpsCallable('createUsuario')
+    const result =  await createUsuario(userToRegister)
    
-
-    
-  } catch (err) {
-    console.log("HUBO FLOR DE ERROR AMIGAR2", err);
-  }
+    if(result.data.error && result.data.error.errorInfo.code === "auth/email-already-exists"){
+      result.data.message = "El email se encuentra en uso"
+    }
+    return result.data
 }
 
-export function editUserApi(user, idUser) {
+export async function editUserApi(user, idUser) {
   try {
-    firebase.firestore().collection("usuarios").doc(idUser).update(user)
+    await firebase.firestore().collection("usuarios").doc(idUser).update(user)
+    return {status: "OK", message: "Usuario actualizado con exito"}
   } catch (err) {
-    console.log("HUBO FLOR DE ERROR AMIGAR2");
+    return {status: "ERROR", message: "Error al actualizar el usuario"}
   }
 }
 
-export function deleteUserApi() {
-  return "...";
+export async function deleteUserApi(idUser) {
+try {
+  await firebase.firestore().collection('usuarios').doc(idUser).update({
+    habilitado: false
+  })
+  return {status: "OK", message:"Usuario eliminado con exito"}
+}
+catch (err){
+  return {status: "ERROR", message: "Error al eliminar el usuario"}
+}
 }
