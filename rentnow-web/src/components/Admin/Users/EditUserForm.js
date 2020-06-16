@@ -4,16 +4,22 @@ import {
   TextField,
   MenuItem,
   Button,
-  Typography,
-  CircularProgress
+  CircularProgress,
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { getProvincesApi, getCitiesByProvincesApi } from "../../../api/geoApi";
 import { editUserApi } from "../../../api/usuarios";
-import AlertCustom from "../../utils/AlertCustom/AlertCustom";
 
 export default function EditUserForm(props) {
-  const { setOpen, user, userId } = props;
+  const {
+    setOpen,
+    user,
+    userId,
+    setReload,
+    setAlertCustomOpen,
+    setAlertCustomType,
+    setAlertCustomText,
+  } = props;
 
   const [isLoading, setIsLoading] = useState(false);
   const [provinces, setProvinces] = useState();
@@ -28,18 +34,15 @@ export default function EditUserForm(props) {
     ciudad: user.ciudad,
     direccion: user.direccion,
   });
-  const [alertCustomOpen, setAlertCustomOpen] = useState(false);
-  const [alertCustomType, setAlertCustomType] = useState();
-  const [alertCustomText, setAlertCustomText] = useState();
 
   useEffect(() => {
     setIsLoading(true);
-    getCitiesByProvincesApi(user.provincia).then((response) => {
-      setCities(response.localidades);
-      setIsLoading(false);
-    });
     getProvincesApi().then((response) => {
       setProvinces(response.provincias);
+    });
+    getCitiesByProvincesApi(user.provincia, user.ciudad).then((response) => {
+      setCities(response.localidades);
+      setIsLoading(false);
     });
   }, []);
 
@@ -51,57 +54,60 @@ export default function EditUserForm(props) {
       userData.roles === [] ||
       userData.nroTelefono === "" ||
       userData.provincia === "" ||
+      userData.ciudad === "" ||
       userData.direccion === ""
     ) {
       setAlertCustomText("Todos los campos son obligatorios.");
       setAlertCustomType("error");
       setAlertCustomOpen(true);
-      return false
-    } 
-    return true
+      return false;
+    }
+    return true;
   };
 
-  const handleProvince = (provinceName) => {
-    setCities([]);
-    if (provinceName) {
-      getCitiesByProvincesApi(provinceName).then((response) => {
-        setCities(response.localidades);
-      });
+  const handleCityTextField = async (e) => {
+    if (e.target.value.length > 3) {
+      await getCitiesByProvincesApi(userData.provincia, e.target.value).then(
+        (response) => {
+          setCities(response.localidades);
+        }
+      );
     } else {
       setCities([]);
     }
   };
-
   const handleEditUser = (e) => {
     e.preventDefault();
-    if(!validateUserData()) return;
+    if (!validateUserData()) return;
     setIsLoading(true);
     consumeEditApi().then(() => {
-      setIsLoading(false)
-    })
-  }
+      setIsLoading(false);
+    });
+  };
 
-  const  consumeEditApi = async () => {
-    const result = await editUserApi(userData, userId)
-    if(result.status === 'OK'){
+  const consumeEditApi = async () => {
+    const result = await editUserApi(userData, userId);
+    if (result.status === "OK") {
       setAlertCustomText(result.message);
       setAlertCustomType("success");
       setAlertCustomOpen(true);
+      setReload(true);
+      setOpen(false);
     } else {
       setAlertCustomText(result.message);
       setAlertCustomType("error");
       setAlertCustomOpen(true);
     }
-  }
+  };
 
   return (
     <>
       {isLoading ? (
-      <Grid container justify='center'>
-        <Grid item>
-           <CircularProgress />
+        <Grid container justify="center">
+          <Grid item>
+            <CircularProgress />
+          </Grid>
         </Grid>
-      </Grid> 
       ) : (
         <form onSubmitCapture={handleEditUser}>
           <Grid container spacing={2}>
@@ -180,7 +186,6 @@ export default function EditUserForm(props) {
                 select
                 fullWidth
                 onChange={(e) => {
-                  handleProvince(e.target.value);
                   setUserData({ ...userData, provincia: e.target.value });
                 }}
                 defaultValue={user.provincia}
@@ -198,12 +203,17 @@ export default function EditUserForm(props) {
             </Grid>
             <Grid item xs={6}>
               <Autocomplete
-                disabled={cities.length === 0 ? true : false}
+                disabled={userData.provincia ? false : true}
                 options={cities}
                 getOptionLabel={(option) => option.nombre}
-                value={cities.find((city) => city.nombre === user.ciudad) || {}}
+                defaultValue={cities.find((city) => city.nombre === user.ciudad) || {}}
                 renderInput={(params) => (
-                  <TextField {...params} label="Ciudad" variant="outlined" />
+                  <TextField
+                    {...params}
+                    label="Ciudad"
+                    variant="outlined"
+                    onChange={handleCityTextField}
+                  />
                 )}
                 onInputChange={(e, inputValue) => {
                   setUserData({ ...userData, ciudad: inputValue });
@@ -251,15 +261,7 @@ export default function EditUserForm(props) {
             </Grid>
           </Grid>
         </form>
-        
-      )
-      }
-       <AlertCustom
-        type={alertCustomType}
-        text={alertCustomText}
-        open={alertCustomOpen}
-        setOpen={setAlertCustomOpen}
-      />
+      )}
     </>
   );
 }

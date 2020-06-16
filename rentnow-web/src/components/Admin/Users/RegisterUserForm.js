@@ -4,17 +4,20 @@ import {
   TextField,
   MenuItem,
   Button,
-  Typography,
-  Container,
-  CircularProgress
+  CircularProgress,
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { getProvincesApi, getCitiesByProvincesApi } from "../../../api/geoApi";
 import { createUserApi } from "../../../api/usuarios";
-import AlertCustom from "../../utils/AlertCustom/AlertCustom";
 
 export default function RegisterUserForm(props) {
-  const { setOpen } = props;
+  const {
+    setOpen,
+    setReload,
+    setAlertCustomOpen,
+    setAlertCustomText,
+    setAlertCustomType,
+  } = props;
   const [provinces, setProvinces] = useState();
   const [cities, setCities] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -29,23 +32,22 @@ export default function RegisterUserForm(props) {
     direccion: "",
     contraseña: "",
     repetirContraseña: "",
+    habilitado: true,
   });
 
-  const [alertCustomOpen, setAlertCustomOpen] = useState(false);
-  const [alertCustomType, setAlertCustomType] = useState();
-  const [alertCustomText, setAlertCustomText] = useState();
-
   useEffect(() => {
-    setIsLoading(true)
-    getProvincesApi().then((response) => {
-      setProvinces(response.provincias);
-      setIsLoading(false);
-    }).catch(err => {
-      setIsLoading(false)
-    })
+    setIsLoading(true);
+    getProvincesApi()
+      .then((response) => {
+        setProvinces(response.provincias);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+      });
   }, []);
 
-  const validateUserData =  () => { 
+  const validateUserData = () => {
     if (
       userData.nombres === "" ||
       userData.apellidos === "" ||
@@ -53,6 +55,7 @@ export default function RegisterUserForm(props) {
       userData.roles === [] ||
       userData.nroTelefono === "" ||
       userData.provincia === "" ||
+      userData.ciudad === "" ||
       userData.direccion === "" ||
       userData.contraseña === "" ||
       userData.repetirContraseña === ""
@@ -60,53 +63,57 @@ export default function RegisterUserForm(props) {
       setAlertCustomText("Todos los campos son obligatorios.");
       setAlertCustomType("error");
       setAlertCustomOpen(true);
-      return false
+      return false;
     } else {
       if (userData.contraseña !== userData.repetirContraseña) {
         setAlertCustomText("Has ingresado contraseñas distintas");
         setAlertCustomType("error");
         setAlertCustomOpen(true);
-        return false
+        return false;
       } else {
         if (userData.contraseña.length < 6) {
           setAlertCustomText("La contraseña debe ser de minimo 6 caracteres");
           setAlertCustomType("error");
           setAlertCustomOpen(true);
-          return false
-        } 
+          return false;
+        }
       }
     }
-    return true
+    return true;
   };
 
-  const consumeUserApi = async ()=> {
-    const result = await createUserApi(userData)
-    console.log('Dentro de la funcionm',result)
-    if(result && result.status === 'OK'){
+  const consumeUserApi = async () => {
+    const result = await createUserApi(userData);
+    if (result && result.status === "OK") {
       setAlertCustomText(result.message);
       setAlertCustomType("success");
       setAlertCustomOpen(true);
+      setOpen(false);
     } else {
       setAlertCustomText(result.message);
       setAlertCustomType("error");
       setAlertCustomOpen(true);
+      setCities([]);
     }
-  }
+  };
 
   const handleAddUser = (e) => {
     e.preventDefault();
     if (!validateUserData()) return;
     setIsLoading(true);
-    consumeUserApi().then(() =>{
+    consumeUserApi().then(() => {
       setIsLoading(false);
-    })
-  }
+      setReload(true);
+    });
+  };
 
-  const handleProvince = (provinceName) => {
-    if (provinceName) {
-      getCitiesByProvincesApi(provinceName).then((response) => {
-        setCities(response.localidades);
-      });
+  const handleCityTextField = async (e) => {
+    if (e.target.value.length > 3) {
+      await getCitiesByProvincesApi(userData.provincia, e.target.value).then(
+        (response) => {
+          setCities(response.localidades);
+        }
+      );
     } else {
       setCities([]);
     }
@@ -115,11 +122,11 @@ export default function RegisterUserForm(props) {
   return (
     <>
       {isLoading ? (
-       <Grid container justify='center'>
-         <Grid item>
+        <Grid container justify="center">
+          <Grid item>
             <CircularProgress />
-         </Grid>
-       </Grid> 
+          </Grid>
+        </Grid>
       ) : (
         <form onSubmitCapture={handleAddUser}>
           <Grid container spacing={2}>
@@ -194,7 +201,6 @@ export default function RegisterUserForm(props) {
                 select
                 fullWidth
                 onChange={(e) => {
-                  handleProvince(e.target.value);
                   setUserData({ ...userData, provincia: e.target.value });
                 }}
               >
@@ -211,11 +217,16 @@ export default function RegisterUserForm(props) {
             </Grid>
             <Grid item xs={6}>
               <Autocomplete
-                disabled={cities.length === 0 ? true : false}
+                disabled={userData.provincia ? false : true}
                 options={cities}
                 getOptionLabel={(option) => option.nombre}
                 renderInput={(params) => (
-                  <TextField {...params} label="Ciudad" variant="outlined" />
+                  <TextField
+                    {...params}
+                    label="Ciudad"
+                    variant="outlined"
+                    onChange={handleCityTextField}
+                  />
                 )}
                 onInputChange={(e, inputValue) => {
                   setUserData({ ...userData, ciudad: inputValue });
@@ -291,13 +302,6 @@ export default function RegisterUserForm(props) {
           </Grid>
         </form>
       )}
-
-      <AlertCustom
-        type={alertCustomType}
-        text={alertCustomText}
-        open={alertCustomOpen}
-        setOpen={setAlertCustomOpen}
-      />
     </>
   );
 }

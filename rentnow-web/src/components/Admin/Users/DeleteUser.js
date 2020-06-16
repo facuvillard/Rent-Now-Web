@@ -1,23 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button, Typography, Grid, CircularProgress } from "@material-ui/core";
 import { deleteUserApi } from "../../../api/usuarios";
-import AlertCustom from "../../utils/AlertCustom/AlertCustom";
 
 export default function DeleteUser(props) {
-  const [alertCustomOpen, setAlertCustomOpen] = useState(false);
-  const [alertCustomType, setAlertCustomType] = useState();
-  const [alertCustomText, setAlertCustomText] = useState();
+  const {
+    setOpen,
+    userId,
+    setReload,
+    setAlertCustomOpen,
+    setAlertCustomText,
+    setAlertCustomType,
+  } = props;
   const [isLoading, setIsLoading] = useState(false);
 
   const handleUserDelete = async () => {
     setIsLoading(true);
-    const result = await deleteUserApi(props.userId);
+    const result = await deleteUserApi(userId);
     setIsLoading(false);
     if (result.status === "OK") {
       setAlertCustomText(result.message);
       setAlertCustomType("success");
       setAlertCustomOpen(true);
-    
+      setReload(true);
+      setOpen(false);
     } else {
       setAlertCustomText(result.message);
       setAlertCustomType("error");
@@ -52,21 +57,15 @@ export default function DeleteUser(props) {
             <Button
               variant="contained"
               onClick={() => {
-                props.setOpen(false);
+                setOpen(false);
               }}
-              color="primary"
+              color="secondary"
             >
               Cancelar
             </Button>
           </Grid>
         </Grid>
       )}
-      <AlertCustom
-        type={alertCustomType}
-        text={alertCustomText}
-        open={alertCustomOpen}
-        setOpen={setAlertCustomOpen}
-      />
     </>
   );
 }

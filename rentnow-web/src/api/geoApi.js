@@ -18,8 +18,9 @@ export function getProvincesApi() {
     });
 }
 
-export function getCitiesByProvincesApi(data) {
-  const url = BASE_URL + "localidades?provincia=" + data + "&max=1000"
+export function getCitiesByProvincesApi(province, cityName) {
+  const url = BASE_URL + "localidades?nombre=" + cityName + "&provincia=" + province + "&max=10";
+
   const params = {
     method: "GET",
   };
