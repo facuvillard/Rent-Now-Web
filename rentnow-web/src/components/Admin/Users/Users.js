@@ -4,82 +4,110 @@ import Dialog from "../../utils/Dialog/Dialog";
 import RegisterUserForm from "./RegisterUserForm";
 import EditUserForm from "./EditUserForm";
 import ViewUser from "./ViewUser";
+import DeleteUser from "./DeleteUser";
+import { Typography } from "@material-ui/core";
+import { getUsersApi } from "../../../api/usuarios";
+import AlertCustom from "../../utils/AlertCustom/AlertCustom";
 
 export default function Users() {
   return <ListUser />;
 }
 
 function ListUser(props) {
+  const [reload, setReload] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [alertCustomOpen, setAlertCustomOpen] = useState(false);
+  const [alertCustomType, setAlertCustomType] = useState();
+  const [alertCustomText, setAlertCustomText] = useState();
+
+  useEffect(() => {
+    setIsLoading(true);
+    getUsersApi().then((resp) => {
+      setUsers(resp);
+      setIsLoading(false);
+      setReload(false);
+    });
+  }, [reload]);
+
   const [open, setOpen] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
   const [dialogContent, setDialogContent] = useState(null);
+  const [dialogSize, setDialogSize] = useState("sm");
 
   const addUserDialog = () => {
     setDialogTitle("Nuevo Usuario");
-    setDialogContent(<RegisterUserForm setOpen={setOpen} />);
+    setDialogContent(
+      <RegisterUserForm
+        setOpen={setOpen}
+        setReload={setReload}
+        setAlertCustomOpen={setAlertCustomOpen}
+        setAlertCustomType={setAlertCustomType}
+        setAlertCustomText={setAlertCustomText}
+      />
+    );
+    setDialogSize("md");
     setOpen(true);
   };
 
-  const editUserDialog = () => {
-    setDialogTitle("Editar usuario");
-    setDialogContent(<EditUserForm setOpen={setOpen} />);
+  const editUserDialog = (user) => {
+    const { id, ...rest } = user;
+
+    setDialogTitle("Editar usuario " + user.nombres + " " + user.apellidos);
+    setDialogContent(
+      <EditUserForm
+        setOpen={setOpen}
+        user={rest}
+        userId={id}
+        setReload={setReload}
+        setAlertCustomOpen={setAlertCustomOpen}
+        setAlertCustomType={setAlertCustomType}
+        setAlertCustomText={setAlertCustomText}
+      />
+    );
+    setDialogSize("md");
     setOpen(true);
   };
 
-  const viewUserDialog = () => {
-    setDialogTitle("TITULO VISTA DE USUARIO");
-    setDialogContent(<ViewUser setOpen={setOpen} />);
+  const viewUserDialog = (user) => {
+    setDialogTitle("Usuario: " + user.nombres + " " + user.apellidos);
+    setDialogContent(<ViewUser setOpen={setOpen} user={user} />);
+    setDialogSize("sm");
+    setOpen(true);
+  };
+
+  const deleteUserDialog = ({ id, ...rest }) => {
+    setDialogTitle("Eliminar Usuario: " + rest.nombres + " " + rest.apellidos);
+    setDialogContent(
+      <DeleteUser
+        setOpen={setOpen}
+        userId={id}
+        setReload={setReload}
+        setAlertCustomOpen={setAlertCustomOpen}
+        setAlertCustomType={setAlertCustomType}
+        setAlertCustomText={setAlertCustomText}
+      />
+    );
+    setDialogSize("sm");
     setOpen(true);
   };
 
   return (
     <>
+      <Typography variant="h3" align="center">
+        Usuarios
+      </Typography>
       <MaterialTable
-        title="Usuarios"
+        isLoading={isLoading}
+        title=""
         columns={[
-          { title: "Nombres", field: "name" },
-          { title: "Apellidos", field: "lastname" },
+          { title: "Nombres", field: "nombres" },
+          { title: "Apellidos", field: "apellidos" },
           { title: "Email", field: "email" },
-          { title: "Rol", field: "role" },
+          { title: "Provincia", field: "provincia" },
         ]}
-        data={[
-          {
-            name: "Facundo",
-            lastname: "Villard",
-            email: "facuvillard@gmail.com",
-            role: "Administrador",
-          },
-          {
-            name: "Juan",
-            lastname: "Bergues",
-            email: "jpbergues@gmail.com",
-            role: "Adm. Complejos",
-          },
-          {
-            name: "Facundo",
-            lastname: "Villard",
-            email: "facuvillard@gmail.com",
-            role: "Administrador",
-          },
-          {
-            name: "Juan",
-            lastname: "Bergues",
-            email: "jpbergues@gmail.com",
-            role: "Adm. Complejos",
-          },
-          {
-            name: "Facundo",
-            lastname: "Villard",
-            email: "facuvillard@gmail.com",
-            role: "Administrador",
-          },
-          {
-            name: "Juan",
-            lastname: "Bergues",
-            email: "jpbergues@gmail.com",
-            role: "Adm. Complejos",
-          },
-        ]}
+        data={users}
         actions={[
           {
             icon: "person_add",
@@ -90,18 +118,22 @@ function ListUser(props) {
           {
             icon: "visibility",
             tooltip: "Ver usuario",
-            onClick: viewUserDialog,
+            onClick: (event, row) => {
+              viewUserDialog(row);
+            },
           },
           {
             icon: "edit",
             tooltip: "Edit User",
-            onClick: editUserDialog,
+            onClick: (event, row) => {
+              editUserDialog(row);
+            },
           },
           {
             icon: "delete",
             tooltip: "Eliminar Usuario",
-            onClick: (event) => {
-              console.log("Clickeaste eliminar usuario");
+            onClick: (event, row) => {
+              deleteUserDialog(row);
             },
           },
         ]}
@@ -109,9 +141,21 @@ function ListUser(props) {
           actionsColumnIndex: -1,
         }}
       />
-      <Dialog title={dialogTitle} open={open} setOpen={setOpen}>
+      <Dialog
+        title={dialogTitle}
+        open={open}
+        setOpen={setOpen}
+        size={dialogSize}
+      >
         {dialogContent}
       </Dialog>
+
+      <AlertCustom
+        type={alertCustomType}
+        text={alertCustomText}
+        open={alertCustomOpen}
+        setOpen={setAlertCustomOpen}
+      />
     </>
   );
 }
