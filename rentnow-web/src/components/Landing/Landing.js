@@ -8,6 +8,7 @@ import About from './About/About';
 import Footer from './Footer/Footer';
 import FAQ from './FAQ/FAQ';
 import ComplejosAdheridos from './Complejos/ComplejosAdheridos';
+import Contacto from './Contacto/Contacto'
 
 const theme = createMuiTheme({
     palette: { 
@@ -48,8 +49,9 @@ const Landing = () => {
         <About />
         <ComplejosAdheridos />
         <FAQ />
+        <Contacto />
         <Footer />  
-    </ ThemeProvider>
+        </ ThemeProvider>
     )
 }
 
