@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "./components/Login/Login";
 import { Layout } from "./components/Layout/Layout";
 import * as Routes from "./constants/routes";
-import { Typography } from "@material-ui/core";
 import AuthProvider from "./Auth/Auth";
 import PrivateRoute from "./Auth/PrivateRoute";
 import Complejos from "./components/App/Complejos/Complejos";
