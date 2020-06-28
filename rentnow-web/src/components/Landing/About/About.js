@@ -76,6 +76,7 @@ const About = () => {
                             color="primary"
                             className={classes.button}
                             startIcon={<ContactIcon />}
+                            href="#Contacto"
                             >
                             <b>CONTACTANOS</b>
                             </Button>

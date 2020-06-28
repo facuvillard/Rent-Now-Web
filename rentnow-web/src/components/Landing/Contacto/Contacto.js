@@ -84,11 +84,11 @@ const Contacto = () => {
 
   const handleSendEmail = async (data) => {
     const formatedData = {
-      destinatario : 'smmag18@gmail.com',
-      asunto: 'Contacto rentnow',
+      destinatario: "smmag18@gmail.com",
+      asunto: "Contacto rentnow",
       contenido: JSON.stringify(data),
-      adjuntos: null
-    }
+      adjuntos: null,
+    };
     const result = await sendEmailApi(formatedData);
     if (result.status === "OK") {
       setAlertCustomText(result.message);
@@ -122,7 +122,7 @@ const Contacto = () => {
   };
 
   return (
-    <section className={classes.root}>
+    <section id="Contacto" className={classes.root}>
       <Container className={classes.container}>
         <img src={imagenFondo} className={classes.imagenFondo} alt="" />
         <Typography
@@ -266,7 +266,6 @@ const Contacto = () => {
                       Enviar
                     </Button>
                   </Grid>
-                  <pre>{JSON.stringify(values, null, 2)}</pre>
                 </Grid>
               </Form>
             )}
