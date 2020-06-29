@@ -135,15 +135,13 @@ const Navbar = (props) => {
                 <b>Iniciar Sesión</b>
               </Button>
             </LinkRouter>
-            <LinkRouter className={classes.link}>
               <Button
                 className={classes.rightLink}
                 color="primary"
-                href=""
+                href="#Contacto"
               >
                 <b>Contactanos</b>
               </Button>
-            </LinkRouter>
           </div>
           <div className={classes.rightMenu}>
             <IconButton ref={anchorRef} color="primary" onClick={handleRightMenuOpen}>
