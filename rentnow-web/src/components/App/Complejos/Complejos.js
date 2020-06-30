@@ -4,13 +4,13 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
-  Container
+  Container,
+  Button
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import addImage from "../../../assets/img/more-image.png"
-
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
@@ -22,12 +22,11 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: 232,
   },
   container: {
-    marginTop: theme.spacing(10),
-    marginBottom: theme.spacing(15),
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    marginTop: theme.spacing(4),
   },
   media: {
     height: 140,
@@ -57,7 +56,10 @@ const useStyles = makeStyles((theme) => ({
     position: 'fixed',
     bottom: theme.spacing(3),
     right: theme.spacing(3),
-  }
+  },
+  heroButtons: {
+    marginTop: theme.spacing(2),
+  },
 }));
 
 const complejos = [
@@ -74,11 +76,28 @@ const Complejos = () => {
 
   return (
     <>
+      <div>
+        <Container maxWidth="sm">
+          <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+            TUS COMPLEJOS
+            <span className={classes.subrayado} />
+            </Typography>
+          <Typography variant="h6" align="center" color="textSecondary" paragraph>
+            Aquí podras visualizar todos tus complejos registrados en la aplicación. 
+            Recuerda que puedes tener solicitudes pendientes de aprobación de complejos, puedes verlas apretando en el siguiente botón:
+            </Typography>
+          <div className={classes.heroButtons}>
+            <Grid container spacing={2} justify="center">
+              <Grid item>
+                <Button variant="outlined" color="primary">
+                  SOLICITUDES PENDIENTES
+                  </Button>
+              </Grid>
+            </Grid>
+          </div>
+        </Container>
+      </div>
       <Container className={classes.container}>
-        <Typography variant="h4" marked="center" className={classes.title} component="h2">
-          <b>TUS COMPLEJOS</b>
-          <span className={classes.subrayado} />
-        </Typography>
         <Grid container spacing={5}>
           {complejos.map((complejo) => (
             <Grid key={complejo.nombre} item xs={12} md={4}>
@@ -101,25 +120,7 @@ const Complejos = () => {
               </Card>
             </Grid>
           ))}
-          <Grid item xs={12} md={4}>
-            <Card elevation={10} className={classes.root}>
-              <CardActionArea>
-                <CardMedia
-                  className={classes.media}
-                  image={addImage}
-                  title="Registrar un nuevo complejo"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    Nuevo Complejo
-                </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    Click aquí para registrar un nuevo complejo!
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
+          
         </Grid>
       </Container>
       <Fab color="primary" aria-label="add" title="Registrar un nuevo complejo" className={classes.addButton}>
