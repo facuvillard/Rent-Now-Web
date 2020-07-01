@@ -21,6 +21,8 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import {OutlinedInput, InputLabel,FormControl} from "@material-ui/core"
 import loginImg from "../../assets/img/login-img.png"
+import { recoverAndResetPassword } from "../../api/auth"
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -78,6 +80,11 @@ const useStyles = makeStyles((theme) => ({
 const Login = (props) => {
   const [loginError, setLoginError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [user, setUser] = useState({
+    email: "",
+    password: ""
+  })
+
 
   const classes = useStyles();
 
@@ -89,6 +96,10 @@ const Login = (props) => {
     onSubmit: (values) => {
       handleSubmit(values.email, values.password);
     },
+    handleChange: (values) => {
+      console.log(values);
+    }
+
   });
 
   const handleSubmit = (email, password) => {
@@ -106,6 +117,18 @@ const Login = (props) => {
   const handleClickShowPassword = () => {
     setShowPassword((oldShowPass) => !oldShowPass);
   };
+
+  const handleClickRecoverAndResetPassword = (e) => {
+    // TO DO: llamada a la funcion de firebase y pasarle como parametro el email.
+    const result = recoverAndResetPassword("facuvillard@gmail.com")
+
+    if(result.status === "OK") {
+      console.log(result.message)
+    } else {
+      console.log(result.message)
+    }
+  
+  }
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -182,8 +205,8 @@ const Login = (props) => {
             <Grid container>
               <Grid item xs>
                 {/* Cambiar por Link de react-router-dom */}
-                <Link href="#" variant="body2">
-                  Olvidate tu contraseña?
+                <Link href="#" variant="body2" onClick={() => handleClickRecoverAndResetPassword}>
+                  Olvidaste tu contraseña?
                 </Link>
               </Grid>
               <Grid item>
