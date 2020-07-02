@@ -1,6 +1,5 @@
 import firebase from "firebase";
 
-
 export function getUsersApi() {
   return firebase
     .firestore()
@@ -43,3 +42,4 @@ catch (err){
   return {status: "ERROR", message: "Error al eliminar el usuario"}
 }
 }
+

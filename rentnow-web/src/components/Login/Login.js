@@ -19,8 +19,13 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
-import {OutlinedInput, InputLabel,FormControl} from "@material-ui/core"
-import loginImg from "../../assets/img/login-img.png"
+import { OutlinedInput, InputLabel, FormControl } from "@material-ui/core";
+import loginImg from "../../assets/img/login-img.png";
+import { recoverAndResetPassword } from "../../api/auth";
+import { Alert } from "@material-ui/lab";
+import CloseIcon from "@material-ui/icons/Close";
+import Collapse from "@material-ui/core/Collapse";
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -43,9 +48,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage: `url(${loginImg})`,
     backgroundRepeat: "repeat",
     backgroundColor: theme.palette.secondary.light,
-      // theme.palette.type === "light"
-      //   ? theme.palette.grey[50]
-      //   : theme.palette.grey[900],
+    // theme.palette.type === "light"
+    //   ? theme.palette.grey[50]
+    //   : theme.palette.grey[900],
     backgroundSize: "cover",
     backgroundPosition: "center",
   },
@@ -69,16 +74,21 @@ const useStyles = makeStyles((theme) => ({
   hideLoginError: {
     display: "none",
   },
-  margin :{
-      marginTop: '1rem',
-      marginBottom:'1rem'
-  }
+  margin: {
+    marginTop: "1rem",
+    marginBottom: "1rem",
+  },
 }));
 
 const Login = (props) => {
   const [loginError, setLoginError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
+  const [alertConst, setAlertConst] = useState({
+    severity: "",
+    text: "",
+    open: false,
+  });
+  
   const classes = useStyles();
 
   const formik = useFormik({
@@ -105,6 +115,20 @@ const Login = (props) => {
 
   const handleClickShowPassword = () => {
     setShowPassword((oldShowPass) => !oldShowPass);
+  };
+
+  const handleClickRecoverAndResetPassword = async (email) => {
+    console.log(email);
+
+    const result = await recoverAndResetPassword(email);
+
+    if (result.status === "OK") {
+      setAlertConst({...alertConst, open: true, text: "Se ha enviado un mail para recuperar contraseña, por favor revise su correo electronico.", severity: "success"})
+      console.log(result.message);
+    } else {
+      setAlertConst({...alertConst, open: true, text: "No se puede recuperar contraseña, por favor ingrese un email válido.", severity: "error"})
+      console.log(result.message);
+    }
   };
 
   return (
@@ -134,14 +158,17 @@ const Login = (props) => {
               value={formik.values.email}
               onChange={formik.handleChange}
             />
-            <FormControl variant='outlined'  fullWidth className={clsx(classes.margin, classes.textField)}>
+            <FormControl
+              variant="outlined"
+              fullWidth
+              className={clsx(classes.margin, classes.textField)}
+            >
               <InputLabel htmlFor="standard-adornment-password">
                 Contraseña
               </InputLabel>
 
               <OutlinedInput
                 variant="outlined"
-          
                 required
                 fullWidth
                 name="password"
@@ -152,11 +179,11 @@ const Login = (props) => {
                 onChange={formik.handleChange}
                 autoComplete="current-password"
                 endAdornment={
-                  <InputAdornment >
+                  <InputAdornment>
                     <IconButton
                       aria-label="Mostrar/Ocultar Contraseña"
                       onClick={handleClickShowPassword}
-                      edge='end'
+                      edge="end"
                     >
                       {showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
@@ -182,17 +209,42 @@ const Login = (props) => {
             <Grid container>
               <Grid item xs>
                 {/* Cambiar por Link de react-router-dom */}
-                <Link href="#" variant="body2">
-                  Olvidate tu contraseña?
+                <Link
+                  href="#"
+                  variant="body2"
+                  onClick={() =>
+                    handleClickRecoverAndResetPassword(formik.values.email)
+                  }
+                >
+                  ¿Olvidaste tu contraseña?
                 </Link>
               </Grid>
               <Grid item>
                 {/* Cambiar por Link to="/contacto del react-router-dom */}
                 <Link href="/contacto" variant="body2">
-                  {"No tienes una cuenta? Contactanos"}
+                  {"¿No tienes una cuenta? Contactanos"}
                 </Link>
               </Grid>
             </Grid>
+            <Collapse in={alertConst.open}>
+              <Alert
+                severity={alertConst.severity}
+                action={
+                  <IconButton
+                    aria-label="close"
+                    color="inherit"
+                    size="small"
+                    onClick={() => {
+                      setAlertConst({ ...alertConst, open: false });
+                    }}
+                  >
+                    <CloseIcon fontSize="inherit" />
+                  </IconButton>
+                }
+              >
+                {alertConst.text}
+              </Alert>
+            </Collapse>
             <Box mt={5}>
               <Copyright />
             </Box>
