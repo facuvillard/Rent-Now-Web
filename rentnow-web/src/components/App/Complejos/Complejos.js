@@ -57,9 +57,10 @@ const useStyles = makeStyles((theme) => ({
     bottom: theme.spacing(3),
     right: theme.spacing(3),
   },
-  heroButtons: {
-    marginTop: theme.spacing(2),
+  extendedIcon: {
+    marginRight: theme.spacing(1),
   },
+  
 }));
 
 const complejos = [
@@ -84,21 +85,11 @@ const Complejos = () => {
             </Typography>
           <Typography variant="h6" align="center" color="textSecondary" paragraph>
             Aquí podras visualizar todos tus complejos registrados en la aplicación. 
-            Recuerda que puedes tener solicitudes pendientes de aprobación de complejos, puedes verlas apretando en el siguiente botón:
             </Typography>
-          <div className={classes.heroButtons}>
-            <Grid container spacing={2} justify="center">
-              <Grid item>
-                <Button variant="outlined" color="primary">
-                  SOLICITUDES PENDIENTES
-                  </Button>
-              </Grid>
-            </Grid>
-          </div>
         </Container>
       </div>
       <Container className={classes.container}>
-        <Grid container spacing={5}>
+        <Grid container spacing={5}  justify="center">
           {complejos.map((complejo) => (
             <Grid key={complejo.nombre} item xs={12} md={4}>
               <Card elevation={10} className={classes.root}>
@@ -120,11 +111,11 @@ const Complejos = () => {
               </Card>
             </Grid>
           ))}
-          
         </Grid>
       </Container>
-      <Fab color="primary" aria-label="add" title="Registrar un nuevo complejo" className={classes.addButton}>
-        <AddIcon />
+      <Fab color="primary" aria-label="add" title="Registrar un nuevo complejo" className={classes.addButton} variant="extended">
+        <AddIcon className={classes.extendedIcon} />
+        Nuevo Complejo
       </Fab>
     </>
   );
