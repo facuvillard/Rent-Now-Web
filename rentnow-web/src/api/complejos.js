@@ -1,13 +1,18 @@
 import firebase from "firebase";
 
-export function getComplejosApi() {
-   return firebase
-    .firestore()
-    .collection("complejos")
-    .get()
-    .then((response) => {
-      return response.docs.map(complejo => (complejo.data()))
-    }).catch(error => {
-        console.log(error)
-    })
+export async function getComplejosByUserApi(user) {
+  try {
+    const userId = user.uid;
+    const result = await firebase
+      .firestore()
+      .collection("complejos")
+      .where("usuarios", "array-contains", userId)
+      .get()
+    const complejos = result.docs.map(complejo => complejo.data())
+    
+    return {status: 'OK', message:'Se consultaron los complejos con exito', data: complejos }
+  } catch (err) {
+    return {status: 'ERROR', message: 'Se produjo un error al consultar los complejos', error: err}
+  }
+ 
 }

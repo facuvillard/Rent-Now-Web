@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   Card,
   CardActionArea,
@@ -12,9 +12,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import { Alert, AlertTitle } from "@material-ui/lab";
-import { getComplejosApi } from "../../../api/complejos";
+import { getComplejosByUserApi } from "../../../api/complejos";
 import Chip from "@material-ui/core/Chip";
-
+import {AuthContext} from '../../../Auth/Auth'
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
@@ -62,11 +62,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Complejos = () => {
+  const currentUser = useContext(AuthContext)
   const classes = useStyles();
   const [complejos, setComplejos] = useState([]);
   useEffect(() => {
-    getComplejosApi().then((response) => {
-      setComplejos(response);
+    getComplejosByUserApi(currentUser).then((response) => {
+      if(response.status === 'OK'){
+        setComplejos(response.data);
+      } else{
+        console.log(response.message, response.error)
+      }
     });
   }, []);
 
