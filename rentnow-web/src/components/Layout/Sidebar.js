@@ -12,7 +12,7 @@ import MailIcon from "@material-ui/icons/Mail";
 import GroupIcon from "@material-ui/icons/Group";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
-
+import {Can} from '../../Auth/can'
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -96,14 +96,16 @@ const Sidebar = (props) => {
             <ListItemText primary="Complejos" />
           </ListItem>
         </Link>
-        <Link to="/usuarios" className={classes.link}>
-          <ListItem button>
-            <ListItemIcon>
-              {<GroupIcon className={classes.link} />}
-            </ListItemIcon>
-            <ListItemText primary="Usuarios" />
-          </ListItem>
-        </Link>
+        <Can I="read" a="usuario">
+          <Link to="/usuarios" className={classes.link}>
+            <ListItem button>
+              <ListItemIcon>
+                {<GroupIcon className={classes.link} />}
+              </ListItemIcon>
+              <ListItemText primary="Usuarios" />
+            </ListItem>
+          </Link>
+        </Can>
       </List>
     </Drawer>
   );

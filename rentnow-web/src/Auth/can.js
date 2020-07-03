@@ -1,4 +1,6 @@
-import { createCanBoundTo } from '@casl/react';
-import ability from './ability';
+import { createContextualCan } from '@casl/react';
+import {createContext} from 'react';
 
-export default createCanBoundTo(ability);
+
+export const AbilityContext = createContext();
+export const Can = createContextualCan(AbilityContext.Consumer);

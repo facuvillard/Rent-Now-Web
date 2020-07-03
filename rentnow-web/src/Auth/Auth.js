@@ -19,7 +19,7 @@ const AuthProvider = (props) => {
 
   useEffect(() => {
     
-    updatePermission(userRoles);
+    updatePermission('rol');
 
     if (!currentUser) {
       return;
