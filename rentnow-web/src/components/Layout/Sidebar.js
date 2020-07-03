@@ -12,7 +12,7 @@ import MailIcon from "@material-ui/icons/Mail";
 import GroupIcon from "@material-ui/icons/Group";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
-import {Can} from '../../Auth/can'
+import { Can } from "../../Auth/can";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -62,6 +62,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const SideBarButton = (props) => {
+  const classes = useStyles()
+  return (
+    <Can I={props.permiso} a={props.elemento}>
+      <Link to={props.ruta} className={classes.link}>
+        <ListItem button>
+          <ListItemIcon>{props.icon}</ListItemIcon>
+          <ListItemText primary={props.text} />
+        </ListItem>
+      </Link>
+    </Can>
+  );
+};
+
 const Sidebar = (props) => {
   const classes = useStyles();
 
@@ -81,31 +95,21 @@ const Sidebar = (props) => {
       }}
     >
       <Divider />
-      <List>
-        <Link to="/login" className={classes.link}>
-          <ListItem button>
-            <ListItemIcon color="primary">
-              {<MailIcon className={classes.link} />}
-            </ListItemIcon>
-            <ListItemText primary="Login" />
-          </ListItem>
-        </Link>
-        <Link to="/complejos" className={classes.link}>
-          <ListItem button>
-            <ListItemIcon>{<MailIcon className={classes.link} />}</ListItemIcon>
-            <ListItemText primary="Complejos" />
-          </ListItem>
-        </Link>
-        <Can I="read" a="usuario">
-          <Link to="/usuarios" className={classes.link}>
-            <ListItem button>
-              <ListItemIcon>
-                {<GroupIcon className={classes.link} />}
-              </ListItemIcon>
-              <ListItemText primary="Usuarios" />
-            </ListItem>
-          </Link>
-        </Can>
+      <List style={{marginTop: 55}}>
+        <SideBarButton
+          permiso="read"
+          elemento="usuario"
+          ruta="/complejos"
+          icon={<MailIcon className={classes.link} />}
+          text="Complejos"
+        />
+        <SideBarButton
+          permiso="read"
+          elemento="usuario"
+          ruta="/usuarios"
+          icon={<GroupIcon className={classes.link} />}
+          text="Usuario" 
+        />
       </List>
     </Drawer>
   );
