@@ -4,7 +4,6 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
-  Container,
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -15,6 +14,10 @@ import { Alert, AlertTitle } from "@material-ui/lab";
 import { getComplejosByUserApi } from "../../../api/complejos";
 import Chip from "@material-ui/core/Chip";
 import {AuthContext} from '../../../Auth/Auth'
+import HttpsOutlined from '@material-ui/icons/HttpsOutlined';
+
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
@@ -25,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    marginTop: theme.spacing(4),
+    marginBotton: theme.spacing(4),
   },
   media: {
     height: 140,
@@ -77,29 +80,7 @@ const Complejos = () => {
 
   return (
     <>
-      <div>
-        <Container maxWidth="sm">
-          <Typography
-            component="h1"
-            variant="h2"
-            align="center"
-            color="textPrimary"
-            gutterBottom
-          >
-            TUS COMPLEJOS
-            <span className={classes.subrayado} />
-          </Typography>
-          <Typography
-            variant="h6"
-            align="center"
-            color="textSecondary"
-            paragraph
-          >
-            Aquí podras visualizar todos tus complejos registrados en la
-            aplicación.
-          </Typography>
-        </Container>
-      </div>
+      
       {complejos.length !== 0 ? (
         <Grid container spacing={5} justify="center">
           {complejos.map((complejo) => (
@@ -114,7 +95,7 @@ const Complejos = () => {
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
                       {complejo.nombre}{" "}
-                      {complejo.habilitado ? null : <Chip disabled label="Deshabilitado" />}
+                      {complejo.habilitado ? null : <Chip variant="outlined" label="Deshabilitado" color="primary" icon={<HttpsOutlined />} />}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
                       {complejo.direccion}
@@ -128,7 +109,7 @@ const Complejos = () => {
       ) : (
         <Alert severity="info">
           <AlertTitle>No tienes complejos registrados</AlertTitle>
-          Has click en el botón Nuevo Complejo y <strong>registralos</strong>!
+          ¡Has click en el botón <strong> Nuevo Complejo</strong> y registralos!
         </Alert>
       )}
       <Fab
