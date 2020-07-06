@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
-import Sidebar from './Sidebar'
-import Navbar from './Navbar'
+import Sidebar from '../Sidebar'
+import Navbar from '../Navbar'
 import {makeStyles} from '@material-ui/core/styles'
 import {Container} from '@material-ui/core'
 import Backdrop from '@material-ui/core/Backdrop';
@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
       },
       content: {
         flexGrow: 1,
-        padding: theme.spacing(8),
+        padding: theme.spacing(0),
       },
       backdrop: {
         zIndex: theme.zIndex.drawer - 1,
@@ -24,16 +24,13 @@ const useStyles = makeStyles(theme => ({
       },
 }))
 
-export const Layout = (props) => {
+const LayoutWithSidebar = (props) => {
     const classes = useStyles()
     const [isSBOpen, setIsSBOpen] = useState(false);
 
     const sideBarOpenHandler = () => {
       setIsSBOpen(oldIsOpen => !oldIsOpen)
     }
-    
-   
-  
     return (
         <div>
             <Navbar sideBarOpenHandler={sideBarOpenHandler} isSideBarOpen={isSBOpen} />
@@ -41,10 +38,14 @@ export const Layout = (props) => {
             <Backdrop className={classes.backdrop} open={isSBOpen} onClick={sideBarOpenHandler} />
             <main className={classes.content}>
               <div className={classes.toolbar} />
-              <Container maxWidth='lg' >
+              <Container maxWidth='xl' >
                 {props.children}
               </Container>
             </main>
         </div>
     )
 }
+
+
+
+export default LayoutWithSidebar

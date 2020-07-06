@@ -24,10 +24,15 @@ function ListUser(props) {
 
   useEffect(() => {
     setIsLoading(true);
-    getUsersApi().then((resp) => {
-      setUsers(resp);
-      setIsLoading(false);
-      setReload(false);
+    getUsersApi().then((response) => {
+      if(response.status === "OK"){
+        setUsers(response.data);
+        setIsLoading(false);
+        setReload(false);
+      } else {
+        console.log(response.message, response.error)
+        setIsLoading(false);
+      }
     });
   }, [reload]);
 

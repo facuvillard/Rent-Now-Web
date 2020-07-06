@@ -9,7 +9,6 @@ import facilImage from "../../../assets/img/Landing/facil-image.png"
 import imagenFondo from "../../../assets/img/Landing/fondo-image.png"
 
 
-
 const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',

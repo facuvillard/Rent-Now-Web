@@ -1,14 +1,21 @@
 import firebase from "firebase";
 
-export function getUsersApi() {
-  return firebase
+
+
+export async function getUsersApi() {
+  try {
+    const result = await firebase
     .firestore()
     .collection("usuarios")
     .where("habilitado", "==", true)
     .get()
-    .then((response) => {
-      return response.docs.map((user) => ({id: user.id, ...user.data()}))
-    });
+  
+    const usuarios = result.docs.map(user => ({id: user.id, ...user.data()}))
+    return {status: 'OK', message: 'Se consultaron usuarios con exito', data: usuarios}
+
+  } catch (err) {
+    return {status: 'ERROR', message: 'Error al consultar usuarios', error: err}
+  }
 }
 
 export  async function  createUserApi   (userToRegister) {
