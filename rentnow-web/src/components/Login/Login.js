@@ -11,7 +11,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import firebaseApp from "../../firebase";
-import { withRouter, Route } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import MuiAlert from "@material-ui/lab/Alert";
 import clsx from "clsx";
 import { useFormik } from "formik";
@@ -91,7 +91,7 @@ const Login = (props) => {
   const {userRoles} = useContext(AuthContext);
 
   const [alertConst, setAlertConst] = useState({
-    severity: "",
+    severity: "success",
     text: "",
     open: false,
   });
@@ -100,7 +100,6 @@ const Login = (props) => {
   const classes = useStyles();
 
   useEffect(() => {
-    console.log('USUARIO EN LOGIN', userRoles)
     switch (userRoles[0]) {
       case Roles.ADMIN_APP : {
         props.history.push(Routes.USUARIOS);

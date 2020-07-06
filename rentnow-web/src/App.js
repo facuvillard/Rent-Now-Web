@@ -30,7 +30,7 @@ function App() {
               />
               <RouteWithSidebar component={() => <Users />} path={Routes.USUARIOS} isPrivate={true} /> 
               <RouteWithoutSidebar component={() => <Complejos />} path={Routes.COMPLEJOS} isPrivate={true} />           
-              <Route path="*" exact component={() => <Landing />} /> //Se redirecciona aca en caso de no encontrar la ruta.
+              <Route path="*" exact component={() => <Landing />} /> 
              </Switch>
           </Router>
       </AbilityContext.Provider>

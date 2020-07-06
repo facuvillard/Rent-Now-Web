@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import firebaseApp from "../firebase";
 import firebase from "firebase"
 import { updatePermission } from "./ability";
-import * as Routes from "../constants/routes"
+
 export const AuthContext = React.createContext();
 
 const AuthProvider = (props) => {
@@ -26,8 +26,6 @@ const AuthProvider = (props) => {
 
   useEffect(() => {
     
-    updatePermission('rol');
-
     if (!currentUser) {
       return;
     }

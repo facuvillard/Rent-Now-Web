@@ -60,7 +60,7 @@ const Arrow = function (props) {
 };
 
 const Complejos = () => {
-  const currentUser = useContext(AuthContext);
+  const {currentUser} = useContext(AuthContext);
   const classes = useStyles();
   const [complejos, setComplejos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);

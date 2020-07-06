@@ -1,4 +1,4 @@
-import { Ability, AbilityBuilder, buildMongoQueryMatcher } from '@casl/ability';
+import { Ability, AbilityBuilder } from '@casl/ability';
 import * as PERMISSIONS from '../constants/auth/perimissions';
 import * as ELEMENTS from '../constants/auth/elements';
 import * as ROLES from '../constants/auth/roles';
@@ -6,7 +6,7 @@ import * as ROLES from '../constants/auth/roles';
 const ability = new Ability([]);
 
 const definePermissionsfor = user => {
-    const { can, build, rules } = new AbilityBuilder(ability);
+    const { can, rules } = new AbilityBuilder(ability);
     
     switch (user) {
         case ROLES.ADMIN_APP: {
@@ -25,7 +25,7 @@ const definePermissionsfor = user => {
 }
 
 export function updatePermission(userRoles) {
-    ability.update(definePermissionsfor(ROLES.ADMIN_APP))
+    ability.update(definePermissionsfor(userRoles[0]))
     // userRoles.forEach(rol => {
     //     ability.update(definePermissionsfor(rol));
     // })
