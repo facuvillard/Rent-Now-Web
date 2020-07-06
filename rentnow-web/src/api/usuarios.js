@@ -1,6 +1,7 @@
 import firebase from "firebase";
 
 
+
 export async function getUsersApi() {
   try {
     const result = await firebase
@@ -48,3 +49,4 @@ catch (err){
   return {status: "ERROR", message: "Error al eliminar el usuario"}
 }
 }
+
