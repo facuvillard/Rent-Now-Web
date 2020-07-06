@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -11,7 +11,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import firebaseApp from "../../firebase";
-import { withRouter } from "react-router-dom";
+import { withRouter, Route } from "react-router-dom";
 import MuiAlert from "@material-ui/lab/Alert";
 import clsx from "clsx";
 import { useFormik } from "formik";
@@ -21,6 +21,9 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import {OutlinedInput, InputLabel,FormControl} from "@material-ui/core"
 import loginImg from "../../assets/img/login-img.png"
+import {AuthContext} from "../../Auth/Auth"
+import * as Roles from "../../constants/auth/roles"
+import * as Routes from "../../constants/routes"
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -79,7 +82,26 @@ const Login = (props) => {
   const [loginError, setLoginError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  const {userRoles} = useContext(AuthContext);
   const classes = useStyles();
+
+  useEffect(() => {
+    console.log('USUARIO EN LOGIN', userRoles)
+    switch (userRoles[0]) {
+      case Roles.ADMIN_APP : {
+        props.history.push(Routes.USUARIOS);
+        break;
+      }
+      case Roles.ADMIN_COMPLEJO : {
+        props.history.push(Routes.COMPLEJOS);
+        break;
+      }
+      default : {
+        break;
+      }
+      
+    }
+  }, [userRoles])
 
   const formik = useFormik({
     initialValues: {
@@ -95,8 +117,8 @@ const Login = (props) => {
     firebaseApp
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        props.history.push("/");
+      .then((user) => {
+        
       })
       .catch((result) => {
         setLoginError(true);

@@ -9,7 +9,7 @@ export const LOGIN = "/login"
 export const FAQ = "/faq"
 
 //APP
-export const COMPLEJOS = "/complejos"
+export const COMPLEJOS = `${APP}/complejos`
 
 //ADMIN
-export const USUARIOS = "/usuarios"
+export const USUARIOS = `${ADMIN}/usuarios`

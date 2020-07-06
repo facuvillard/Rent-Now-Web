@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import firebaseApp from "../firebase";
 import firebase from "firebase"
 import { updatePermission } from "./ability";
-
+import * as Routes from "../constants/routes"
 export const AuthContext = React.createContext();
 
 const AuthProvider = (props) => {
@@ -12,8 +12,15 @@ const AuthProvider = (props) => {
 
   useEffect(() => {
     firebaseApp.auth().onAuthStateChanged((user) => {
-      setCurrentUser(user);
+      if(user){
+
+        setCurrentUser(user);
+        setPending(false);
+        return;
+      }
+      setUserRoles(['default'])
       setPending(false);
+      return;
     });
   }, []);
 
@@ -43,8 +50,7 @@ const AuthProvider = (props) => {
   }, [currentUser]);
 
   useEffect(()=>{
-    updatePermission(userRoles);
-
+    
     if (userRoles) {
         updatePermission(userRoles);
       }
@@ -55,7 +61,7 @@ const AuthProvider = (props) => {
   }
 
   return (
-    <AuthContext.Provider value={currentUser}>
+    <AuthContext.Provider value={{currentUser, userRoles}}>
       {props.children}
     </AuthContext.Provider>
   );
