@@ -16,7 +16,7 @@ import { getComplejosByUserApi } from "../../../api/complejos";
 import Chip from "@material-ui/core/Chip";
 import { AuthContext } from '../../../Auth/Auth'
 import HttpsOutlined from '@material-ui/icons/HttpsOutlined';
-import Title from './Title.js'
+import Title from '../../utils/Title/Title.js'
 
 
 
@@ -60,7 +60,7 @@ const Complejos = () => {
         setIsLoading(false)
       }
     });
-  }, []);
+  }, [currentUser]);
 
   return (
     <>
