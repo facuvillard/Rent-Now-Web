@@ -8,7 +8,9 @@ export async function getComplejosByUserApi(user) {
       .collection("complejos")
       .where("usuarios", "array-contains", userId)
       .get()
-    const complejos = result.docs.map(complejo => complejo.data())
+    const complejos = result.docs.map(complejo => {
+      return {id: complejo.id ,...complejo.data()}
+    })
     
     return {status: 'OK', message:'Se consultaron los complejos con exito', data: complejos }
   } catch (err) {

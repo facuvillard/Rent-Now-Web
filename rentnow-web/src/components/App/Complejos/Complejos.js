@@ -99,7 +99,7 @@ const Complejos = () => {
                 addArrowClickHandler
               >
                 {complejos.map((complejo) => (
-                  <Grid key={complejo.nombre} item xs={10} className={classes.carousel}>
+                  <Grid key={complejo.id} item xs={10} className={classes.carousel}>
                     <Card>
                       <CardActionArea disabled={!complejo.habilitado}>
                         <CardMedia
