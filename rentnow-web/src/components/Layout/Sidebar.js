@@ -13,11 +13,27 @@ import GroupIcon from "@material-ui/icons/Group";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 import { Can } from "../../Auth/can";
+import logoSinLetraAmarillo from "../../assets/img/logos/logo-amarillo-sin-letra.png";
+import logoConLetraAmarillo from "../../assets/img/logos/logo-horizontal-blanco.png";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
+  },
+  logoSBClosed: {
+    padding: "10px",
+    height: "43px",
+    background: `url(${logoSinLetraAmarillo}) no-repeat`,
+    backgroundSize: "60%",
+    backgroundPosition: "center",
+  },
+  logoSBOpen: {
+    padding: "10px",
+    height: "43px",
+    background: `url(${logoConLetraAmarillo}) no-repeat`,
+    backgroundSize: "80%",
+    backgroundPosition: "center",
   },
   drawer: {
     width: drawerWidth,
@@ -38,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+
     overflowX: "hidden",
     width: theme.spacing(7) + 1,
     [theme.breakpoints.down("xs")]: {
@@ -63,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SideBarButton = (props) => {
-  const classes = useStyles()
+  const classes = useStyles();
   return (
     <Can I={props.permiso} a={props.elemento}>
       <Link to={props.ruta} className={classes.link}>
@@ -94,8 +111,15 @@ const Sidebar = (props) => {
         }),
       }}
     >
+      {/* <img className={classes.logoSBClosed}  src={props.isSideBarOpen ? logoConLetraAmarillo : logoSinLetraAmarillo} /> */}
+      <div
+        className={clsx({
+          [classes.logoSBClosed]: !props.isSideBarOpen,
+          [classes.logoSBOpen]: props.isSideBarOpen,
+        })}
+      />
       <Divider />
-      <List style={{marginTop: 55}}>
+      <List>
         <SideBarButton
           permiso="read"
           elemento="usuario"
@@ -108,7 +132,7 @@ const Sidebar = (props) => {
           elemento="usuario"
           ruta="/usuarios"
           icon={<GroupIcon className={classes.link} />}
-          text="Usuario" 
+          text="Usuario"
         />
       </List>
     </Drawer>

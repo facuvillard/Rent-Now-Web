@@ -1,51 +1,66 @@
-import React, {useState} from 'react'
-import Sidebar from '../Sidebar'
-import Navbar from '../Navbar'
-import {makeStyles} from '@material-ui/core/styles'
-import {Container} from '@material-ui/core'
-import Backdrop from '@material-ui/core/Backdrop';
-
-const useStyles = makeStyles(theme => ({
-    toolbar: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        padding: theme.spacing(0, 1),
-        // necessary for content to be below app bar
-        ...theme.mixins.toolbar,
-      },
-      content: {
-        flexGrow: 1,
-        padding: theme.spacing(0),
-      },
-      backdrop: {
-        zIndex: theme.zIndex.drawer - 1,
-        color: '#fff',
-      },
-}))
+import React, { useState } from "react";
+import Sidebar from "../Sidebar";
+import Navbar from "../Navbar";
+import { makeStyles } from "@material-ui/core/styles";
+import { Container } from "@material-ui/core";
+import Backdrop from "@material-ui/core/Backdrop";
+import Title from "../../utils/Title/Title";
+const useStyles = makeStyles((theme) => ({
+  toolbar: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+  },
+  content: {
+    width: "auto",
+    height: "100vh",
+    flexGrow: 1,
+    marginLeft: theme.spacing(8),
+    [theme.breakpoints.down("xs")]: {
+      marginLeft: theme.spacing(1),
+    },
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer - 1,
+    color: "#fff",
+  },
+}));
 
 const LayoutWithSidebar = (props) => {
-    const classes = useStyles()
-    const [isSBOpen, setIsSBOpen] = useState(false);
+  const classes = useStyles();
+  const [isSBOpen, setIsSBOpen] = useState(false);
 
-    const sideBarOpenHandler = () => {
-      setIsSBOpen(oldIsOpen => !oldIsOpen)
-    }
-    return (
-        <div>
-            <Navbar sideBarOpenHandler={sideBarOpenHandler} isSideBarOpen={isSBOpen} />
-            <Sidebar sideBarOpenHandler={sideBarOpenHandler} isSideBarOpen={isSBOpen} />
-            <Backdrop className={classes.backdrop} open={isSBOpen} onClick={sideBarOpenHandler} />
-            <main className={classes.content}>
-              <div className={classes.toolbar} />
-              <Container maxWidth='xl' >
-                {props.children}
-              </Container>
-            </main>
-        </div>
-    )
-}
+  const sideBarOpenHandler = () => {
+    setIsSBOpen((oldIsOpen) => !oldIsOpen);
+  };
+  console.log(props.children);
+  return (
+    <div>
+      <Navbar
+        sideBarOpenHandler={sideBarOpenHandler}
+        isSideBarOpen={isSBOpen}
+      />
+      <Sidebar
+        sideBarOpenHandler={sideBarOpenHandler}
+        isSideBarOpen={isSBOpen}
+      />
+      <Backdrop
+        className={classes.backdrop}
+        open={isSBOpen}
+        onClick={sideBarOpenHandler}
+      />
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+        <Container maxWidth="xl">
+          <Title titulo={props.children.props.title} />
+          {props.children}
+        </Container>
+      </main>
+    </div>
+  );
+};
 
-
-
-export default LayoutWithSidebar
+export default LayoutWithSidebar;

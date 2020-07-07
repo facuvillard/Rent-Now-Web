@@ -7,32 +7,37 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import clsx from "clsx";
-import {Link, withRouter} from "react-router-dom";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
-import AccountCircleSharpIcon from '@material-ui/icons/AccountCircleSharp';
-import logo from "../../assets/img/logos/logo-horizontal.png"
-import firebaseApp from "../../firebase"
+import { Link, withRouter } from "react-router-dom";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ExitToAppTwoToneIcon from "@material-ui/icons/ExitToAppTwoTone";
+import firebaseApp from "../../firebase";
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
   navBar: {
-    zIndex: theme.zIndex.drawer + 3,
+    zIndex: theme.zIndex.drawer,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
+  menuButtonSBClosed: {
+    marginLeft: theme.spacing(4),
+    [theme.breakpoints.down("xs")]: {
+      marginLeft: theme.spacing(0.2),
+    },
+  },
+  menuButtonSBOpen: {
+    marginLeft: theme.spacing(28),
   },
   hidden: { display: "none" },
   title: {
     flexGrow: 1,
   },
   icon: {
-    flexGrow: 0
+    flexGrow: 0,
   },
   navBarShift: {
     marginLeft: drawerWidth,
@@ -42,28 +47,31 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
-  link : {
+  link: {
     color: "white",
-    textDecoration: 'none'
+    textDecoration: "none",
   },
   logo: {
     maxWidth: 170,
-    marginTop: 10
+    marginTop: 10,
   },
 }));
 
 function Navbar(props) {
   const classes = useStyles();
-  const handleLogout = ()=>{
-    firebaseApp.auth().signOut().then(()=>{
-      props.history.push("/login")
-    }).catch(() => console.log("Error al desloguearse"))
-  }
+  const handleLogout = () => {
+    firebaseApp
+      .auth()
+      .signOut()
+      .then(() => {
+        props.history.push("/login");
+      })
+      .catch(() => console.log("Error al desloguearse"));
+  };
   return (
     <AppBar
       position="fixed"
       color="primary"
-
       className={clsx(classes.navBar, {
         [classes.navBarShift]: false,
       })}
@@ -72,24 +80,23 @@ function Navbar(props) {
         <IconButton
           edge="start"
           onClick={props.sideBarOpenHandler}
-          className={clsx(classes.menuButton, {
-            [classes.hidden]: false,
+          className={clsx(classes.menuButtonSBClosed, {
+            [classes.menuButtonSBOpen]: props.isSideBarOpen,
           })}
           color="inherit"
           aria-label="menu"
         >
-          {
-             props.isSideBarOpen ? <ChevronLeftIcon /> :  
-            <MenuIcon />
-          }
+          {props.isSideBarOpen ? <ChevronLeftIcon /> : <MenuIcon />}
         </IconButton>
-        
-        <Typography  align='center'  className={classes.title}>
-            <img src={logo}  alt="logo" className={classes.logo} />
+
+        <Typography align="center" className={classes.title}>
+          {/* <img src={logo}  alt="logo" className={classes.logo} /> */}
         </Typography>
 
-        <Link to='/login' className={classes.link}>
-        <Button  startIcon={<AccountCircleSharpIcon/>} onClick={handleLogout}>Cerrar sesión</Button>
+        <Link to="/login" className={classes.link}>
+          <IconButton onClick={handleLogout}>
+            <ExitToAppTwoToneIcon />
+          </IconButton>
         </Link>
       </Toolbar>
     </AppBar>
