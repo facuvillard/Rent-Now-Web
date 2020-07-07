@@ -28,6 +28,7 @@ import { recoverAndResetPassword } from "../../api/auth";
 import { Alert } from "@material-ui/lab";
 import CloseIcon from "@material-ui/icons/Close";
 import Collapse from "@material-ui/core/Collapse";
+import {CircularProgress} from "@material-ui/core"
 
 function Copyright() {
   return (
@@ -86,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
 const Login = (props) => {
   const [loginError, setLoginError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
 
   const {userRoles} = useContext(AuthContext);
 
@@ -127,6 +128,7 @@ const Login = (props) => {
   });
 
   const handleSubmit = (email, password) => {
+    setIsLoading(true)
     firebaseApp
       .auth()
       .signInWithEmailAndPassword(email, password)
@@ -134,6 +136,7 @@ const Login = (props) => {
         
       })
       .catch((result) => {
+        setIsLoading(false)
         setLoginError(true);
       });
   };
@@ -228,8 +231,9 @@ const Login = (props) => {
               variant="contained"
               color="primary"
               className={classes.submit}
+              disabled={isLoading}
             >
-              Ingresar
+              {!isLoading ? "Ingresar" : <CircularProgress />}
             </Button>
             <Grid container>
               <Grid item xs>
