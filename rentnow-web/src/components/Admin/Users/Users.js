@@ -25,12 +25,12 @@ function ListUser(props) {
   useEffect(() => {
     setIsLoading(true);
     getUsersApi().then((response) => {
-      if(response.status === "OK"){
+      if (response.status === "OK") {
         setUsers(response.data);
         setIsLoading(false);
         setReload(false);
       } else {
-        console.log(response.message, response.error)
+        console.log(response.message, response.error);
         setIsLoading(false);
       }
     });
@@ -100,10 +100,8 @@ function ListUser(props) {
 
   return (
     <>
-      <Typography variant="h3" align="center">
-        Usuarios
-      </Typography>
       <MaterialTable
+        
         isLoading={isLoading}
         title=""
         columns={[
@@ -144,6 +142,8 @@ function ListUser(props) {
         ]}
         options={{
           actionsColumnIndex: -1,
+          pageSize: 10,
+          pageSizeOptions: [10]
         }}
       />
       <Dialog

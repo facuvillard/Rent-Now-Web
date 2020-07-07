@@ -17,7 +17,6 @@ import { getComplejosByUserApi } from "../../../api/complejos";
 import Chip from "@material-ui/core/Chip";
 import { AuthContext } from "../../../Auth/Auth";
 import HttpsOutlined from "@material-ui/icons/HttpsOutlined";
-import Title from "../../utils/Title/Title.js";
 import Carousel from "@brainhubeu/react-carousel";
 import "@brainhubeu/react-carousel/lib/style.css";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -79,7 +78,6 @@ const Complejos = () => {
 
   return (
     <>
-      <Title titulo="Mis Complejos" />
       {isLoading ? (
         <Grid container justify="center" className={classes.circularProgress}>
           <Grid item>

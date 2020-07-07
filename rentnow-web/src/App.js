@@ -28,8 +28,8 @@ function App() {
                   <Landing />
                 )}
               />
-              <RouteWithSidebar component={() => <Users />} path={Routes.USUARIOS} isPrivate={true} /> 
-              <RouteWithoutSidebar component={() => <Complejos />} path={Routes.COMPLEJOS} isPrivate={true} />           
+              <RouteWithSidebar title="Usuarios" component={() => <Users />} path={Routes.USUARIOS} isPrivate={true} /> 
+              <RouteWithoutSidebar title="Complejos" component={() => <Complejos />} path={Routes.COMPLEJOS} isPrivate={true} />           
               <Route path="*" exact component={() => <Landing />} /> 
              </Switch>
           </Router>
