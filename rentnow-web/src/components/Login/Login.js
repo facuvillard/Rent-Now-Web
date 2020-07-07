@@ -23,11 +23,12 @@ import {AuthContext} from "../../Auth/Auth"
 import * as Roles from "../../constants/auth/roles"
 import * as Routes from "../../constants/routes"
 import { OutlinedInput, InputLabel, FormControl } from "@material-ui/core";
-import loginImg from "../../assets/img/login-img.png";
+import loginImg from "../../assets/img/login-img.jpg";
 import { recoverAndResetPassword } from "../../api/auth";
 import { Alert } from "@material-ui/lab";
 import CloseIcon from "@material-ui/icons/Close";
 import Collapse from "@material-ui/core/Collapse";
+import {CircularProgress} from "@material-ui/core"
 
 function Copyright() {
   return (
@@ -51,11 +52,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage: `url(${loginImg})`,
     backgroundRepeat: "repeat",
     backgroundColor: theme.palette.secondary.light,
-    // theme.palette.type === "light"
-    //   ? theme.palette.grey[50]
-    //   : theme.palette.grey[900],
     backgroundSize: "cover",
-    backgroundPosition: "center",
   },
   paper: {
     margin: theme.spacing(8, 4),
@@ -86,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
 const Login = (props) => {
   const [loginError, setLoginError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
 
   const {userRoles} = useContext(AuthContext);
 
@@ -127,6 +124,7 @@ const Login = (props) => {
   });
 
   const handleSubmit = (email, password) => {
+    setIsLoading(true)
     firebaseApp
       .auth()
       .signInWithEmailAndPassword(email, password)
@@ -134,6 +132,7 @@ const Login = (props) => {
         
       })
       .catch((result) => {
+        setIsLoading(false)
         setLoginError(true);
       });
   };
@@ -159,8 +158,8 @@ const Login = (props) => {
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+      <Grid item xs={false}  md={8} className={classes.image} />
+      <Grid item xs={12}  md={4} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
@@ -228,8 +227,9 @@ const Login = (props) => {
               variant="contained"
               color="primary"
               className={classes.submit}
+              disabled={isLoading}
             >
-              Ingresar
+              {!isLoading ? "Ingresar" : <CircularProgress />}
             </Button>
             <Grid container>
               <Grid item xs>
