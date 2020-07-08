@@ -9,6 +9,7 @@ import {
 import { Autocomplete } from "@material-ui/lab";
 import { getProvincesApi, getCitiesByProvincesApi } from "../../../api/geoApi";
 import { editUserApi } from "../../../api/usuarios";
+import { ADMIN_APP, ADMIN_COMPLEJO } from "../../../constants/auth/roles";
 
 export default function EditUserForm(props) {
   const {
@@ -158,8 +159,8 @@ export default function EditUserForm(props) {
                   setUserData({ ...userData, roles: [e.target.value] });
                 }}
               >
-                <MenuItem value="Administrador">Administrador</MenuItem>
-                <MenuItem value="Adm. Complejos">Adm. Complejos</MenuItem>
+                <MenuItem value={ADMIN_APP}>Administrador</MenuItem>
+                <MenuItem value={ADMIN_COMPLEJO}>Adm. Complejos</MenuItem>
               </TextField>
             </Grid>
           </Grid>
@@ -206,7 +207,9 @@ export default function EditUserForm(props) {
                 disabled={userData.provincia ? false : true}
                 options={cities}
                 getOptionLabel={(option) => option.nombre}
-                defaultValue={cities.find((city) => city.nombre === user.ciudad) || {}}
+                defaultValue={
+                  cities.find((city) => city.nombre === user.ciudad) || {}
+                }
                 renderInput={(params) => (
                   <TextField
                     {...params}

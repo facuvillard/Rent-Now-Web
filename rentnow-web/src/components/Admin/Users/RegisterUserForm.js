@@ -9,6 +9,7 @@ import {
 import { Autocomplete } from "@material-ui/lab";
 import { getProvincesApi, getCitiesByProvincesApi } from "../../../api/geoApi";
 import { createUserApi } from "../../../api/usuarios";
+import { ADMIN_APP, ADMIN_COMPLEJO } from "../../../constants/auth/roles";
 
 export default function RegisterUserForm(props) {
   const {
@@ -173,8 +174,8 @@ export default function RegisterUserForm(props) {
                   setUserData({ ...userData, roles: [e.target.value] });
                 }}
               >
-                <MenuItem value="Administrador">Administrador</MenuItem>
-                <MenuItem value="Adm. Complejos">Adm. Complejos</MenuItem>
+                <MenuItem value={ADMIN_APP}>Administrador</MenuItem>
+                <MenuItem value={ADMIN_COMPLEJO}>Adm. Complejos</MenuItem>
               </TextField>
             </Grid>
           </Grid>

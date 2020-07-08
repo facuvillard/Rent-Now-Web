@@ -5,7 +5,6 @@ import RegisterUserForm from "./RegisterUserForm";
 import EditUserForm from "./EditUserForm";
 import ViewUser from "./ViewUser";
 import DeleteUser from "./DeleteUser";
-import { Typography } from "@material-ui/core";
 import { getUsersApi } from "../../../api/usuarios";
 import AlertCustom from "../../utils/AlertCustom/AlertCustom";
 

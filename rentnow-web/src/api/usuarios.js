@@ -1,7 +1,5 @@
 import firebase from "firebase";
 
-
-
 export async function getUsersApi() {
   try {
     const result = await firebase
