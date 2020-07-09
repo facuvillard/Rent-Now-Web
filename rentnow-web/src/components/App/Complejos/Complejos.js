@@ -6,6 +6,7 @@ import {
   CardMedia,
   CircularProgress,
   IconButton,
+  Paper,
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -25,7 +26,8 @@ import imgPlaceHolder from "../../../assets/img/image-placeholder.png";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    marginTop: theme.spacing(7),
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
   },
   media: {
     height: 350,
@@ -45,21 +47,21 @@ const useStyles = makeStyles((theme) => ({
   circularProgress: {
     marginTop: theme.spacing(25),
   },
-  carousel: {
-    paddingBottom: "5%",
+  carouselItem: {
+    paddingBottom: theme.spacing(2),
   },
 }));
 
 const Arrow = function (props) {
   return (
-    <IconButton color={props.color}>
-      {props.back ? <ArrowBackIcon /> : <ArrowForwardIcon />}
+    <IconButton >
+      {props.back ? <ArrowBackIcon  style={{color: props.cssColor}} /> : <ArrowForwardIcon style={{color: props.cssColor}} />}
     </IconButton>
   );
 };
 
 const Complejos = () => {
-  const {currentUser} = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
   const classes = useStyles();
   const [complejos, setComplejos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -87,48 +89,59 @@ const Complejos = () => {
       ) : (
         <>
           {complejos.length !== 0 ? (
-            <Grid container className={classes.container}>
-              <Carousel
-                dots
-                arrowLeft={<Arrow back color="secondary" />}
-                arrowLeftDisabled={<></>}
-                arrowRight={<Arrow color="secondary" />}
-                arrowRightDisabled={<></>}
-                addArrowClickHandler
-              >
-                {complejos.map((complejo) => (
-                  <Grid key={complejo.id} item xs={10} className={classes.carousel}>
-                    <Card>
-                      <CardActionArea disabled={!complejo.habilitado}>
-                        <CardMedia
-                          className={classes.media}
-                          image={
-                            complejo.imagen ? complejo.imagen : imgPlaceHolder
-                          }
-                          title={complejo.nombre}
-                        />
-                        <CardContent>
-                          <Typography gutterBottom variant="h5" component="h2">
-                            {complejo.nombre}{" "}
-                            {complejo.habilitado ? null : (
-                              <Chip
-                                variant="outlined"
-                                label="Deshabilitado"
-                                color="primary"
-                                icon={<HttpsOutlined />}
-                              />
-                            )}
-                          </Typography>
-                          <Typography variant="body2" color="textSecondary">
-                            {complejo.direccion}
-                          </Typography>
-                        </CardContent>
-                      </CardActionArea>
-                    </Card>
-                  </Grid>
-                ))}
-              </Carousel>
-            </Grid>
+            <Paper elevation={5}>
+              <Grid container className={classes.container}>
+                <Carousel
+                  dots
+                  arrowLeft={<Arrow back cssColor="black" />}
+                  arrowLeftDisabled={<Arrow back cssColor="grey" />}
+                  arrowRight={<Arrow cssColor="black" />}
+                  arrowRightDisabled={<Arrow  cssColor="grey"  />}
+                  addArrowClickHandler
+                >
+                  {complejos.map((complejo) => (
+                    <Grid
+                      key={complejo.id}
+                      item
+                      xs={11}
+                      className={classes.carouselItem}
+                    >
+                      <Card>
+                        <CardActionArea disabled={!complejo.habilitado}>
+                          <CardMedia
+                            className={classes.media}
+                            image={
+                              complejo.imagen ? complejo.imagen : imgPlaceHolder
+                            }
+                            title={complejo.nombre}
+                          />
+                          <CardContent>
+                            <Typography
+                              gutterBottom
+                              variant="h5"
+                              component="h2"
+                            >
+                              {complejo.nombre}{" "}
+                              {complejo.habilitado ? null : (
+                                <Chip
+                                  variant="outlined"
+                                  label="Deshabilitado"
+                                  color="primary"
+                                  icon={<HttpsOutlined />}
+                                />
+                              )}
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary">
+                              {complejo.direccion}
+                            </Typography>
+                          </CardContent>
+                        </CardActionArea>
+                      </Card>
+                    </Grid>
+                  ))}
+                </Carousel>
+              </Grid>
+            </Paper>
           ) : (
             <Grid
               container
