@@ -11,6 +11,7 @@ import { Link, withRouter } from "react-router-dom";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ExitToAppTwoToneIcon from "@material-ui/icons/ExitToAppTwoTone";
 import firebaseApp from "../../firebase";
+import logoHorizontal from "../../assets/img/logos/rentnow-letra.png";
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -77,21 +78,27 @@ function Navbar(props) {
       })}
     >
       <Toolbar>
-        <IconButton
-          edge="start"
-          onClick={props.sideBarOpenHandler}
-          className={clsx(classes.menuButtonSBClosed, {
-            [classes.menuButtonSBOpen]: props.isSideBarOpen,
-          })}
-          color="inherit"
-          aria-label="menu"
-        >
-          {props.isSideBarOpen ? <ChevronLeftIcon /> : <MenuIcon />}
-        </IconButton>
-
-        <Typography align="center" className={classes.title}>
-          {/* <img src={logo}  alt="logo" className={classes.logo} /> */}
-        </Typography>
+        {!props.withoutSidebar ? (
+          <>
+            <IconButton
+              edge="start"
+              onClick={props.sideBarOpenHandler}
+              className={clsx(classes.menuButtonSBClosed, {
+                [classes.menuButtonSBOpen]: props.isSideBarOpen,
+              })}
+              color="inherit"
+              aria-label="menu"
+            >
+              {props.isSideBarOpen ? <ChevronLeftIcon /> : <MenuIcon />}
+            </IconButton>
+            <Typography align="center" className={classes.title} />
+          
+          </>
+        ) : (
+          <Typography align="left" className={classes.title}>
+            <img src={logoHorizontal} alt="logo" className={classes.logo} />
+          </Typography>
+        )}
 
         <Link to="/login" className={classes.link}>
           <IconButton onClick={handleLogout}>
