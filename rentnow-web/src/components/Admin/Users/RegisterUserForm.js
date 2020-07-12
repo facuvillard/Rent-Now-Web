@@ -202,7 +202,7 @@ export default function RegisterUserForm(props) {
                 select
                 fullWidth
                 onChange={(e) => {
-                  setUserData({ ...userData, provincia: e.target.value });
+                  setUserData({ ...userData, provincia: e.target.value, ciudad: "" })
                 }}
               >
                 {provinces !== undefined ? (
@@ -221,6 +221,7 @@ export default function RegisterUserForm(props) {
                 disabled={userData.provincia ? false : true}
                 options={cities}
                 getOptionLabel={(option) => option.nombre}
+                inputValue={userData.ciudad}
                 renderInput={(params) => (
                   <TextField
                     {...params}

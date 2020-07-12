@@ -187,7 +187,7 @@ export default function EditUserForm(props) {
                 select
                 fullWidth
                 onChange={(e) => {
-                  setUserData({ ...userData, provincia: e.target.value });
+                  setUserData({ ...userData, provincia: e.target.value, ciudad: "" });
                 }}
                 defaultValue={user.provincia}
               >
@@ -210,6 +210,7 @@ export default function EditUserForm(props) {
                 defaultValue={
                   cities.find((city) => city.nombre === user.ciudad) || {}
                 }
+                inputValue={userData.ciudad}
                 renderInput={(params) => (
                   <TextField
                     {...params}
