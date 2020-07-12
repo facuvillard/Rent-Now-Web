@@ -3,9 +3,13 @@ import {
   makeStyles,
   Typography,
   Breadcrumbs,
-  Link,
+  useMediaQuery,
+  useTheme
 } from "@material-ui/core";
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import Chip from '@material-ui/core/Chip';
+import { emphasize, withStyles } from '@material-ui/core/styles';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,38 +27,57 @@ const useStyles = makeStyles((theme) => ({
   breadcrumbs: {
     [theme.breakpoints.down("sm")]: { display: "none" },
   },
+
 }));
+
+const StyledBreadcrumb = withStyles((theme) => ({
+  root: {
+    backgroundColor: theme.palette.primary.light,
+    height: theme.spacing(4),
+    color: theme.palette.secondary,
+    fontWeight: theme.typography.fontWeightMedium,
+    '&:hover, &:focus': {
+      backgroundColor: theme.palette.primary.dark,
+    },
+    '&:active': {
+      boxShadow: theme.shadows[5],
+      backgroundColor: emphasize(theme.palette.primary.main, 0.50),
+    },
+  },
+}))(Chip);
 
 const breadcrumbs = [
   {
-    id: "1",
     nombre: "Complejos",
-    color: "inherit"
+    href: ""
   },
   {
-    id: "2",
     nombre: "Registrar",
-    color: "inherit"
+    href: ""
   },
   {
-    id: "3",
     nombre: "Hola",
-    color: "textPrimary"
+    href: ""
   },
 ]
 
 
 const Title = (props) => {
   const classes = useStyles();
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
   return (
     <section className={classes.root}>
-      <Typography variant="h4" color="secondary">{props.titulo}</Typography>
+      {matches ? (
+        <Typography variant="h4" color="secondary" >{props.titulo}</Typography>
+      ) : (
+          <Typography variant="h6" color="secondary" >{props.titulo}</Typography>
+        )}
       <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} maxItems={2} className={classes.breadcrumbs}>
         {breadcrumbs.map((breadcrumbs) => (
-          <Link color={breadcrumbs.color} key={breadcrumbs.id}>{breadcrumbs.nombre}</Link>
+          <StyledBreadcrumb key={breadcrumbs.nombre} label={breadcrumbs.nombre} href={breadcrumbs.href} />
         ))}
       </Breadcrumbs>
-
     </section>
   );
 };
