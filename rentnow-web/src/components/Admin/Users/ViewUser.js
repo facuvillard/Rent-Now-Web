@@ -14,6 +14,7 @@ import AccountBoxOutlinedIcon from "@material-ui/icons/AccountBoxOutlined";
 import LocationCityOutlinedIcon from "@material-ui/icons/LocationCityOutlined";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 import PhoneOutlinedIcon from "@material-ui/icons/PhoneOutlined";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -81,7 +82,7 @@ export default function ViewUser(props) {
                 <AccountBoxOutlinedIcon />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText primary="Rol" secondary={user.roles[0] ? user.roles : "..."} />
+            <ListItemText primary="Rol" secondary={user.roles[0]? user.roles : "..."} />
           </ListItem>
           <ListItem>
             <ListItemAvatar>
