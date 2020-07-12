@@ -27,7 +27,7 @@ const LayoutWithoutSidebar = (props) => {
   const classes = useStyles();
   return (
     <div>
-      <Navbar />
+      <Navbar withoutSidebar={true} />
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Container maxWidth="xl">
