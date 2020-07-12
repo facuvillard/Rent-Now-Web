@@ -3,14 +3,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import clsx from "clsx";
 import { Link, withRouter } from "react-router-dom";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ExitToAppTwoToneIcon from "@material-ui/icons/ExitToAppTwoTone";
-import firebaseApp from "../../firebase";
+import { signOut } from "../../api/auth";
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,14 +58,13 @@ const useStyles = makeStyles((theme) => ({
 
 function Navbar(props) {
   const classes = useStyles();
-  const handleLogout = () => {
-    firebaseApp
-      .auth()
-      .signOut()
-      .then(() => {
-        props.history.push("/login");
-      })
-      .catch(() => console.log("Error al desloguearse"));
+  const handleLogout = async () => {
+    const response = await signOut();
+    if (response.status === "OK") {
+      props.history.push("/login");
+    } else {
+      console.log("Error al desloguearse");
+    }
   };
   return (
     <AppBar

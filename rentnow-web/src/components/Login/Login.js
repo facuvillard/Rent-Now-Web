@@ -19,16 +19,16 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
-import {AuthContext} from "../../Auth/Auth"
-import * as Roles from "../../constants/auth/roles"
-import * as Routes from "../../constants/routes"
+import { AuthContext } from "../../Auth/Auth";
+import * as Roles from "../../constants/auth/roles";
+import * as Routes from "../../constants/routes";
 import { OutlinedInput, InputLabel, FormControl } from "@material-ui/core";
 import loginImg from "../../assets/img/login-img.jpg";
-import { recoverAndResetPassword } from "../../api/auth";
+import { recoverAndResetPassword, signIn } from "../../api/auth";
 import { Alert } from "@material-ui/lab";
 import CloseIcon from "@material-ui/icons/Close";
 import Collapse from "@material-ui/core/Collapse";
-import {CircularProgress} from "@material-ui/core"
+import { CircularProgress } from "@material-ui/core";
 
 function Copyright() {
   return (
@@ -85,33 +85,31 @@ const Login = (props) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const {userRoles} = useContext(AuthContext);
+  const { userRoles } = useContext(AuthContext);
 
   const [alertConst, setAlertConst] = useState({
     severity: "success",
     text: "",
     open: false,
   });
-  
 
   const classes = useStyles();
 
   useEffect(() => {
     switch (userRoles[0]) {
-      case Roles.ADMIN_APP : {
+      case Roles.ADMIN_APP: {
         props.history.push(Routes.USUARIOS);
         break;
       }
-      case Roles.ADMIN_COMPLEJO : {
+      case Roles.ADMIN_COMPLEJO: {
         props.history.push(Routes.COMPLEJOS);
         break;
       }
-      default : {
+      default: {
         break;
       }
-      
     }
-  }, [userRoles])
+  }, [userRoles]);
 
   const formik = useFormik({
     initialValues: {
@@ -123,18 +121,15 @@ const Login = (props) => {
     },
   });
 
-  const handleSubmit = (email, password) => {
-    setIsLoading(true)
-    firebaseApp
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then((user) => {
-        
-      })
-      .catch((result) => {
-        setIsLoading(false)
+  const handleSubmit = async (email, password) => {
+    setIsLoading(true);
+    const response = await signIn(email, password);
+    if (response.status === "OK"){
+      console.log(response.message)
+    } else {
+        setIsLoading(false);
         setLoginError(true);
-      });
+    }
   };
 
   const handleClickShowPassword = () => {
@@ -142,15 +137,25 @@ const Login = (props) => {
   };
 
   const handleClickRecoverAndResetPassword = async (email) => {
-    console.log(email);
-
     const result = await recoverAndResetPassword(email);
 
     if (result.status === "OK") {
-      setAlertConst({...alertConst, open: true, text: "Se ha enviado un mail para recuperar contraseña, por favor revise su correo electronico.", severity: "success"})
+      setAlertConst({
+        ...alertConst,
+        open: true,
+        text:
+          "Se ha enviado un mail para recuperar contraseña, por favor revise su correo electronico.",
+        severity: "success",
+      });
       console.log(result.message);
     } else {
-      setAlertConst({...alertConst, open: true, text: "No se puede recuperar contraseña, por favor ingrese un email válido.", severity: "error"})
+      setAlertConst({
+        ...alertConst,
+        open: true,
+        text:
+          "No se puede recuperar contraseña, por favor ingrese un email válido.",
+        severity: "error",
+      });
       console.log(result.message);
     }
   };
@@ -158,8 +163,8 @@ const Login = (props) => {
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={false}  md={8} className={classes.image} />
-      <Grid item xs={12}  md={4} component={Paper} elevation={6} square>
+      <Grid item xs={false} md={8} className={classes.image} />
+      <Grid item xs={12} md={4} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
