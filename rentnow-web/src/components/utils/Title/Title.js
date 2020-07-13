@@ -9,6 +9,7 @@ import {
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import Chip from '@material-ui/core/Chip';
 import { emphasize, withStyles } from '@material-ui/core/styles';
+import { Link } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -27,7 +28,9 @@ const useStyles = makeStyles((theme) => ({
   breadcrumbs: {
     [theme.breakpoints.down("sm")]: { display: "none" },
   },
-
+  link: {
+    textDecoration: "none",
+  },
 }));
 
 const StyledBreadcrumb = withStyles((theme) => ({
@@ -46,18 +49,18 @@ const StyledBreadcrumb = withStyles((theme) => ({
   },
 }))(Chip);
 
-const breadcrumbs = [
+const elementos = [
   {
     nombre: "Complejos",
-    href: ""
+    ruta: "/app/complejos"
   },
   {
     nombre: "Registrar",
-    href: ""
+    ruta: "/admin/usuarios"
   },
   {
     nombre: "Hola",
-    href: ""
+    ruta: ""
   },
 ]
 
@@ -74,8 +77,10 @@ const Title = (props) => {
           <Typography variant="h6" color="secondary" >{props.titulo}</Typography>
         )}
       <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} maxItems={2} className={classes.breadcrumbs}>
-        {breadcrumbs.map((breadcrumbs) => (
-          <StyledBreadcrumb key={breadcrumbs.nombre} label={breadcrumbs.nombre} href={breadcrumbs.href} />
+        {elementos.map((elementos) => (
+          <Link key={elementos.nombre} to={elementos.ruta} className={classes.link}>
+            <StyledBreadcrumb label={elementos.nombre} />
+          </Link>
         ))}
       </Breadcrumbs>
     </section>
