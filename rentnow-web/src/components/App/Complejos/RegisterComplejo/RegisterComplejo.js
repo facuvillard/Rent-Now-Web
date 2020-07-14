@@ -1,17 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Container, Paper } from "@material-ui/core";
 import Title from "../../../utils/Title/Title";
 import RegisterComplejoStepper from "./RegisterComplejoStepper";
 import BasicData from "./Steps/BasicData";
+import Fotos from "./Steps/Fotos";
 import * as yup from "yup";
+import { AuthContext } from "../../../../Auth/Auth";
+
+import { createComplejoApi } from "../../../../api/complejos";
+import { RegisterSuccessComplejo } from "./RegisterSuccessComplejo";
+
 const phoneRegex = RegExp(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/);
+
 const RegistrarComplejo = () => {
-  const [isStepValid, setIsStepValid] = useState(false);
+  const { currentUser } = useContext(AuthContext);
+  const [created, setCreated] = useState(false);
   const [complejo, setComplejo] = useState({});
 
-  const addStepDataToComplejo = (stepData) => {
-    setComplejo((oldComplejo) => ({ ...oldComplejo, ...stepData }));
-    setIsStepValid(true);
+  const registerComplejo = (values) => {
+    let complejoToSave = { ...values, usuarios: [currentUser.uid] };
+    createComplejoApi(complejoToSave).then((response) => {
+      if (response.status === "OK") {
+        setCreated(true);
+        setComplejo(complejoToSave);
+      } else {
+        alert("ERROR");
+      }
+    });
   };
 
   const BasicDataValidationSchema = yup.object({
@@ -31,6 +46,7 @@ const RegistrarComplejo = () => {
       .email("El formato del email no es valido")
       .required("Porfavor, complete el campo Email"),
   });
+
   return (
     <Paper
       variant="outlined"
@@ -39,31 +55,37 @@ const RegistrarComplejo = () => {
         overflow: "scroll",
       }}
     >
-      <RegisterComplejoStepper
-        initialValues={{
-          nombre: "Sebastian",
-          email: "",
-          telefono: "",
-          redes: {
-            instagram: "",
-            facebook: "",
-            twitter: "",
-          },
-        }}
-        onSubmit={(values) => {
-          alert("SUBMITTING");
-        }}
-      >
-        <ComplejoStep
-          label="Datos básicos"
-          validationSchema={BasicDataValidationSchema}
+      {" "}
+      {!created ? (
+        <RegisterComplejoStepper
+          initialValues={{
+            nombre: "Sebastian",
+            email: "",
+            telefono: "",
+            redes: {
+              instagram: "",
+              facebook: "",
+              twitter: "",
+            },
+            fotos: [],
+          }}
+          onSubmit={(values) => {
+            registerComplejo(values);
+          }}
         >
-          <BasicData />
-        </ComplejoStep>
-        <ComplejoStep label="Datos 2 ">
-          <div>STEP 2</div>
-        </ComplejoStep>
-      </RegisterComplejoStepper>
+          <ComplejoStep
+            label="Datos básicos"
+            validationSchema={BasicDataValidationSchema}
+          >
+            <BasicData />
+          </ComplejoStep>
+          <ComplejoStep label="Fotos ">
+            <Fotos />
+          </ComplejoStep>
+        </RegisterComplejoStepper>
+      ) : (
+        <RegisterSuccessComplejo complejo={complejo} />
+      )}
     </Paper>
   );
 };
