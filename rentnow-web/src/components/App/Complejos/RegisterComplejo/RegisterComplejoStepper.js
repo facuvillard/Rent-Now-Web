@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Stepper,
   Step,
@@ -7,49 +7,29 @@ import {
   Grid,
   Container,
 } from "@material-ui/core";
-const RegisterComplejoStepper = (props) => {
+import { Formik, Form } from "formik";
+const RegisterComplejoStepper = ({ children, ...props }) => {
+  const childrenArray = React.Children.toArray(children);
   const [activeStep, setActiveStep] = useState(0);
-  const [canNext, setCanNext] = useState(true);
-  const [canBack, setCanBack] = useState(false);
-  useEffect(() => {
-    const numberOfSteps = props.data.length - 1;
-    if (activeStep === numberOfSteps) {
-      setCanNext(false);
-    } else {
-      setCanNext(true);
-    }
-    if (activeStep === 0) {
-      setCanBack(false);
-    } else {
-      setCanBack(true);
-    }
-  }, [activeStep]);
+  const currentChild = childrenArray[activeStep];
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  const isLastStep = () => {
+    return activeStep === childrenArray.length - 1;
   };
-
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const getStepContent = (stepIndex) => {
-    return <div>{props.data[stepIndex].stepContent}</div>;
-  };
-  return (
-    <>
-      <Stepper activeStep={activeStep}>
-        {props.data.map((step) => (
-          <Step>
-            <StepLabel>{step.stepLabel}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-      <Container>{getStepContent(activeStep)}</Container>
-      <Grid container justify="space-evenly">
+  const BackNextBtns = () => {
+    return (
+      <Grid
+        container
+        style={{ marginTop: "auto", marginBottom: "1%" }}
+        justify="space-evenly"
+      >
         <Grid item>
           <Button
-            disabled={!canBack}
+            disabled={!activeStep > 0}
             variant="contained"
             color="primary"
             onClick={handleBack}
@@ -58,17 +38,59 @@ const RegisterComplejoStepper = (props) => {
           </Button>
         </Grid>
         <Grid item>
-          <Button
-            disabled={!canNext}
-            variant="contained"
-            color="primary"
-            onClick={handleNext}
-          >
-            Siguiente
+          <Button variant="contained" color="primary" type="submit">
+            {isLastStep() ? "Registrar" : "Siguiente"}
           </Button>
         </Grid>
       </Grid>
-    </>
+    );
+  };
+
+  return (
+    <Container
+      style={{
+        height: "100%",
+        display: "flex",
+        flexGrow: "1",
+        flexDirection: "column",
+      }}
+    >
+      <Stepper activeStep={activeStep}>
+        {childrenArray.map((step) => (
+          <Step key={step.props.label}>
+            <StepLabel>{step.props.label}</StepLabel>
+          </Step>
+        ))}
+      </Stepper>
+
+      <Formik
+        {...props}
+        onSubmit={async (values) => {
+          if (isLastStep()) {
+            console.log("IS LAST");
+            await props.onSubmit(values);
+          } else {
+            setActiveStep((step) => step + 1);
+          }
+        }}
+        validationSchema={currentChild.props.validationSchema}
+      >
+        {({ errors, values, touched }) => (
+          <Form
+            style={{
+              height: "100%",
+              display: "flex",
+              flexGrow: "1",
+              flexDirection: "column",
+            }}
+          >
+            {React.cloneElement(currentChild, { errors, touched })}
+            <BackNextBtns />
+          </Form>
+        )}
+      </Formik>
+    </Container>
   );
 };
+
 export default RegisterComplejoStepper;
