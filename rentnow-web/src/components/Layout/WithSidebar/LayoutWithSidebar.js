@@ -36,7 +36,6 @@ const LayoutWithSidebar = (props) => {
   const sideBarOpenHandler = () => {
     setIsSBOpen((oldIsOpen) => !oldIsOpen);
   };
-
   return (
     <div>
       <Navbar

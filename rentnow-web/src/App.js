@@ -5,6 +5,7 @@ import Login from "./components/Login/Login";
 import * as Routes from "./constants/routes";
 import AuthProvider from "./Auth/Auth";
 import Complejos from "./components/App/Complejos/Complejos";
+import RegistrarComplejo from "./components/App/Complejos/RegisterComplejo/RegisterComplejo";
 import Users from "./components/Admin/Users/Users";
 import Landing from "./components/Landing/Landing"
 import RouteWithSidebar from './components/Layout/WithSidebar/RouteWithSidebar'
@@ -29,10 +30,12 @@ function App() {
                   <Landing />
                 )}
               />
-              <RouteWithSidebar title="Usuarios" component={() => <Users />} path={Routes.USUARIOS} isPrivate={true} breadcrumbs={Breadcrumbs.ADMIN_USUARIOS} />
-              <RouteWithoutSidebar title="Complejos" component={() => <Complejos />} path={Routes.COMPLEJOS} isPrivate={true} breadcrumbs={Breadcrumbs.APP_COMPLEJOS} />
-              <Route path="*" exact component={() => <Landing />} />
-            </Switch>
+
+              <RouteWithSidebar title="Usuarios" component={() => <Users />} path={Routes.USUARIOS} isPrivate={true} breadcrumbs={Breadcrumbs.ADMIN_USUARIOS} /> 
+              <RouteWithoutSidebar title="Complejos"  exact component={() => <Complejos />} path={Routes.COMPLEJOS} isPrivate={true} breadcrumbs={Breadcrumbs.APP_COMPLEJOS}/>           
+              <RouteWithoutSidebar title="Registrar Nuevo Complejo" exact component={() => <RegistrarComplejo />} path={Routes.REGISTRAR_COMPLEJO} isPrivate={true} />           
+              <Route path="*" exact component={() => <Landing />} /> 
+             </Switch>
           </Router>
         </AbilityContext.Provider>
       </AuthProvider>

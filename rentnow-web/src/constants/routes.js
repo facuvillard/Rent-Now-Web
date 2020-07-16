@@ -10,6 +10,7 @@ export const FAQ = "/faq"
 
 //APP
 export const COMPLEJOS = `${APP}/complejos`
+export const REGISTRAR_COMPLEJO = `${APP}/complejos/registrar`
 
 //ADMIN
 export const USUARIOS = `${ADMIN}/usuarios`
