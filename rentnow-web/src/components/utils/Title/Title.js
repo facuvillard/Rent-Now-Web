@@ -49,22 +49,6 @@ const StyledBreadcrumb = withStyles((theme) => ({
   },
 }))(Chip);
 
-const elementos = [
-  {
-    nombre: "Complejos",
-    ruta: "/app/complejos"
-  },
-  {
-    nombre: "Registrar",
-    ruta: "/admin/usuarios"
-  },
-  {
-    nombre: "Hola",
-    ruta: ""
-  },
-]
-
-
 const Title = (props) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -76,13 +60,15 @@ const Title = (props) => {
       ) : (
           <Typography variant="h6" color="secondary" >{props.titulo}</Typography>
         )}
-      <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} maxItems={2} className={classes.breadcrumbs}>
-        {elementos.map((elementos) => (
-          <Link key={elementos.nombre} to={elementos.ruta} className={classes.link}>
-            <StyledBreadcrumb label={elementos.nombre} />
-          </Link>
-        ))}
-      </Breadcrumbs>
+      {props.breadcrumbs ? (
+        <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} maxItems={2} className={classes.breadcrumbs}>
+          {props.breadcrumbs.map((elemento) => (
+            <Link key={elemento.nombre} to={elemento.ruta} className={classes.link}>
+              <StyledBreadcrumb label={elemento.nombre} />
+            </Link>
+          ))}
+        </Breadcrumbs>
+      ) : (null)}
     </section>
   );
 };

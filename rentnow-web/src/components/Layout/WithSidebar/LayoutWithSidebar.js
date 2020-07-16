@@ -55,7 +55,7 @@ const LayoutWithSidebar = (props) => {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Container maxWidth="xl">
-          <Title titulo={props.children.props.title} />
+          <Title titulo={props.children.props.title} breadcrumbs={props.children.props.breadcrumbs} />
           {props.children}
         </Container>
       </main>

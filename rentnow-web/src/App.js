@@ -11,6 +11,7 @@ import RouteWithSidebar from './components/Layout/WithSidebar/RouteWithSidebar'
 import RouteWithoutSidebar from './components/Layout/WithoutSidebar/RouteWithoutSidebar'
 import { AbilityContext } from "./Auth/can";
 import ability from "./Auth/ability"
+import * as Breadcrumbs from "./constants/breadcrumbs"
 
 
 function App() {
@@ -28,13 +29,13 @@ function App() {
                   <Landing />
                 )}
               />
-              <RouteWithSidebar title="Usuarios" component={() => <Users />} path={Routes.USUARIOS} isPrivate={true} /> 
-              <RouteWithoutSidebar title="Complejos" component={() => <Complejos />} path={Routes.COMPLEJOS} isPrivate={true} />           
-              <Route path="*" exact component={() => <Landing />} /> 
-             </Switch>
+              <RouteWithSidebar title="Usuarios" component={() => <Users />} path={Routes.USUARIOS} isPrivate={true} breadcrumbs={Breadcrumbs.ADMIN_USUARIOS} />
+              <RouteWithoutSidebar title="Complejos" component={() => <Complejos />} path={Routes.COMPLEJOS} isPrivate={true} breadcrumbs={Breadcrumbs.APP_COMPLEJOS} />
+              <Route path="*" exact component={() => <Landing />} />
+            </Switch>
           </Router>
-      </AbilityContext.Provider>
-    </AuthProvider>
+        </AbilityContext.Provider>
+      </AuthProvider>
     </div>
   );
 }
