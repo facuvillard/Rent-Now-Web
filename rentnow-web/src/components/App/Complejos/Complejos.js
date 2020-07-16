@@ -23,6 +23,8 @@ import "@brainhubeu/react-carousel/lib/style.css";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import imgPlaceHolder from "../../../assets/img/image-placeholder.png";
+import LinkCustom from "../../utils/LinkCustom/LinkCustom";
+import * as Routes from "../../../constants/routes";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -54,8 +56,12 @@ const useStyles = makeStyles((theme) => ({
 
 const Arrow = function (props) {
   return (
-    <IconButton >
-      {props.back ? <ArrowBackIcon  style={{color: props.cssColor}} /> : <ArrowForwardIcon style={{color: props.cssColor}} />}
+    <IconButton>
+      {props.back ? (
+        <ArrowBackIcon style={{ color: props.cssColor }} />
+      ) : (
+        <ArrowForwardIcon style={{ color: props.cssColor }} />
+      )}
     </IconButton>
   );
 };
@@ -89,14 +95,14 @@ const Complejos = () => {
       ) : (
         <>
           {complejos.length !== 0 ? (
-            <Paper elevation={5}>
+            <Paper variant='outlined'>
               <Grid container className={classes.container}>
                 <Carousel
                   dots
                   arrowLeft={<Arrow back cssColor="black" />}
                   arrowLeftDisabled={<Arrow back cssColor="grey" />}
                   arrowRight={<Arrow cssColor="black" />}
-                  arrowRightDisabled={<Arrow  cssColor="grey"  />}
+                  arrowRightDisabled={<Arrow cssColor="grey" />}
                   addArrowClickHandler
                 >
                   {complejos.map((complejo) => (
@@ -157,17 +163,18 @@ const Complejos = () => {
           )}
         </>
       )}
-
-      <Fab
-        color="primary"
-        aria-label="add"
-        title="Registrar un nuevo complejo"
-        className={classes.addButton}
-        variant="extended"
-      >
-        <AddIcon className={classes.extendedIcon} />
-        Nuevo Complejo
-      </Fab>
+      <LinkCustom to={Routes.REGISTRAR_COMPLEJO}>
+        <Fab
+          color="primary"
+          aria-label="add"
+          title="Registrar un nuevo complejo"
+          className={classes.addButton}
+          variant="extended"
+        >
+          <AddIcon className={classes.extendedIcon} />
+          Nuevo Complejo
+        </Fab>
+      </LinkCustom>
     </>
   );
 };
