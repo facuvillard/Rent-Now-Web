@@ -200,7 +200,10 @@ const Contacto = () => {
                         labelId="provincia-select-label"
                         name="provincia"
                         value={values.provincia}
-                        onChange={handleChange}
+                        onChange={(e) => {
+                          values.ciudad = "";
+                          handleChange(e);
+                        }}
                         id="provincia-select"
                       >
                         {provincias.length > 0
@@ -219,7 +222,7 @@ const Contacto = () => {
                       <Autocomplete
                         label="Ciudad"
                         value={values.ciudad}
-                        onChange={(event, newValue) => {
+                        onChange={(_, newValue) => {
                           const target = {
                             name: "ciudad",
                             value: newValue,
@@ -228,7 +231,7 @@ const Contacto = () => {
                           handleChange({ target });
                         }}
                         inputValue={ciudad}
-                        onInputChange={(event, value) => {
+                        onInputChange={(_, value) => {
                           handleCitiesChange(value, values.provincia);
                         }}
                         name="ciudad"
@@ -267,6 +270,7 @@ const Contacto = () => {
                     </Button>
                   </Grid>
                 </Grid>
+                <pre>{JSON.stringify(values, null, 2)}</pre>
               </Form>
             )}
           </Formik>
