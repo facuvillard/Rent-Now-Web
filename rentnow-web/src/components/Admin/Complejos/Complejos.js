@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import MaterialTable from "material-table";
 import { getComplejosApi } from "./../../../api/complejos"
+import Dialog from "../../utils/Dialog/Dialog";
+import Switch from '@material-ui/core/Switch';
 
 
 const AdminComplejos = () => {
@@ -13,6 +15,11 @@ function ListComplejos(props) {
     const [reload, setReload] = useState(false);
     const [complejos, setComplejos] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+
+    const [alertCustomOpen, setAlertCustomOpen] = useState(false);
+    const [alertCustomType, setAlertCustomType] = useState();
+    const [alertCustomText, setAlertCustomText] = useState();
+
 
     useEffect(() => {
         setIsLoading(true);
@@ -28,19 +35,39 @@ function ListComplejos(props) {
         });
     }, [reload]);
 
+    const [open, setOpen] = useState(false);
+    const [dialogTitle, setDialogTitle] = useState("");
+    const [dialogContent, setDialogContent] = useState(null);
+    const [dialogSize, setDialogSize] = useState("sm");
+
+    const viewComplejoDialog = (complejo) => {
+        setDialogTitle("Complejo: " + complejo.nombre + " - Dueño: " + complejo.usuarios);
+        setDialogContent();
+        setDialogSize("sm");
+        setOpen(true);
+    };
+
     return (
         <>
             <MaterialTable
-
                 isLoading={isLoading}
                 title=""
                 columns={[
                     { title: "Nombre", field: "nombre" },
                     { title: "Dueño", field: "usuarios" },
-                    { title: "Estado", field: "habilitado" },
-                    { title: "Fecha Alta"}
+                    { title: "Fecha Alta" },
+                    { title: "Estado", field: "habilitado" }
                 ]}
                 data={complejos}
+                actions={[
+                    {
+                        icon: "visibility",
+                        tooltip: "Ver Datos del Complejo",
+                        onClick: (event, row) => {
+                            viewComplejoDialog(row);
+                        },
+                    },
+                ]}
                 options={{
                     exportButton: true,
                     grouping: true,
@@ -53,9 +80,17 @@ function ListComplejos(props) {
                     headerStyle: {
                         backgroundColor: '#656b74',
                         color: '#FFF'
-                      }
+                    }
                 }}
             />
+            <Dialog
+                title={dialogTitle}
+                open={open}
+                setOpen={setOpen}
+                size={dialogSize}
+            >
+                {dialogContent}
+            </Dialog>
         </>
     )
 }
