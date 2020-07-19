@@ -270,7 +270,6 @@ const Contacto = () => {
                     </Button>
                   </Grid>
                 </Grid>
-                <pre>{JSON.stringify(values, null, 2)}</pre>
               </Form>
             )}
           </Formik>
