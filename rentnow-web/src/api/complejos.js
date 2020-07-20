@@ -31,6 +31,7 @@ export async function getComplejosApi(){
     const result = await firebase
       .firestore()
       .collection("complejos")
+      .orderBy("fechaAlta", 'desc')
       .get();
     const complejos = result.docs.map((complejo) => {
       return { id: complejo.id, ...complejo.data() };

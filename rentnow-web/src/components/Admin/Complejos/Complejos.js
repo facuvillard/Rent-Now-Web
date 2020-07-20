@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import MaterialTable from "material-table";
 import { getComplejosApi } from "./../../../api/complejos"
 import Dialog from "../../utils/Dialog/Dialog";
-import Switch from '@material-ui/core/Switch';
 
 
 const AdminComplejos = () => {
@@ -41,7 +40,7 @@ function ListComplejos(props) {
     const [dialogSize, setDialogSize] = useState("sm");
 
     const viewComplejoDialog = (complejo) => {
-        setDialogTitle("Complejo: " + complejo.nombre + " - Dueño: " + complejo.usuarios);
+        setDialogTitle("Complejo: " + complejo.nombre + " - Dueño: " + complejo.usuarios[0].nombre);
         setDialogContent();
         setDialogSize("sm");
         setOpen(true);
@@ -54,9 +53,9 @@ function ListComplejos(props) {
                 title=""
                 columns={[
                     { title: "Nombre", field: "nombre" },
-                    { title: "Dueño", field: "usuarios" },
+                    { title: "Dueño", field: "usuarios[0].nombre" },
                     { title: "Fecha Alta" },
-                    { title: "Estado", field: "habilitado" }
+                    { title: "Habilitado", field: "habilitado", type: 'boolean' }
                 ]}
                 data={complejos}
                 actions={[
