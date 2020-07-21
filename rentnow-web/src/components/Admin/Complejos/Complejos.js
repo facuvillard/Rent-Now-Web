@@ -15,16 +15,12 @@ function ListComplejos(props) {
     const [complejos, setComplejos] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    const [alertCustomOpen, setAlertCustomOpen] = useState(false);
-    const [alertCustomType, setAlertCustomType] = useState();
-    const [alertCustomText, setAlertCustomText] = useState();
-
-
     useEffect(() => {
         setIsLoading(true);
         getComplejosApi().then((response) => {
             if (response.status === "OK") {
                 setComplejos(response.data);
+                console.log(response.data);
                 setIsLoading(false);
                 setReload(false);
             } else {
@@ -54,7 +50,7 @@ function ListComplejos(props) {
                 columns={[
                     { title: "Nombre", field: "nombre" },
                     { title: "Dueño", field: "usuarios[0].nombre" },
-                    { title: "Fecha Alta" },
+                    { title: "Fecha Alta", field: "fechaAlta", type: 'datetime' },
                     { title: "Habilitado", field: "habilitado", type: 'boolean' }
                 ]}
                 data={complejos}

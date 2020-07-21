@@ -26,7 +26,7 @@ export async function getComplejosByUserApi(user) {
   }
 }
 
-export async function getComplejosApi(){
+export async function getComplejosApi() {
   try {
     const result = await firebase
       .firestore()
@@ -34,7 +34,8 @@ export async function getComplejosApi(){
       .orderBy("fechaAlta", 'desc')
       .get();
     const complejos = result.docs.map((complejo) => {
-      return { id: complejo.id, ...complejo.data() };
+      const complejoData = complejo.data()
+      return { id: complejo.id, ...complejoData, fechaAlta: complejoData.fechaAlta.toDate() };
     });
     return {
       status: "OK",
@@ -56,7 +57,7 @@ export async function createComplejoApi(complejo) {
       .firestore()
       .collection("complejos")
       .add(complejo);
-      console.log(result)
+    console.log(result)
     return { status: "OK", message: "Se registró el complejo con exito" };
   } catch (err) {
     return {
