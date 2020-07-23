@@ -67,3 +67,13 @@ export async function createComplejoApi(complejo) {
     };
   }
 }
+
+export async function habilitarComplejoApi(idComplejo, value) {
+
+  try {
+    await firebase.firestore().collection("complejos").doc(idComplejo).update({habilitado: !value})
+    return {status: "OK", message: "Complejo habilitado/deshabilitado con exito"}
+  } catch (err) {
+    return {status: "ERROR", message: "Error al habilitar/deshabilitar el complejo"}
+  }
+}
