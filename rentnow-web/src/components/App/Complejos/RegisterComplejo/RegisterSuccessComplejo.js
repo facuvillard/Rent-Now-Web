@@ -1,18 +1,20 @@
-import React from "react";
-import { Typography, Button, Grid, Paper } from "@material-ui/core";
+import React, { useState } from "react";
+import { Typography, Button, Grid, Paper, useMediaQuery, useTheme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import Snackbar from '@material-ui/core/Snackbar';
+import AlertCustom from "../../../utils/AlertCustom/AlertCustom"
 import successImage from '../../../../assets/img/register-success-image.png'
 
 const useStyles = makeStyles((theme) => ({
   divider: {
     borderTop: "2px solid #3F4652",
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(3),
+    marginRight: theme.spacing(3),
     borderRadius: "1.5px",
   },
   paper: {
+    [theme.breakpoints.down("md")]: { height: "80vh" },
     height: "65vh",
+    [theme.breakpoints.down("md")]: { width: "100%" },
     width: "50%",
   },
   title: {
@@ -28,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   image: {
-    height: "25vh",
+    height: "30vh",
     width: "100%",
   },
 }))
@@ -36,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
 
 export const RegisterSuccessComplejo = ({ complejo }) => {
   const classes = useStyles();
+  const [alertCustomOpen, setAlertCustomOpen] = useState(true);
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
   return (
     <>
       <Paper
@@ -49,10 +54,16 @@ export const RegisterSuccessComplejo = ({ complejo }) => {
           justify="center"
         >
           <Grid item xs={12}>
-            <Typography align="center" variant="h6" className={classes.title}>
-              ¡Tu complejo <b>{complejo.nombre}</b> fue registrado con éxito!
-        </Typography>
-            <hr className={classes.divider} />
+            {matches ? (
+              <Typography align="center" variant="h5" className={classes.title}>
+                ¡Tu complejo <b>{complejo.nombre}</b> fue registrado con éxito!
+              </Typography>
+            ) : (
+              <Typography align="center" variant="h6" className={classes.title}>
+                ¡Tu complejo <b>{complejo.nombre}</b> fue registrado con éxito!
+              </Typography>
+            )}
+              < hr className={classes.divider} />
           </Grid>
           <Grid item xs={12}>
             <img
@@ -65,26 +76,19 @@ export const RegisterSuccessComplejo = ({ complejo }) => {
               ¡Ahora puedes comenzar a registrar los <b>espacios</b> que tiene tu complejo haciendo clic en el siguiente botón!
         </Typography>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={5}>
             <Button fullWidth variant='contained' color='primary'>agregar espacios</Button>
             {/* On Click redireccionar a la pagina de registrar espacios */}
           </Grid>
         </Grid>
-        <Typography variant="caption" display="block" gutterBottom color="textSecondary">
-          <b>Nota</b>: Recuerda que el complejo permanecera en estado <b>Deshabilitado</b> hasta que el equipo de RentNow valide y apruebe la solicitud de registro.
-        </Typography>
       </Paper>
-      <Snackbar
-        open
-        color="primary"
-        autoHideDuration={6000}
-        message="Nota: Recuerda que el complejo permanecera en estado Deshabilitado hasta que el equipo de RentNow valide y apruebe la solicitud de registro."
-        action={
-          <Button color="inherit" size="small">
-            Entendido
-            </Button>
-        }
-        className={classes.snackbar}
+      <AlertCustom
+        type="warning"
+        text="Recuerda que el complejo permanecerá en estado Deshabilitado hasta que el equipo de RentNow valide y apruebe la solicitud de registro."
+        open={alertCustomOpen}
+        setOpen={setAlertCustomOpen}
+        duration={1000000000}
+        vertical="bottom"
       />
     </>
   );

@@ -8,13 +8,15 @@ const AlertCustom = (props) => {
   const handleClose = () => {
     props.setOpen(false);
   };
+  const verticalPosition =  props.vertical ? props.vertical : "top";
+  const horizontalPosition =  props.horizontal ? props.horizontal : "center";
   return (
     <Snackbar
-      anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      anchorOrigin={{ vertical: verticalPosition , horizontal: horizontalPosition }}
       open={props.open}
       autoHideDuration={props.duration ? props.duration : 2500}
       onClose={handleClose}
-      key={"top" + "center"}
+      key={verticalPosition + horizontalPosition}
     >
       <Alert
         action={
