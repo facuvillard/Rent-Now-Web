@@ -40,10 +40,10 @@ function ListComplejos() {
 
 
   const handleHabilitar = async (complejo) => {
-    const opc = !complejo.habilitado? "habilitar" : "deshabilitar"
+    const opc = !complejo.habilitado ? "habilitar" : "deshabilitar"
     setDialogTitle(`¿Estas seguro de que quieres ${opc} el complejo "${complejo.nombre}"?`)
-    setDialogContent(<EnableComplejo 
-      setOpen={setOpen} 
+    setDialogContent(<EnableComplejo
+      setOpen={setOpen}
       setReload={setReload}
       setAlertCustomText={setAlertCustomText}
       setAlertCustomOpen={setAlertCustomOpen}
@@ -51,26 +51,26 @@ function ListComplejos() {
       complejo={complejo} />)
     setOpen(true)
 
- /*    const result = await habilitarComplejoApi(complejo.id, complejo.habilitado);
-
-    if (result.status === "OK") {
-      setReload(true);
-      setAlertCustomText(result.message)
-      setAlertCustomType("success")
-      setAlertCustomOpen(true)
-    } else {
-      setAlertCustomText(result.message)
-      setAlertCustomType("error")
-      setAlertCustomOpen(true)
-    } */
+    /*    const result = await habilitarComplejoApi(complejo.id, complejo.habilitado);
+   
+       if (result.status === "OK") {
+         setReload(true);
+         setAlertCustomText(result.message)
+         setAlertCustomType("success")
+         setAlertCustomOpen(true)
+       } else {
+         setAlertCustomText(result.message)
+         setAlertCustomType("error")
+         setAlertCustomOpen(true)
+       } */
   };
 
   const viewComplejoDialog = (complejo) => {
     setDialogTitle(
       "Complejo: " +
-        complejo.nombre +
-        " - Dueño: " +
-        complejo.usuarios[0].nombre
+      complejo.nombre +
+      " - Dueño: " +
+      complejo.usuarios[0].nombre
     );
     setDialogContent();
     setDialogSize("sm");
@@ -113,7 +113,7 @@ function ListComplejos() {
                 }
               />
             ),
-            tooltip: rowData.habilitado ? "deshabilitar" : "habilitar",
+            tooltip: rowData.habilitado ? "Deshabilitar" : "Habilitar",
           }),
         ]}
         options={{
