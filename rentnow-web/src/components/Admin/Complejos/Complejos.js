@@ -6,7 +6,8 @@ import Dialog from "../../utils/Dialog/Dialog";
 import Switch from "@material-ui/core/Switch";
 import CheckIcon from "@material-ui/icons/Check";
 import CloseIcon from "@material-ui/icons/Close";
-import EnableComplejo from "./EnableComplejo"
+import EnableComplejo from "./EnableComplejo";
+import ViewComplejo from "./ViewComplejo";
 
 const AdminComplejos = () => {
   return <ListComplejos />;
@@ -37,19 +38,22 @@ function ListComplejos() {
     });
   }, [reload]);
 
-
-
   const handleHabilitar = async (complejo) => {
-    const opc = !complejo.habilitado ? "habilitar" : "deshabilitar"
-    setDialogTitle(`¿Estas seguro de que quieres ${opc} el complejo "${complejo.nombre}"?`)
-    setDialogContent(<EnableComplejo
-      setOpen={setOpen}
-      setReload={setReload}
-      setAlertCustomText={setAlertCustomText}
-      setAlertCustomOpen={setAlertCustomOpen}
-      setAlertCustomType={setAlertCustomType}
-      complejo={complejo} />)
-    setOpen(true)
+    const opc = !complejo.habilitado ? "habilitar" : "deshabilitar";
+    setDialogTitle(
+      `¿Estas seguro de que quieres ${opc} el complejo "${complejo.nombre}"?`
+    );
+    setDialogContent(
+      <EnableComplejo
+        setOpen={setOpen}
+        setReload={setReload}
+        setAlertCustomText={setAlertCustomText}
+        setAlertCustomOpen={setAlertCustomOpen}
+        setAlertCustomType={setAlertCustomType}
+        complejo={complejo}
+      />
+    );
+    setOpen(true);
 
     /*    const result = await habilitarComplejoApi(complejo.id, complejo.habilitado);
    
@@ -66,13 +70,8 @@ function ListComplejos() {
   };
 
   const viewComplejoDialog = (complejo) => {
-    setDialogTitle(
-      "Complejo: " +
-      complejo.nombre +
-      " - Dueño: " +
-      complejo.usuarios[0].nombre
-    );
-    setDialogContent();
+    setDialogTitle("Complejo: " + complejo.nombre);
+    setDialogContent(<ViewComplejo complejo={complejo} />);
     setDialogSize("sm");
     setOpen(true);
   };
@@ -108,9 +107,7 @@ function ListComplejos() {
               <Switch
                 color="primary"
                 checked={rowData.habilitado}
-                onChange={() =>
-                  handleHabilitar(rowData)
-                }
+                onChange={() => handleHabilitar(rowData)}
               />
             ),
             tooltip: rowData.habilitado ? "Deshabilitar" : "Habilitar",
