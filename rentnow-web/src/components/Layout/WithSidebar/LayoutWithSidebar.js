@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
     height: "100vh",
     flexGrow: 1,
     marginLeft: theme.spacing(8),
+    marginBottom: theme.spacing(1),
     [theme.breakpoints.down("xs")]: {
       marginLeft: theme.spacing(1),
     },

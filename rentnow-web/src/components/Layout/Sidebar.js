@@ -8,15 +8,16 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@material-ui/core";
-import MailIcon from "@material-ui/icons/Mail";
+import HomeIcon from "@material-ui/icons/Home";
 import GroupIcon from "@material-ui/icons/Group";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 import { Can } from "../../Auth/can";
 import logoSinLetraAmarillo from "../../assets/img/logos/logo-amarillo-sin-letra.png";
 import logoConLetraAmarillo from "../../assets/img/logos/logo-horizontal-blanco.png";
-const drawerWidth = 240;
+import * as Routes from "../../constants/routes";
 
+const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -123,16 +124,16 @@ const Sidebar = (props) => {
         <SideBarButton
           permiso="read"
           elemento="usuario"
-          ruta="/complejos"
-          icon={<MailIcon className={classes.link} />}
+          ruta={Routes.ADMIN_COMPLEJOS}
+          icon={<HomeIcon className={classes.link} />}
           text="Complejos"
         />
         <SideBarButton
           permiso="read"
           elemento="usuario"
-          ruta="/usuarios"
+          ruta={Routes.USUARIOS}
           icon={<GroupIcon className={classes.link} />}
-          text="Usuario"
+          text="Usuarios"
         />
       </List>
     </Drawer>

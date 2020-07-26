@@ -100,7 +100,6 @@ function ListUser(props) {
   return (
     <>
       <MaterialTable
-        
         isLoading={isLoading}
         title=""
         columns={[
@@ -142,7 +141,14 @@ function ListUser(props) {
         options={{
           actionsColumnIndex: -1,
           pageSize: 10,
-          pageSizeOptions: [10]
+          pageSizeOptions: [10],
+          rowStyle: {
+            backgroundColor: "#FAFAFA",
+          },
+          headerStyle: {
+            backgroundColor: "#656b74",
+            color: "#FFF",
+          },
         }}
       />
       <Dialog
