@@ -25,13 +25,9 @@ export async function getComplejosByUserApi(user) {
     };
   }
 }
-export async function createComplejoApi(complejo) {
+export async function createComplejoApi(docRef, complejo) {
   try {
-    const result = await firebase
-      .firestore()
-      .collection("complejos")
-      .add(complejo);
-      console.log(result)
+    await docRef.set(complejo)
     return { status: "OK", message: "Se registró el complejo con exito" };
   } catch (err) {
     return {
