@@ -6,9 +6,9 @@ import successImage from '../../../../assets/img/register-success-image.png'
 
 const useStyles = makeStyles((theme) => ({
   divider: {
-    borderTop: "2px solid #3F4652",
-    marginLeft: theme.spacing(3),
-    marginRight: theme.spacing(3),
+    borderTop: "2px solid #656b74",
+    marginLeft: theme.spacing(4),
+    marginRight: theme.spacing(4),
     borderRadius: "1.5px",
   },
   paper: {
@@ -84,10 +84,10 @@ export const RegisterSuccessComplejo = ({ complejo }) => {
       </Paper>
       <AlertCustom
         type="warning"
-        text="Recuerda que el complejo permanecerá en estado Deshabilitado hasta que el equipo de RentNow valide y apruebe la solicitud de registro."
+        text="Recuerda que el complejo permanecerá en estado Deshabilitado (por lo que no podrá ser utilizado) hasta que el equipo de RentNow valide y apruebe la solicitud de registro."
         open={alertCustomOpen}
         setOpen={setAlertCustomOpen}
-        duration={1000000000}
+        duration={0}
         vertical="bottom"
       />
     </>

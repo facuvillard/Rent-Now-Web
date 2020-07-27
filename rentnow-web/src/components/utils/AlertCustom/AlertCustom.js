@@ -8,8 +8,8 @@ const AlertCustom = (props) => {
   const handleClose = () => {
     props.setOpen(false);
   };
-  const verticalPosition =  props.vertical ? props.vertical : "top";
-  const horizontalPosition =  props.horizontal ? props.horizontal : "center";
+  const verticalPosition =  props.vertical || "top";
+  const horizontalPosition =  props.horizontal || "center";
   return (
     <Snackbar
       anchorOrigin={{ vertical: verticalPosition , horizontal: horizontalPosition }}
