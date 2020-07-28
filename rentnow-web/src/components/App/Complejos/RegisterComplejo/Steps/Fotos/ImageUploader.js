@@ -117,7 +117,7 @@ export const ImageUploader = React.memo(function (props) {
         variant="contained"
         fullWidth
       >
-        {!uploaded ? "Subir Imágenes" : "Siguiente"}
+        Subir Imágenes
       </Button>
     </>
   );

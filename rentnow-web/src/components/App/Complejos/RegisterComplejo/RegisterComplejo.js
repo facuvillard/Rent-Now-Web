@@ -24,7 +24,10 @@ const RegistrarComplejo = () => {
   }, []);
 
   const registerComplejo = (values) => {
-    let complejoToSave = { ...values, usuarios: [currentUser.uid] };
+    let complejoToSave = {
+      ...values,
+      usuarios: [{ id: currentUser.uid, nombre: currentUser.displayName }],
+    };
 
     createComplejoApi(docRef, complejoToSave).then((response) => {
       if (response.status === "OK") {
@@ -65,15 +68,15 @@ const RegistrarComplejo = () => {
 
   return (
     <>
-      <Paper
-        variant="outlined"
-        style={{
-          height: "70vh",
-          overflow: "scroll",
-        }}
-      >
-        {" "}
-        {!created ? (
+      {" "}
+      {!created ? (
+        <Paper
+          variant="outlined"
+          style={{
+            height: "70vh",
+            overflow: "scroll",
+          }}
+        >
           <RegisterComplejoStepper
             initialValues={{
               nombre: "Sebastian",
@@ -100,10 +103,10 @@ const RegistrarComplejo = () => {
               <Fotos docRef={docRef} />
             </ComplejoStep>
           </RegisterComplejoStepper>
-        ) : (
-          <RegisterSuccessComplejo complejo={complejo} />
-        )}
-      </Paper>
+        </Paper>
+      ) : (
+        <RegisterSuccessComplejo complejo={complejo} />
+      )}
       <AlertCustom
         type={alertProps.type}
         text={alertProps.text}

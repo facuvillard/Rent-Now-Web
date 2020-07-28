@@ -2,11 +2,12 @@ import firebase from "firebase";
 
 export async function getComplejosByUserApi(user) {
   try {
-    const userId = user.uid;
+    console.log(user)
+    const userObject = { id: user.uid, nombre: user.displayName  };
     const result = await firebase
       .firestore()
       .collection("complejos")
-      .where("usuarios", "array-contains", userId)
+      .where("usuarios", "array-contains", userObject)
       .get();
     const complejos = result.docs.map((complejo) => {
       return { id: complejo.id, ...complejo.data() };
