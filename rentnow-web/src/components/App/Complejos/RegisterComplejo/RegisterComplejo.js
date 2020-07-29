@@ -88,6 +88,11 @@ const RegistrarComplejo = () => {
                 twitter: "",
               },
               fotos: [],
+              ubicacion: {
+                calle: "Calle de prueba",
+                numero: 2134 ,
+                barrio: "Barrio de prueba"
+              }
             }}
             onSubmit={(values) => {
               registerComplejo(values);

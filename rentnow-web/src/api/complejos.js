@@ -2,7 +2,6 @@ import firebase from "firebase";
 
 export async function getComplejosByUserApi(user) {
   try {
-    console.log(user)
     const userObject = { id: user.uid, nombre: user.displayName  };
     const result = await firebase
       .firestore()
@@ -28,7 +27,7 @@ export async function getComplejosByUserApi(user) {
 }
 export async function createComplejoApi(docRef, complejo) {
   try {
-    await docRef.set(complejo)
+    await docRef.set({...complejo, habilitado: false})
     return { status: "OK", message: "Se registró el complejo con exito" };
   } catch (err) {
     return {
