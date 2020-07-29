@@ -13,6 +13,7 @@ import RouteWithoutSidebar from './components/Layout/WithoutSidebar/RouteWithout
 import { AbilityContext } from "./Auth/can";
 import ability from "./Auth/ability"
 import * as Breadcrumbs from "./constants/breadcrumbs"
+import AdminComplejos from './components/Admin/Complejos/Complejos'
 
 
 function App() {
@@ -31,9 +32,10 @@ function App() {
                 )}
               />
 
-              <RouteWithSidebar title="Usuarios" component={() => <Users />} path={Routes.USUARIOS} isPrivate={true} breadcrumbs={Breadcrumbs.ADMIN_USUARIOS} /> 
+              <RouteWithSidebar title="Usuarios" component={() => <Users />} path={Routes.USUARIOS} isPrivate={true} breadcrumbs={Breadcrumbs.ADMIN_USUARIOS} />
+              <RouteWithSidebar title="Administrar Complejos" component={() => <AdminComplejos />} path={Routes.ADMIN_COMPLEJOS} isPrivate={true} breadcrumbs={Breadcrumbs.ADMIN_COMPLEJOS}/> 
               <RouteWithoutSidebar title="Complejos"  exact component={() => <Complejos />} path={Routes.COMPLEJOS} isPrivate={true} breadcrumbs={Breadcrumbs.APP_COMPLEJOS}/>           
-              <RouteWithoutSidebar title="Registrar Nuevo Complejo" exact component={() => <RegistrarComplejo />} path={Routes.REGISTRAR_COMPLEJO} isPrivate={true} />           
+              <RouteWithoutSidebar title="Registrar Nuevo Complejo" exact component={() => <RegistrarComplejo />} path={Routes.REGISTRAR_COMPLEJO} isPrivate={true} breadcrumbs={Breadcrumbs.APP_REGISTRAR_COMPLEJO}/>           
               <Route path="*" exact component={() => <Landing />} /> 
              </Switch>
           </Router>

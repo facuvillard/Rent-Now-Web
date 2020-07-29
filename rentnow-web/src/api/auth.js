@@ -24,7 +24,6 @@ export async function signOut() {
 
 export async function signIn(email, password) {
     var auth = firebase.auth()
-
     try {
         await auth.signInWithEmailAndPassword(email, password)
         return {status: "OK", message:"Logeo correcto"}

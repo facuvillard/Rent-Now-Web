@@ -14,3 +14,4 @@ export const REGISTRAR_COMPLEJO = `${APP}/complejos/registrar`
 
 //ADMIN
 export const USUARIOS = `${ADMIN}/usuarios`
+export const ADMIN_COMPLEJOS = `${ADMIN}/complejos`
