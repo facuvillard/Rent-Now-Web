@@ -15,7 +15,7 @@ import { Field } from "formik";
 const BasicData = ({errors, touched}) => {
 
   return (
-    <Grid container style={{marginBottom: '10%'}} alignItems="center" justify="space-around">
+    <Grid container style={{marginBottom: '10%'}} spacing={5} alignItems="center" justify="space-around">
       <Grid item xs={12}>
         <Typography variant="h4" marked="center" align="center" component="h2">
           DATOS BÁSICOS

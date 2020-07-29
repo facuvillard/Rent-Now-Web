@@ -1,14 +1,14 @@
-import React, { useState, useContext } from "react";
-import { Container, Paper } from "@material-ui/core";
-import Title from "../../../utils/Title/Title";
+import React, { useState, useContext, useEffect } from "react";
+import { Paper } from "@material-ui/core";
 import RegisterComplejoStepper from "./RegisterComplejoStepper";
-import BasicData from "./Steps/BasicData";
-import Fotos from "./Steps/Fotos";
+import BasicData from "./Steps/BasicData/BasicData";
+import Fotos from "./Steps/Fotos/Fotos";
 import * as yup from "yup";
 import { AuthContext } from "../../../../Auth/Auth";
-
 import { createComplejoApi } from "../../../../api/complejos";
 import { RegisterSuccessComplejo } from "./RegisterSuccessComplejo";
+import AlertCustom from "components/utils/AlertCustom/AlertCustom";
+import firebase from "firebase";
 
 const phoneRegex = RegExp(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/);
 
@@ -16,15 +16,34 @@ const RegistrarComplejo = () => {
   const { currentUser } = useContext(AuthContext);
   const [created, setCreated] = useState(false);
   const [complejo, setComplejo] = useState({});
+  const [docRef, setDocRef] = useState();
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertProps, setAlertProps] = useState({});
+  useEffect(() => {
+    setDocRef(firebase.firestore().collection("/complejos").doc());
+  }, []);
 
   const registerComplejo = (values) => {
-    let complejoToSave = { ...values, usuarios: [currentUser.uid] };
-    createComplejoApi(complejoToSave).then((response) => {
+    let complejoToSave = {
+      ...values,
+      usuarios: [{ id: currentUser.uid, nombre: currentUser.displayName }],
+    };
+
+    createComplejoApi(docRef, complejoToSave).then((response) => {
       if (response.status === "OK") {
         setCreated(true);
         setComplejo(complejoToSave);
+        setAlertProps({
+          type: "success",
+          text: response.message,
+        });
+        setShowAlert(true);
       } else {
-        alert("ERROR");
+        setAlertProps({
+          type: "error",
+          text: response.message,
+        });
+        setShowAlert(true);
       }
     });
   };
@@ -48,45 +67,58 @@ const RegistrarComplejo = () => {
   });
 
   return (
-    <Paper
-      variant="outlined"
-      style={{
-        height: "70vh",
-        overflow: "scroll",
-      }}
-    >
+    <>
       {" "}
       {!created ? (
-        <RegisterComplejoStepper
-          initialValues={{
-            nombre: "Sebastian",
-            email: "",
-            telefono: "",
-            redes: {
-              instagram: "",
-              facebook: "",
-              twitter: "",
-            },
-            fotos: [],
-          }}
-          onSubmit={(values) => {
-            registerComplejo(values);
+        <Paper
+          variant="outlined"
+          style={{
+            height: "70vh",
+            overflow: "scroll",
           }}
         >
-          <ComplejoStep
-            label="Datos básicos"
-            validationSchema={BasicDataValidationSchema}
+          <RegisterComplejoStepper
+            initialValues={{
+              nombre: "Sebastian",
+              email: "",
+              telefono: "",
+              redes: {
+                instagram: "",
+                facebook: "",
+                twitter: "",
+              },
+              fotos: [],
+              ubicacion: {
+                calle: "Calle de prueba",
+                numero: 2134 ,
+                barrio: "Barrio de prueba"
+              }
+            }}
+            onSubmit={(values) => {
+              registerComplejo(values);
+            }}
           >
-            <BasicData />
-          </ComplejoStep>
-          <ComplejoStep label="Fotos ">
-            <Fotos />
-          </ComplejoStep>
-        </RegisterComplejoStepper>
+            <ComplejoStep
+              label="Datos básicos"
+              validationSchema={BasicDataValidationSchema}
+            >
+              <BasicData />
+            </ComplejoStep>
+            <ComplejoStep label="Fotos ">
+              <Fotos docRef={docRef} />
+            </ComplejoStep>
+          </RegisterComplejoStepper>
+        </Paper>
       ) : (
         <RegisterSuccessComplejo complejo={complejo} />
       )}
-    </Paper>
+      <AlertCustom
+        type={alertProps.type}
+        text={alertProps.text}
+        open={showAlert}
+        setOpen={setShowAlert}
+      />
+    </>
   );
 };
 

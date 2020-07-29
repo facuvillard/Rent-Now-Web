@@ -2,11 +2,11 @@ import firebase from "firebase";
 
 export async function getComplejosByUserApi(user) {
   try {
-    const userId = user.uid;
+    const userObject = { id: user.uid, nombre: user.displayName  };
     const result = await firebase
       .firestore()
       .collection("complejos")
-      .where("usuarios", "array-contains", userId)
+      .where("usuarios", "array-contains", userObject)
       .get();
     const complejos = result.docs.map((complejo) => {
       return { id: complejo.id, ...complejo.data() };
@@ -51,13 +51,9 @@ export async function getComplejosApi() {
   }
 }
 
-export async function createComplejoApi(complejo) {
+export async function createComplejoApi(docRef, complejo) {
   try {
-    const result = await firebase
-      .firestore()
-      .collection("complejos")
-      .add(complejo);
-    console.log(result)
+    await docRef.set({...complejo, habilitado: false})
     return { status: "OK", message: "Se registró el complejo con exito" };
   } catch (err) {
     return {

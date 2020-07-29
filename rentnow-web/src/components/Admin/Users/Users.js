@@ -29,7 +29,6 @@ function ListUser(props) {
         setIsLoading(false);
         setReload(false);
       } else {
-        console.log(response.message, response.error);
         setIsLoading(false);
       }
     });

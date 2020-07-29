@@ -78,7 +78,6 @@ const Complejos = () => {
         setComplejos(response.data);
         setIsLoading(false);
       } else {
-        console.log(response.message, response.error);
         setIsLoading(false);
       }
     });
