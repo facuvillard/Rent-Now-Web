@@ -13,6 +13,14 @@ export const APP_REGISTRAR_COMPLEJO = [
     }
 ]
 
+export const APP_MODIFICAR_COMPLEJO = [
+    ...APP_COMPLEJOS,
+    {
+        nombre: "Modificar Complejo",
+        ruta: Routes.MODIFICAR_COMPLEJO
+    }
+]
+
 export const ADMIN_USUARIOS = [
     {
         nombre: "Usuarios",
@@ -26,4 +34,6 @@ export const ADMIN_COMPLEJOS = [
         ruta: Routes.ADMIN_COMPLEJOS
     }
 ]
+
+
 
