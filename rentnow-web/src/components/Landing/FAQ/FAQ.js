@@ -46,7 +46,6 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#FAFAFA',
     },
     heading: {
-
         position: "center"
     },
     tab: {

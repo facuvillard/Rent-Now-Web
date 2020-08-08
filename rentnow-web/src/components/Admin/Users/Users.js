@@ -29,7 +29,6 @@ function ListUser(props) {
         setIsLoading(false);
         setReload(false);
       } else {
-        console.log(response.message, response.error);
         setIsLoading(false);
       }
     });
@@ -100,7 +99,6 @@ function ListUser(props) {
   return (
     <>
       <MaterialTable
-        
         isLoading={isLoading}
         title=""
         columns={[
@@ -142,7 +140,14 @@ function ListUser(props) {
         options={{
           actionsColumnIndex: -1,
           pageSize: 10,
-          pageSizeOptions: [10]
+          pageSizeOptions: [10],
+          rowStyle: {
+            backgroundColor: "#FAFAFA",
+          },
+          headerStyle: {
+            backgroundColor: "#656b74",
+            color: "#FFF",
+          },
         }}
       />
       <Dialog

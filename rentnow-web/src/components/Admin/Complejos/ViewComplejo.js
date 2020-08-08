@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   List,
@@ -7,27 +7,32 @@ import {
   ListItemAvatar,
   Avatar,
   Grid,
+  Button,
 } from "@material-ui/core";
+
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import MailOutlineOutlinedIcon from "@material-ui/icons/MailOutlineOutlined";
-import AccountBoxOutlinedIcon from "@material-ui/icons/AccountBoxOutlined";
-import LocationCityOutlinedIcon from "@material-ui/icons/LocationCityOutlined";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 import PhoneOutlinedIcon from "@material-ui/icons/PhoneOutlined";
+import MapIcon from "@material-ui/icons/Map";
+import InstagramIcon from "@material-ui/icons/Instagram";
+import FacebookIcon from "@material-ui/icons/Facebook";
+import TwitterIcon from "@material-ui/icons/Twitter";
+import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
+import PhotoIcon from "@material-ui/icons/Photo";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
-    alignContent: "justify",
-  },
-}));
+    root: {
+      width: "100%",
+      maxWidth: 360,
+      backgroundColor: theme.palette.background.paper,
+      alignContent: "justify",
+    },
+  }));
 
-export default function ViewUser(props) {
-  const { setOpen, user } = props;
-  const classes = useStyles();
-
+export default function ViewComplejo(props) {
+  const { complejo } = props;
+  const classes = useStyles()
   return (
     <Grid container spacing={2}>
       <Grid item xs={6}>
@@ -39,8 +44,8 @@ export default function ViewUser(props) {
               </Avatar>
             </ListItemAvatar>
             <ListItemText
-              primary="Nombres"
-              secondary={user.nombres ? user.nombres : "..."}
+              primary="Dueño"
+              secondary={complejo.usuarios[0].nombre}
             />
           </ListItem>
           <ListItem>
@@ -49,20 +54,17 @@ export default function ViewUser(props) {
                 <MailOutlineOutlinedIcon />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText
-              primary="Email"
-              secondary={user.email ? user.email : "..."}
-            />
+            <ListItemText primary="Email" secondary={complejo.email} />
           </ListItem>
           <ListItem>
             <ListItemAvatar>
               <Avatar>
-                <LocationCityOutlinedIcon />
+                <FacebookIcon />
               </Avatar>
             </ListItemAvatar>
             <ListItemText
-              primary="Provincia"
-              secondary={user.provincia ? user.provincia : "..."}
+              primary="Facebook"
+              secondary={complejo.redes.facebook || "..."}
             />
           </ListItem>
           <ListItem>
@@ -73,7 +75,16 @@ export default function ViewUser(props) {
             </ListItemAvatar>
             <ListItemText
               primary="Direccion"
-              secondary={user.direccion ? user.direccion : "..."}
+              secondary={
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  size="small"
+                  startIcon={<MapIcon />}
+                >
+                  Ver mapa
+                </Button>
+              }
             />
           </ListItem>
         </List>
@@ -83,45 +94,51 @@ export default function ViewUser(props) {
           <ListItem>
             <ListItemAvatar>
               <Avatar>
-                <AccountCircleOutlinedIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary="Apellidos"
-              secondary={user.apellidos ? user.apellidos : "..."}
-            />
-          </ListItem>
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar>
-                <AccountBoxOutlinedIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary="Rol"
-              secondary={user.roles[0] ? user.roles : "..."}
-            />
-          </ListItem>
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar>
-                <LocationCityOutlinedIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary="Ciudad"
-              secondary={user.ciudad ? user.ciudad : "..."}
-            />
-          </ListItem>
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar>
                 <PhoneOutlinedIcon />
               </Avatar>
             </ListItemAvatar>
+            <ListItemText primary="Telefono" secondary={complejo.telefono} />
+          </ListItem>
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar>
+                <InstagramIcon />
+              </Avatar>
+            </ListItemAvatar>
             <ListItemText
-              primary="Telefono"
-              secondary={user.nroTelefono ? user.nroTelefono : "..."}
+              primary="Instagram"
+              secondary={complejo.redes.instagram || "..."}
+            />
+          </ListItem>
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar>
+                <TwitterIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText
+              primary="Twitter"
+              secondary={complejo.redes.twitter || "..."}
+            />
+          </ListItem>
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar>
+                <PhotoCameraIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText
+              primary="Fotos"
+              secondary={
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  size="small"
+                  startIcon={<PhotoIcon />}
+                >
+                  Ver fotos
+                </Button>
+              }
             />
           </ListItem>
         </List>

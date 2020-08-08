@@ -13,6 +13,8 @@ import RouteWithoutSidebar from './components/Layout/WithoutSidebar/RouteWithout
 import { AbilityContext } from "./Auth/can";
 import ability from "./Auth/ability"
 import * as Breadcrumbs from "./constants/breadcrumbs"
+import AdminComplejos from './components/Admin/Complejos/Complejos'
+import EditComplejos from "components/App/Complejos/EditComplejos";
 
 
 function App() {
@@ -30,12 +32,13 @@ function App() {
                   <Landing />
                 )}
               />
-
-              <RouteWithSidebar title="Usuarios" component={() => <Users />} path={Routes.USUARIOS} isPrivate={true} breadcrumbs={Breadcrumbs.ADMIN_USUARIOS} /> 
-              <RouteWithoutSidebar title="Complejos"  exact component={() => <Complejos />} path={Routes.COMPLEJOS} isPrivate={true} breadcrumbs={Breadcrumbs.APP_COMPLEJOS}/>           
-              <RouteWithoutSidebar title="Registrar Nuevo Complejo" exact component={() => <RegistrarComplejo />} path={Routes.REGISTRAR_COMPLEJO} isPrivate={true} />           
-              <Route path="*" exact component={() => <Landing />} /> 
-             </Switch>
+              <RouteWithSidebar title="Usuarios" component={() => <Users />} path={Routes.USUARIOS} isPrivate={true} breadcrumbs={Breadcrumbs.ADMIN_USUARIOS} />
+              <RouteWithSidebar title="Administrar Complejos" component={() => <AdminComplejos />} path={Routes.ADMIN_COMPLEJOS} isPrivate={true} breadcrumbs={Breadcrumbs.ADMIN_COMPLEJOS} />
+              <RouteWithSidebar title="Modificar Datos del Complejo" component={() => <EditComplejos />} path={Routes.MODIFICAR_COMPLEJO} isPrivate={true} breadcrumbs={Breadcrumbs.APP_MODIFICAR_COMPLEJO} />
+              <RouteWithoutSidebar title="Complejos" exact component={() => <Complejos />} path={Routes.COMPLEJOS} isPrivate={true} breadcrumbs={Breadcrumbs.APP_COMPLEJOS} />
+              <RouteWithoutSidebar title="Registrar Nuevo Complejo" exact component={() => <RegistrarComplejo />} path={Routes.REGISTRAR_COMPLEJO} isPrivate={true} breadcrumbs={Breadcrumbs.APP_REGISTRAR_COMPLEJO} />
+              <Route path="*" exact component={() => <Landing />} />
+            </Switch>
           </Router>
         </AbilityContext.Provider>
       </AuthProvider>

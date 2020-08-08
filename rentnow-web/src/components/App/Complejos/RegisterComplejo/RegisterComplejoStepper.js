@@ -8,6 +8,8 @@ import {
   Container,
 } from "@material-ui/core";
 import { Formik, Form } from "formik";
+
+
 const RegisterComplejoStepper = ({ children, ...props }) => {
   const childrenArray = React.Children.toArray(children);
   const [activeStep, setActiveStep] = useState(0);
@@ -16,8 +18,23 @@ const RegisterComplejoStepper = ({ children, ...props }) => {
   const isLastStep = () => {
     return activeStep === childrenArray.length - 1;
   };
+
+  const isFotosStep = () => {
+    return activeStep === 1; // 1 : fotos
+  };
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleFormSubmit = async (values) => {
+    if (isLastStep()) {
+      await props.onSubmit(values);
+      return;
+    }
+    if (isFotosStep()) {
+      return;
+    }
+    setActiveStep((step) => step + 1);
   };
 
   const BackNextBtns = () => {
@@ -65,14 +82,7 @@ const RegisterComplejoStepper = ({ children, ...props }) => {
 
       <Formik
         {...props}
-        onSubmit={async (values) => {
-          if (isLastStep()) {
-            console.log("IS LAST");
-            await props.onSubmit(values);
-          } else {
-            setActiveStep((step) => step + 1);
-          }
-        }}
+        onSubmit={handleFormSubmit}
         validationSchema={currentChild.props.validationSchema}
       >
         {({ errors, values, touched }) => (
@@ -84,8 +94,11 @@ const RegisterComplejoStepper = ({ children, ...props }) => {
               flexDirection: "column",
             }}
           >
-            {React.cloneElement(currentChild, { errors, touched })}
-            <BackNextBtns />
+            {React.cloneElement(currentChild, {
+              errors,
+              touched
+            })}
+            {isFotosStep() && values.fotos.length === 0 ? null : <BackNextBtns />}
           </Form>
         )}
       </Formik>

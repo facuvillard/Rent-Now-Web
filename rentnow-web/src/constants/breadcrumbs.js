@@ -9,7 +9,15 @@ export const APP_REGISTRAR_COMPLEJO = [
     ...APP_COMPLEJOS,
     {
         nombre: "Nuevo Complejo",
-        ruta: "/app/complejos/registrar"
+        ruta: Routes.REGISTRAR_COMPLEJO
+    }
+]
+
+export const APP_MODIFICAR_COMPLEJO = [
+    ...APP_COMPLEJOS,
+    {
+        nombre: "Modificar Complejo",
+        ruta: Routes.MODIFICAR_COMPLEJO
     }
 ]
 
@@ -19,4 +27,13 @@ export const ADMIN_USUARIOS = [
         ruta: Routes.USUARIOS
     }
 ]
+
+export const ADMIN_COMPLEJOS = [
+    {
+        nombre: "Administrar Complejos",
+        ruta: Routes.ADMIN_COMPLEJOS
+    }
+]
+
+
 
