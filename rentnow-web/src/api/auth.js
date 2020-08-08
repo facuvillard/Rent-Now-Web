@@ -30,7 +30,7 @@ export async function signIn(email, password) {
         return {status: "OK", message:"Logeo correcto"}
 
     } catch (err) {
-        return {status: "OK", message:"Logeo incorrecto"}
+        return {status: "ERROR", message:"Logeo incorrecto"}
     }
 
 
