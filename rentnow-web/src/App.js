@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "./components/Login/Login";
 import * as Routes from "./constants/routes";
 import AuthProvider from "./Auth/Auth";
-import Complejos from "./components/App/Complejos/Complejos";
+import Complejos from "./components/App/Complejos/Complejos/Complejos";
 import RegistrarComplejo from "./components/App/Complejos/RegisterComplejo/RegisterComplejo";
 import Users from "./components/Admin/Users/Users";
 import Landing from "./components/Landing/Landing"
@@ -14,7 +14,8 @@ import { AbilityContext } from "./Auth/can";
 import ability from "./Auth/ability"
 import * as Breadcrumbs from "./constants/breadcrumbs"
 import AdminComplejos from './components/Admin/Complejos/Complejos'
-import EditComplejos from "components/App/Complejos/EditComplejos";
+import EditComplejos from "components/App/Complejos/EditComplejo/EditComplejos";
+import HomeComplejo from "components/App/Complejos/Complejos/HomeComplejo/HomeComplejo"
 
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
               />
               <RouteWithSidebar title="Usuarios" component={() => <Users />} path={Routes.USUARIOS} isPrivate={true} breadcrumbs={Breadcrumbs.ADMIN_USUARIOS} />
               <RouteWithSidebar title="Administrar Complejos" component={() => <AdminComplejos />} path={Routes.ADMIN_COMPLEJOS} isPrivate={true} breadcrumbs={Breadcrumbs.ADMIN_COMPLEJOS} />
+              <RouteWithSidebar title="Complejo" component={() => <HomeComplejo />} path={Routes.COMPLEJO} isPrivate={true} breadcrumbs={Breadcrumbs.APP_COMPLEJO} />
               <RouteWithSidebar title="Modificar Datos del Complejo" component={() => <EditComplejos />} path={Routes.MODIFICAR_COMPLEJO} isPrivate={true} breadcrumbs={Breadcrumbs.APP_MODIFICAR_COMPLEJO} />
               <RouteWithoutSidebar title="Complejos" exact component={() => <Complejos />} path={Routes.COMPLEJOS} isPrivate={true} breadcrumbs={Breadcrumbs.APP_COMPLEJOS} />
               <RouteWithoutSidebar title="Registrar Nuevo Complejo" exact component={() => <RegistrarComplejo />} path={Routes.REGISTRAR_COMPLEJO} isPrivate={true} breadcrumbs={Breadcrumbs.APP_REGISTRAR_COMPLEJO} />
