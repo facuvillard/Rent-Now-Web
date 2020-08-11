@@ -8,8 +8,10 @@ import {
   Avatar,
   Grid,
   Button,
+  Card,
+  CardActionArea,
+  CardMedia,
 } from "@material-ui/core";
-
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import MailOutlineOutlinedIcon from "@material-ui/icons/MailOutlineOutlined";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
@@ -22,21 +24,33 @@ import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
 import PhotoIcon from "@material-ui/icons/Photo";
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-      width: "100%",
-      maxWidth: 360,
-      backgroundColor: theme.palette.background.paper,
-      alignContent: "justify",
-    },
-  }));
+  root: {
+    width: "100%",
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
+    alignContent: "justify",
+  },
+}));
 
 export default function ViewComplejo(props) {
   const { complejo, setOpenDrawer, setDrawerContent } = props;
-  const classes = useStyles()
+  const classes = useStyles();
   const verFotosHandler = () => {
-    setDrawerContent(complejo.fotos[0])
-    setOpenDrawer(true)
-  }
+    setDrawerContent(
+      <Grid container spacing={1}>
+        {complejo.fotos.map((foto) => (
+          <Grid item xs={12} sm={6} key={foto}>
+            <Card>
+              <CardActionArea href={foto} target="_blank">
+                <CardMedia component="img" height={200} image={foto} />
+              </CardActionArea>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    );
+    setOpenDrawer(true);
+  };
   return (
     <Grid container spacing={2}>
       <Grid item xs={6}>
