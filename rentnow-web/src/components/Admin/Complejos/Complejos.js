@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MaterialTable from "material-table";
-import { getComplejosApi } from "./../../../api/complejos";
+import { getAllComplejosApi } from "./../../../api/complejos";
 import AlertCustom from "../../utils/AlertCustom/AlertCustom";
 import Dialog from "../../utils/Dialog/Dialog";
 import Switch from "@material-ui/core/Switch";
@@ -8,6 +8,7 @@ import CheckIcon from "@material-ui/icons/Check";
 import CloseIcon from "@material-ui/icons/Close";
 import EnableComplejo from "./EnableComplejo";
 import ViewComplejo from "./ViewComplejo";
+import Drawer from "@material-ui/core/Drawer"
 
 const AdminComplejos = () => {
   return <ListComplejos />;
@@ -24,10 +25,12 @@ function ListComplejos() {
   const [dialogTitle, setDialogTitle] = useState("");
   const [dialogContent, setDialogContent] = useState(null);
   const [dialogSize, setDialogSize] = useState("sm");
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [drawerContent, setDrawerContent] = useState("");
 
   useEffect(() => {
     setIsLoading(true);
-    getComplejosApi().then((response) => {
+    getAllComplejosApi().then((response) => {
       if (response.status === "OK") {
         setComplejos(response.data);
         setIsLoading(false);
@@ -71,7 +74,7 @@ function ListComplejos() {
 
   const viewComplejoDialog = (complejo) => {
     setDialogTitle("Complejo: " + complejo.nombre);
-    setDialogContent(<ViewComplejo complejo={complejo} />);
+    setDialogContent(<ViewComplejo complejo={complejo} setOpenDrawer={setOpenDrawer} setDrawerContent={setDrawerContent} />);
     setDialogSize("sm");
     setOpen(true);
   };
@@ -141,6 +144,7 @@ function ListComplejos() {
         open={alertCustomOpen}
         setOpen={setAlertCustomOpen}
       />
+      <Drawer open={openDrawer} anchor="bottom" onClose={() => setOpenDrawer(false)}>{drawerContent}</Drawer>
     </>
   );
 }

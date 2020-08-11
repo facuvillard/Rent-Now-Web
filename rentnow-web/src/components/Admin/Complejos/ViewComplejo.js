@@ -31,8 +31,12 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 export default function ViewComplejo(props) {
-  const { complejo } = props;
+  const { complejo, setOpenDrawer, setDrawerContent } = props;
   const classes = useStyles()
+  const verFotosHandler = () => {
+    setDrawerContent(complejo.fotos[0])
+    setOpenDrawer(true)
+  }
   return (
     <Grid container spacing={2}>
       <Grid item xs={6}>
@@ -135,6 +139,7 @@ export default function ViewComplejo(props) {
                   color="secondary"
                   size="small"
                   startIcon={<PhotoIcon />}
+                  onClick={verFotosHandler}
                 >
                   Ver fotos
                 </Button>
