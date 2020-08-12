@@ -2,7 +2,7 @@ import firebase from "firebase";
 
 export async function getComplejosByUserApi(user) {
   try {
-    const userObject = { id: user.uid, nombre: user.displayName  };
+    const userObject = { id: user.uid, nombre: user.displayName };
     const result = await firebase
       .firestore()
       .collection("complejos")
@@ -53,7 +53,7 @@ export async function getComplejosApi() {
 
 export async function createComplejoApi(docRef, complejo) {
   try {
-    await docRef.set({...complejo, habilitado: false})
+    await docRef.set({ ...complejo, habilitado: false })
     return { status: "OK", message: "Se registró el complejo con exito" };
   } catch (err) {
     return {
@@ -67,9 +67,44 @@ export async function createComplejoApi(docRef, complejo) {
 export async function habilitarComplejoApi(idComplejo, value) {
 
   try {
-    await firebase.firestore().collection("complejos").doc(idComplejo).update({habilitado: !value})
-    return {status: "OK", message: "Complejo habilitado/deshabilitado con exito"}
+    await firebase.firestore().collection("complejos").doc(idComplejo).update({ habilitado: !value })
+    return { status: "OK", message: "Complejo habilitado/deshabilitado con exito" }
   } catch (err) {
-    return {status: "ERROR", message: "Error al habilitar/deshabilitar el complejo"}
+    return { status: "ERROR", message: "Error al habilitar/deshabilitar el complejo" }
   }
 }
+
+export async function updateComplejoApi(complejo, idComplejo) {
+  try {
+    await firebase.firestore().collection("complejos").doc(idComplejo).update(complejo)
+    return { status: "OK", message: "Los datos del complejo han sido actualizados con exito" }
+  } catch (err) {
+    return { status: "ERROR", message: "Error al actualizar los datos del complejo" }
+  }
+}
+
+export async function getComplejosById(id) {
+  try {
+    const result = await firebase
+      .firestore()
+      .collection("complejos")
+      .doc(id)
+      .get();
+
+    const complejo = { id: result.id, ...result.data() };
+    return {
+      status: "OK",
+      message: "Se consultaron los complejos con exito",
+      data: complejo,
+    };
+  } catch (err) {
+    console.log(err)
+    return {
+      status: "ERROR",
+      message: "Se produjo un error al consultar los complejos",
+      error: err,
+    };
+  }
+}
+
+

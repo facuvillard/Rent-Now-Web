@@ -33,12 +33,12 @@ function App() {
                   <Landing />
                 )}
               />
-              <RouteWithSidebar title="Usuarios" component={() => <Users />} path={Routes.USUARIOS} isPrivate={true} breadcrumbs={Breadcrumbs.ADMIN_USUARIOS} />
-              <RouteWithSidebar title="Administrar Complejos" component={() => <AdminComplejos />} path={Routes.ADMIN_COMPLEJOS} isPrivate={true} breadcrumbs={Breadcrumbs.ADMIN_COMPLEJOS} />
-              <RouteWithSidebar title="Complejo" component={() => <HomeComplejo />} path={Routes.COMPLEJO} isPrivate={true} breadcrumbs={Breadcrumbs.APP_COMPLEJO} />
-              <RouteWithSidebar title="Modificar Datos del Complejo" component={() => <EditComplejos />} path={Routes.MODIFICAR_COMPLEJO} isPrivate={true} breadcrumbs={Breadcrumbs.APP_MODIFICAR_COMPLEJO} />
+              <RouteWithSidebar title="Usuarios" exact component={() => <Users />} path={Routes.USUARIOS} isPrivate={true} breadcrumbs={Breadcrumbs.ADMIN_USUARIOS} />
+              <RouteWithSidebar title="Administrar Complejos" exact component={() => <AdminComplejos />} path={Routes.ADMIN_COMPLEJOS} isPrivate={true} breadcrumbs={Breadcrumbs.ADMIN_COMPLEJOS} />
               <RouteWithoutSidebar title="Complejos" exact component={() => <Complejos />} path={Routes.COMPLEJOS} isPrivate={true} breadcrumbs={Breadcrumbs.APP_COMPLEJOS} />
               <RouteWithoutSidebar title="Registrar Nuevo Complejo" exact component={() => <RegistrarComplejo />} path={Routes.REGISTRAR_COMPLEJO} isPrivate={true} breadcrumbs={Breadcrumbs.APP_REGISTRAR_COMPLEJO} />
+              <RouteWithSidebar title="Complejo" exact component={() => <HomeComplejo />} path={Routes.COMPLEJO} isPrivate={true} breadcrumbs={Breadcrumbs.APP_COMPLEJO} />
+              <RouteWithSidebar title="Modificar Datos del Complejo" exact component={() => <EditComplejos />} path={Routes.MODIFICAR_COMPLEJO} isPrivate={true} breadcrumbs={Breadcrumbs.APP_MODIFICAR_COMPLEJO} />
               <Route path="*" exact component={() => <Landing />} />
             </Switch>
           </Router>
