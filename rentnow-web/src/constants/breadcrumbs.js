@@ -5,6 +5,14 @@ export const APP_COMPLEJOS = [{
     ruta: Routes.COMPLEJOS
 }]
 
+export const APP_COMPLEJO = [
+    ...APP_COMPLEJOS,
+    {
+        nombre: "Home",
+        ruta: Routes.COMPLEJO
+    }
+]
+
 export const APP_REGISTRAR_COMPLEJO = [
     ...APP_COMPLEJOS,
     {
@@ -14,7 +22,7 @@ export const APP_REGISTRAR_COMPLEJO = [
 ]
 
 export const APP_MODIFICAR_COMPLEJO = [
-    ...APP_COMPLEJOS,
+    ...APP_COMPLEJO,
     {
         nombre: "Modificar Complejo",
         ruta: Routes.MODIFICAR_COMPLEJO

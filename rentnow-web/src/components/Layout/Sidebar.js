@@ -10,12 +10,14 @@ import {
 } from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/Home";
 import GroupIcon from "@material-ui/icons/Group";
+import Settings from "@material-ui/icons/Settings"
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 import { Can } from "../../Auth/can";
 import logoSinLetraAmarillo from "../../assets/img/logos/logo-amarillo-sin-letra.png";
 import logoConLetraAmarillo from "../../assets/img/logos/logo-horizontal-blanco.png";
 import * as Routes from "../../constants/routes";
+import { useParams } from "react-router-dom"
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -78,6 +80,11 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.grey[50],
     textDecoration: "none",
   },
+  listContainer: {
+    display: "flex",
+    flexDirection: "column",
+    height: "100%",
+  }
 }));
 
 const SideBarButton = (props) => {
@@ -96,6 +103,7 @@ const SideBarButton = (props) => {
 
 const Sidebar = (props) => {
   const classes = useStyles();
+  const { id } = useParams()
 
   return (
     <Drawer
@@ -120,22 +128,33 @@ const Sidebar = (props) => {
         })}
       />
       <Divider />
-      <List>
-        <SideBarButton
-          permiso="read"
-          elemento="usuario"
-          ruta={Routes.ADMIN_COMPLEJOS}
-          icon={<HomeIcon className={classes.link} />}
-          text="Complejos"
-        />
-        <SideBarButton
-          permiso="read"
-          elemento="usuario"
-          ruta={Routes.USUARIOS}
-          icon={<GroupIcon className={classes.link} />}
-          text="Usuarios"
-        />
-      </List>
+      <div className={classes.listContainer}>
+        <List style={{ flexGrow: "1" }}>
+          <SideBarButton
+            permiso="read"
+            elemento="usuario"
+            ruta={Routes.ADMIN_COMPLEJOS}
+            icon={<HomeIcon className={classes.link} />}
+            text="Complejos"
+          />
+          <SideBarButton
+            permiso="read"
+            elemento="usuario"
+            ruta={Routes.USUARIOS}
+            icon={<GroupIcon className={classes.link} />}
+            text="Usuarios"
+          />
+        </List>
+        <List>
+          <SideBarButton
+            permiso="update"
+            elemento="complejo"
+            ruta={`/app/complejos/${id}/modificar`}
+            icon={<Settings className={classes.link} />}
+            text="Configuracion"
+          />
+        </ List>
+      </ div>
     </Drawer>
   );
 };
