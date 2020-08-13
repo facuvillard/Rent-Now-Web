@@ -7,17 +7,17 @@ import AuthProvider from "./Auth/Auth";
 import Complejos from "./components/App/Complejos/Complejos/Complejos";
 import RegistrarComplejo from "./components/App/Complejos/RegisterComplejo/RegisterComplejo";
 import Users from "./components/Admin/Users/Users";
-import Landing from "./components/Landing/Landing"
-import RouteWithSidebar from './components/Layout/WithSidebar/RouteWithSidebar'
-import RouteWithoutSidebar from './components/Layout/WithoutSidebar/RouteWithoutSidebar'
+import Landing from "./components/Landing/Landing";
+import RouteWithSidebar from "./components/Layout/WithSidebar/RouteWithSidebar";
+import RouteWithoutSidebar from "./components/Layout/WithoutSidebar/RouteWithoutSidebar";
 import { AbilityContext } from "./Auth/can";
-import ability from "./Auth/ability"
-import * as Breadcrumbs from "./constants/breadcrumbs"
-import AdminComplejos from './components/Admin/Complejos/Complejos'
+import ability from "./Auth/ability";
+import * as Breadcrumbs from "./constants/breadcrumbs";
+import AdminComplejos from "./components/Admin/Complejos/Complejos";
 import EditComplejos from "components/App/Complejos/EditComplejo/EditComplejos";
-import HomeComplejo from "components/App/Complejos/Complejos/HomeComplejo/HomeComplejo"
-
-
+import HomeComplejo from "components/App/Complejos/Complejos/HomeComplejo/HomeComplejo";
+import { Can } from "Auth/can";
+import CheckAccess from "Auth/CheckAccess";
 function App() {
   return (
     <div className="App">
@@ -29,16 +29,71 @@ function App() {
               <Route
                 path={Routes.LANDING}
                 exact
-                component={() => (
-                  <Landing />
-                )}
+                component={() => <Landing />}
               />
-              <RouteWithSidebar title="Usuarios" component={() => <Users />} path={Routes.USUARIOS} isPrivate={true} breadcrumbs={Breadcrumbs.ADMIN_USUARIOS} />
-              <RouteWithSidebar title="Administrar Complejos" component={() => <AdminComplejos />} path={Routes.ADMIN_COMPLEJOS} isPrivate={true} breadcrumbs={Breadcrumbs.ADMIN_COMPLEJOS} />
-              <RouteWithSidebar title="Complejo" component={() => <HomeComplejo />} path={Routes.COMPLEJO} isPrivate={true} breadcrumbs={Breadcrumbs.APP_COMPLEJO} />
-              <RouteWithSidebar title="Modificar Datos del Complejo" component={() => <EditComplejos />} path={Routes.MODIFICAR_COMPLEJO} isPrivate={true} breadcrumbs={Breadcrumbs.APP_MODIFICAR_COMPLEJO} />
-              <RouteWithoutSidebar title="Complejos" exact component={() => <Complejos />} path={Routes.COMPLEJOS} isPrivate={true} breadcrumbs={Breadcrumbs.APP_COMPLEJOS} />
-              <RouteWithoutSidebar title="Registrar Nuevo Complejo" exact component={() => <RegistrarComplejo />} path={Routes.REGISTRAR_COMPLEJO} isPrivate={true} breadcrumbs={Breadcrumbs.APP_REGISTRAR_COMPLEJO} />
+              <RouteWithSidebar
+                title="Usuarios"
+                component={() => <Users />}
+                path={Routes.USUARIOS}
+                isPrivate={true}
+                permiso="admin"
+                elemento="usuario"
+                breadcrumbs={Breadcrumbs.ADMIN_USUARIOS}
+              />
+
+              <RouteWithSidebar
+                title="Administrar Complejos"
+                component={() => <AdminComplejos />}
+                path={Routes.ADMIN_COMPLEJOS}
+                isPrivate={true}
+                permiso="admin"
+                elemento="complejo"
+                breadcrumbs={Breadcrumbs.ADMIN_COMPLEJOS}
+              />
+
+              <RouteWithSidebar
+                title="Complejo"
+                component={() => <HomeComplejo />}
+                exact
+                path={Routes.COMPLEJO}
+                isPrivate={true}
+                permiso="read"
+                elemento="complejo"
+                breadcrumbs={Breadcrumbs.APP_COMPLEJO}
+              />
+
+              <RouteWithSidebar
+                title="Modificar Datos del Complejo"
+                exact
+                component={() => <EditComplejos />}
+                path={Routes.MODIFICAR_COMPLEJO}
+                isPrivate={true}
+                permiso="update"
+                elemento="complejo"
+                breadcrumbs={Breadcrumbs.APP_MODIFICAR_COMPLEJO}
+              />
+
+              <RouteWithoutSidebar
+                title="Complejos"
+                exact
+                component={() => <Complejos />}
+                path={Routes.COMPLEJOS}
+                isPrivate={true}
+                permiso="read"
+                elemento="complejo"
+                breadcrumbs={Breadcrumbs.APP_COMPLEJOS}
+              />
+
+              <RouteWithoutSidebar
+                title="Registrar Nuevo Complejo"
+                exact
+                component={() => <RegistrarComplejo />}
+                path={Routes.REGISTRAR_COMPLEJO}
+                isPrivate={true}
+                permiso="create"
+                elemento="complejo"
+                breadcrumbs={Breadcrumbs.APP_REGISTRAR_COMPLEJO}
+              />
               <Route path="*" exact component={() => <Landing />} />
             </Switch>
           </Router>

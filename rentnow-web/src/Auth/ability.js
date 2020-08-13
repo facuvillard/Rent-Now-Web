@@ -10,12 +10,17 @@ const definePermissionsfor = user => {
     
     switch (user) {
         case ROLES.ADMIN_APP: {
-            can(PERMISSIONS.READ, ELEMENTS.USUARIO);
+            can(PERMISSIONS.ADMIN, ELEMENTS.USUARIO);
+            can(PERMISSIONS.ADMIN, ELEMENTS.COMPLEJO);
             break;
         }
         case ROLES.ADMIN_COMPLEJO: {
-            can(PERMISSIONS.MANAGE, [ELEMENTS.COMPLEJO, ELEMENTS.RESERVA]);
+            can([PERMISSIONS.CREATE, PERMISSIONS.UPDATE, PERMISSIONS.DELETE, PERMISSIONS.READ], [ELEMENTS.COMPLEJO, ELEMENTS.RESERVA]);
             break;
+        }
+        case ROLES.ENCARGADO_COMPLEJO: {
+            can(PERMISSIONS.READ, ELEMENTS.COMPLEJO)
+            break
         }
         default: {
             break;
