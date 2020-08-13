@@ -8,6 +8,14 @@ import CheckIcon from "@material-ui/icons/Check";
 import CloseIcon from "@material-ui/icons/Close";
 import EnableComplejo from "./EnableComplejo";
 import ViewComplejo from "./ViewComplejo";
+import Drawer from "@material-ui/core/Drawer";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  drawer: {
+    maxHeight: "50%",
+  },
+}));
 
 const AdminComplejos = () => {
   return <ListComplejos />;
@@ -24,6 +32,9 @@ function ListComplejos() {
   const [dialogTitle, setDialogTitle] = useState("");
   const [dialogContent, setDialogContent] = useState(null);
   const [dialogSize, setDialogSize] = useState("sm");
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [drawerContent, setDrawerContent] = useState("");
+  const classes = useStyles();
 
   useEffect(() => {
     setIsLoading(true);
@@ -32,6 +43,7 @@ function ListComplejos() {
         setComplejos(response.data);
         setIsLoading(false);
         setReload(false);
+        console.log(response.data)
       } else {
         setIsLoading(false);
       }
@@ -54,24 +66,17 @@ function ListComplejos() {
       />
     );
     setOpen(true);
-
-    /*    const result = await habilitarComplejoApi(complejo.id, complejo.habilitado);
-   
-       if (result.status === "OK") {
-         setReload(true);
-         setAlertCustomText(result.message)
-         setAlertCustomType("success")
-         setAlertCustomOpen(true)
-       } else {
-         setAlertCustomText(result.message)
-         setAlertCustomType("error")
-         setAlertCustomOpen(true)
-       } */
   };
 
   const viewComplejoDialog = (complejo) => {
     setDialogTitle("Complejo: " + complejo.nombre);
-    setDialogContent(<ViewComplejo complejo={complejo} />);
+    setDialogContent(
+      <ViewComplejo
+        complejo={complejo}
+        setOpenDrawer={setOpenDrawer}
+        setDrawerContent={setDrawerContent}
+      />
+    );
     setDialogSize("sm");
     setOpen(true);
   };
@@ -85,6 +90,11 @@ function ListComplejos() {
           { title: "Nombre", field: "nombre" },
           { title: "Dueño", field: "usuarios[0].nombre" },
           { title: "Fecha Alta", field: "fechaAlta", type: "datetime" },
+          {
+            title: "Fecha habilitación",
+            field: "fechaHabilitado",
+            type: "datetime",
+          },
           {
             title: "Habilitado",
             field: "habilitado",
@@ -141,6 +151,14 @@ function ListComplejos() {
         open={alertCustomOpen}
         setOpen={setAlertCustomOpen}
       />
+      <Drawer
+        classes={{ paperAnchorBottom: classes.drawer }}
+        open={openDrawer}
+        anchor="bottom"
+        onClose={() => setOpenDrawer(false)}
+      >
+        {drawerContent}
+      </Drawer>
     </>
   );
 }
