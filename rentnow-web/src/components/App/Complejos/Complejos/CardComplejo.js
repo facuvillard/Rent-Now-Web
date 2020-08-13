@@ -11,7 +11,6 @@ import imgPlaceHolder from "assets/img/image-placeholder.png";
 import HttpsOutlined from "@material-ui/icons/HttpsOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import LinkCustom from 'components/utils/LinkCustom/LinkCustom'
-import * as Routes from 'constants/routes'
 
 const useStyles = makeStyles((theme) => ({
     media: {
