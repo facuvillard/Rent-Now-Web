@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MaterialTable from "material-table";
-import { getAllComplejosApi } from "./../../../api/complejos";
+import { getComplejosApi } from "./../../../api/complejos";
 import AlertCustom from "../../utils/AlertCustom/AlertCustom";
 import Dialog from "../../utils/Dialog/Dialog";
 import Switch from "@material-ui/core/Switch";
@@ -38,11 +38,12 @@ function ListComplejos() {
 
   useEffect(() => {
     setIsLoading(true);
-    getAllComplejosApi().then((response) => {
+    getComplejosApi().then((response) => {
       if (response.status === "OK") {
         setComplejos(response.data);
         setIsLoading(false);
         setReload(false);
+        console.log(response.data)
       } else {
         setIsLoading(false);
       }
@@ -89,6 +90,11 @@ function ListComplejos() {
           { title: "Nombre", field: "nombre" },
           { title: "Dueño", field: "usuarios[0].nombre" },
           { title: "Fecha Alta", field: "fechaAlta", type: "datetime" },
+          {
+            title: "Fecha habilitación",
+            field: "fechaHabilitado",
+            type: "datetime",
+          },
           {
             title: "Habilitado",
             field: "habilitado",
