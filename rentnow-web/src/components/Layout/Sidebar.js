@@ -17,7 +17,6 @@ import { Can } from "Auth/can";
 import logoSinLetraAmarillo from "../../assets/img/logos/logo-amarillo-sin-letra.png";
 import logoConLetraAmarillo from "../../assets/img/logos/logo-horizontal-blanco.png";
 import * as Routes from "../../constants/routes";
-import { useParams } from "react-router-dom";
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -130,14 +129,14 @@ const Sidebar = (props) => {
       <div className={classes.listContainer}>
         <List style={{ flexGrow: "1" }}>
           <SideBarButton
-            permiso="read"
-            elemento="usuario"
+            permiso="admin"
+            elemento="complejo"
             ruta={Routes.ADMIN_COMPLEJOS}
             icon={<HomeIcon className={classes.link} />}
             text="Complejos"
           />
           <SideBarButton
-            permiso="read"
+            permiso="admin"
             elemento="usuario"
             ruta={Routes.USUARIOS}
             icon={<GroupIcon className={classes.link} />}

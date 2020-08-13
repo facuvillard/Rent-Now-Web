@@ -16,8 +16,6 @@ import * as Breadcrumbs from "./constants/breadcrumbs";
 import AdminComplejos from "./components/Admin/Complejos/Complejos";
 import EditComplejos from "components/App/Complejos/EditComplejo/EditComplejos";
 import HomeComplejo from "components/App/Complejos/Complejos/HomeComplejo/HomeComplejo";
-import { Can } from "Auth/can";
-import CheckAccess from "Auth/CheckAccess";
 function App() {
   return (
     <div className="App">

@@ -4,7 +4,6 @@ import SentimentVeryDissatisfiedIcon from "@material-ui/icons/SentimentVeryDissa
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { withRouter } from "react-router-dom";
 const PermissionDenied = (props) => {
-  console.log(props.history);
   return (
     <Paper style={{ margin: "auto" }}>
       <Grid
