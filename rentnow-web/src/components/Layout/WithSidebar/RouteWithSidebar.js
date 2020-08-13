@@ -12,7 +12,7 @@ const RouteWithSidebar = ({
   const RouteToRender = () => {
     if (isPrivate) {
       return (
-        <LayoutWithSidebar>
+        <LayoutWithSidebar {...rest}>
           <PrivateRoute
             title={title}
             component={(props) => <Component {...props} />}
