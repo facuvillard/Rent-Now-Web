@@ -22,6 +22,8 @@ import FacebookIcon from "@material-ui/icons/Facebook";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
 import PhotoIcon from "@material-ui/icons/Photo";
+import { GOOGLE_MAP_KEY } from "../../../constants/apiKeys";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,6 +50,27 @@ export default function ViewComplejo(props) {
           </Grid>
         ))}
       </Grid>
+    );
+    setOpenDrawer(true);
+  };
+
+  const verUbicacionHandler = () => {
+    // TO DO: Setear DrawerOpen y drawerContent.
+    const coordenadas = { lat: -3.745, lng: -38.523 };
+    const style = {
+      width: "100%",
+      height: "200000px",
+    };
+    setDrawerContent(
+      <LoadScript googleMapsApiKey={GOOGLE_MAP_KEY}>
+        <GoogleMap
+          mapContainerStyle={style}
+          center={coordenadas}
+          zoom={20}
+        >
+          <Marker key="1" position={coordenadas}/>
+        </GoogleMap>
+      </LoadScript>
     );
     setOpenDrawer(true);
   };
@@ -99,6 +122,7 @@ export default function ViewComplejo(props) {
                   color="secondary"
                   size="small"
                   startIcon={<MapIcon />}
+                  onClick={verUbicacionHandler}
                 >
                   Ver mapa
                 </Button>
