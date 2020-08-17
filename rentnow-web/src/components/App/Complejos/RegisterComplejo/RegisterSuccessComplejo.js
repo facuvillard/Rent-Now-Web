@@ -86,7 +86,7 @@ export const RegisterSuccessComplejo = ({ complejo }) => {
         text="Recuerda que el complejo permanecerá en estado Deshabilitado (por lo que no podrá ser utilizado) hasta que el equipo de RentNow valide y apruebe la solicitud de registro."
         open={alertCustomOpen}
         setOpen={setAlertCustomOpen}
-        duration={0}
+        infinite={true}
         vertical="bottom"
       />
     </>
