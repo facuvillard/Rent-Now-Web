@@ -14,8 +14,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     [theme.breakpoints.down("md")]: { height: "80vh" },
     height: "65vh",
-    [theme.breakpoints.down("md")]: { width: "100%" },
-    width: "50%",
+    width: "100%",
   },
   title: {
     marginBottom: theme.spacing(3),
