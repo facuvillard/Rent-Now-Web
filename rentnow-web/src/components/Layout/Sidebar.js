@@ -148,7 +148,7 @@ const Sidebar = (props) => {
             <SideBarButton
               permiso="update"
               elemento="complejo"
-              ruta={`/app/complejos/${props.params.id}/modificar`}
+              ruta={`/app/complejos/${props.params.idComplejo}/modificar`}
               icon={<Settings className={classes.link} />}
               text="Configuracion"
             />

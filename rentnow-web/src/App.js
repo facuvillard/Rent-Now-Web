@@ -49,6 +49,28 @@ function App() {
                 breadcrumbs={Breadcrumbs.ADMIN_COMPLEJOS}
               />
 
+              <RouteWithoutSidebar
+                title="Registrar Nuevo Complejo"
+                exact
+                component={() => <RegistrarComplejo />}
+                path={Routes.REGISTRAR_COMPLEJO}
+                isPrivate={true}
+                permiso="create"
+                elemento="complejo"
+                breadcrumbs={Breadcrumbs.APP_REGISTRAR_COMPLEJO}
+              />
+              
+              <RouteWithoutSidebar
+                title="Complejos"
+                exact
+                component={() => <Complejos />}
+                path={Routes.COMPLEJOS}
+                isPrivate={true}
+                permiso="read"
+                elemento="complejo"
+                breadcrumbs={Breadcrumbs.APP_COMPLEJOS}
+              />
+
               <RouteWithSidebar
                 title="Complejo"
                 component={() => <HomeComplejo />}
@@ -71,27 +93,6 @@ function App() {
                 breadcrumbs={Breadcrumbs.APP_MODIFICAR_COMPLEJO}
               />
 
-              <RouteWithoutSidebar
-                title="Complejos"
-                exact
-                component={() => <Complejos />}
-                path={Routes.COMPLEJOS}
-                isPrivate={true}
-                permiso="read"
-                elemento="complejo"
-                breadcrumbs={Breadcrumbs.APP_COMPLEJOS}
-              />
-
-              <RouteWithoutSidebar
-                title="Registrar Nuevo Complejo"
-                exact
-                component={() => <RegistrarComplejo />}
-                path={Routes.REGISTRAR_COMPLEJO}
-                isPrivate={true}
-                permiso="create"
-                elemento="complejo"
-                breadcrumbs={Breadcrumbs.APP_REGISTRAR_COMPLEJO}
-              />
               <Route path="*" exact component={() => <Landing />} />
             </Switch>
           </Router>

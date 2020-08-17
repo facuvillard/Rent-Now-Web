@@ -14,8 +14,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     [theme.breakpoints.down("md")]: { height: "80vh" },
     height: "65vh",
-    [theme.breakpoints.down("md")]: { width: "100%" },
-    width: "50%",
+    width: "100%",
   },
   title: {
     marginBottom: theme.spacing(3),
@@ -87,7 +86,7 @@ export const RegisterSuccessComplejo = ({ complejo }) => {
         text="Recuerda que el complejo permanecerá en estado Deshabilitado (por lo que no podrá ser utilizado) hasta que el equipo de RentNow valide y apruebe la solicitud de registro."
         open={alertCustomOpen}
         setOpen={setAlertCustomOpen}
-        duration={0}
+        infinite={true}
         vertical="bottom"
       />
     </>
