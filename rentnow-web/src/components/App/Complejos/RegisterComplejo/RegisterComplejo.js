@@ -9,6 +9,7 @@ import { createComplejoApi } from "../../../../api/complejos";
 import { RegisterSuccessComplejo } from "./RegisterSuccessComplejo";
 import AlertCustom from "components/utils/AlertCustom/AlertCustom";
 import firebase from "firebase";
+import Ubicacion from "./Steps/Ubicacion/Ubicacion";
 
 const phoneRegex = RegExp(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/);
 
@@ -79,7 +80,7 @@ const RegistrarComplejo = () => {
         >
           <RegisterComplejoStepper
             initialValues={{
-              nombre: "Sebastian",
+              nombre: "",
               email: "",
               telefono: "",
               redes: {
@@ -92,6 +93,7 @@ const RegistrarComplejo = () => {
                 calle: "Calle de prueba",
                 numero: 2134,
                 barrio: "Barrio de prueba",
+                latlng: ''
               },
             }}
             onSubmit={(values) => {
@@ -106,6 +108,9 @@ const RegistrarComplejo = () => {
             </ComplejoStep>
             <ComplejoStep label="Fotos ">
               <Fotos docRef={docRef} />
+            </ComplejoStep>
+            <ComplejoStep label="Ubicacion">
+              <Ubicacion />
             </ComplejoStep>
           </RegisterComplejoStepper>
         </Paper>
