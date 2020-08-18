@@ -56,19 +56,18 @@ export default function ViewComplejo(props) {
 
   const verUbicacionHandler = () => {
     // TO DO: Setear DrawerOpen y drawerContent.
-    const coordenadas = { lat: -3.745, lng: -38.523 };
+    const geoPoint = {
+      lat: complejo.ubicacion.latlng.latitude,
+      lng: complejo.ubicacion.latlng.longitude,
+    };
     const style = {
       width: "100%",
       height: "200000px",
     };
     setDrawerContent(
       <LoadScript googleMapsApiKey={GOOGLE_MAP_KEY}>
-        <GoogleMap
-          mapContainerStyle={style}
-          center={coordenadas}
-          zoom={20}
-        >
-          <Marker key="1" position={coordenadas}/>
+        <GoogleMap mapContainerStyle={style} center={geoPoint} zoom={18}>
+          <Marker key="1" position={geoPoint} />
         </GoogleMap>
       </LoadScript>
     );
