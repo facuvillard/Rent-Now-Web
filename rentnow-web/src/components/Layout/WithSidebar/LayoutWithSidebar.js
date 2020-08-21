@@ -46,6 +46,7 @@ const LayoutWithSidebar = (props) => {
       <Sidebar
         sideBarOpenHandler={sideBarOpenHandler}
         isSideBarOpen={isSBOpen}
+        params = {props.computedMatch ? props.computedMatch.params : {}}
       />
       <Backdrop
         className={classes.backdrop}

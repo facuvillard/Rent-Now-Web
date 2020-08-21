@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Paper } from "@material-ui/core";
+import { Paper, Grid } from "@material-ui/core";
 import RegisterComplejoStepper from "./RegisterComplejoStepper";
 import BasicData from "./Steps/BasicData/BasicData";
 import Fotos from "./Steps/Fotos/Fotos";
@@ -90,9 +90,9 @@ const RegistrarComplejo = () => {
               fotos: [],
               ubicacion: {
                 calle: "Calle de prueba",
-                numero: 2134 ,
-                barrio: "Barrio de prueba"
-              }
+                numero: 2134,
+                barrio: "Barrio de prueba",
+              },
             }}
             onSubmit={(values) => {
               registerComplejo(values);
@@ -110,7 +110,11 @@ const RegistrarComplejo = () => {
           </RegisterComplejoStepper>
         </Paper>
       ) : (
-        <RegisterSuccessComplejo complejo={complejo} />
+        <Grid container justify="center" alignItems="center">
+          <Grid item xs={8}>
+            <RegisterSuccessComplejo complejo={complejo} />
+          </Grid>
+        </Grid>
       )}
       <AlertCustom
         type={alertProps.type}

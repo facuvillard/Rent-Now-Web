@@ -8,8 +8,10 @@ import {
   Avatar,
   Grid,
   Button,
+  Card,
+  CardActionArea,
+  CardMedia,
 } from "@material-ui/core";
-
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import MailOutlineOutlinedIcon from "@material-ui/icons/MailOutlineOutlined";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
@@ -20,19 +22,58 @@ import FacebookIcon from "@material-ui/icons/Facebook";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
 import PhotoIcon from "@material-ui/icons/Photo";
+import { GOOGLE_MAP_KEY } from "../../../constants/apiKeys";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-      width: "100%",
-      maxWidth: 360,
-      backgroundColor: theme.palette.background.paper,
-      alignContent: "justify",
-    },
-  }));
+  root: {
+    width: "100%",
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
+    alignContent: "justify",
+  },
+}));
 
 export default function ViewComplejo(props) {
-  const { complejo } = props;
-  const classes = useStyles()
+  const { complejo, setOpenDrawer, setDrawerContent } = props;
+  const classes = useStyles();
+  const verFotosHandler = () => {
+    setDrawerContent(
+      <Grid container spacing={1}>
+        {complejo.fotos.map((foto) => (
+          <Grid item xs={12} sm={6} key={foto}>
+            <Card>
+              <CardActionArea href={foto} target="_blank">
+                <CardMedia component="img" height={200} image={foto} />
+              </CardActionArea>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    );
+    setOpenDrawer(true);
+  };
+
+  const verUbicacionHandler = () => {
+    // TO DO: Setear DrawerOpen y drawerContent.
+    const coordenadas = { lat: -3.745, lng: -38.523 };
+    const style = {
+      width: "100%",
+      height: "200000px",
+    };
+    setDrawerContent(
+      <LoadScript googleMapsApiKey={GOOGLE_MAP_KEY}>
+        <GoogleMap
+          mapContainerStyle={style}
+          center={coordenadas}
+          zoom={20}
+        >
+          <Marker key="1" position={coordenadas}/>
+        </GoogleMap>
+      </LoadScript>
+    );
+    setOpenDrawer(true);
+  };
   return (
     <Grid container spacing={2}>
       <Grid item xs={6}>
@@ -81,6 +122,7 @@ export default function ViewComplejo(props) {
                   color="secondary"
                   size="small"
                   startIcon={<MapIcon />}
+                  onClick={verUbicacionHandler}
                 >
                   Ver mapa
                 </Button>
@@ -135,6 +177,7 @@ export default function ViewComplejo(props) {
                   color="secondary"
                   size="small"
                   startIcon={<PhotoIcon />}
+                  onClick={verFotosHandler}
                 >
                   Ver fotos
                 </Button>

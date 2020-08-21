@@ -10,9 +10,10 @@ import {
 } from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/Home";
 import GroupIcon from "@material-ui/icons/Group";
+import Settings from "@material-ui/icons/Settings";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
-import { Can } from "../../Auth/can";
+import { Can } from "Auth/can";
 import logoSinLetraAmarillo from "../../assets/img/logos/logo-amarillo-sin-letra.png";
 import logoConLetraAmarillo from "../../assets/img/logos/logo-horizontal-blanco.png";
 import * as Routes from "../../constants/routes";
@@ -78,6 +79,11 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.grey[50],
     textDecoration: "none",
   },
+  listContainer: {
+    display: "flex",
+    flexDirection: "column",
+    height: "100%",
+  },
 }));
 
 const SideBarButton = (props) => {
@@ -120,22 +126,35 @@ const Sidebar = (props) => {
         })}
       />
       <Divider />
-      <List>
-        <SideBarButton
-          permiso="read"
-          elemento="usuario"
-          ruta={Routes.ADMIN_COMPLEJOS}
-          icon={<HomeIcon className={classes.link} />}
-          text="Complejos"
-        />
-        <SideBarButton
-          permiso="read"
-          elemento="usuario"
-          ruta={Routes.USUARIOS}
-          icon={<GroupIcon className={classes.link} />}
-          text="Usuarios"
-        />
-      </List>
+      <div className={classes.listContainer}>
+        <List style={{ flexGrow: "1" }}>
+          <SideBarButton
+            permiso="admin"
+            elemento="complejo"
+            ruta={Routes.ADMIN_COMPLEJOS}
+            icon={<HomeIcon className={classes.link} />}
+            text="Complejos"
+          />
+          <SideBarButton
+            permiso="admin"
+            elemento="usuario"
+            ruta={Routes.USUARIOS}
+            icon={<GroupIcon className={classes.link} />}
+            text="Usuarios"
+          />
+        </List>
+        <List>
+          <Can I="update" a="complejo">
+            <SideBarButton
+              permiso="update"
+              elemento="complejo"
+              ruta={`/app/complejos/${props.params.idComplejo}/modificar`}
+              icon={<Settings className={classes.link} />}
+              text="Configuracion"
+            />
+          </Can>
+        </List>
+      </div>
     </Drawer>
   );
 };
