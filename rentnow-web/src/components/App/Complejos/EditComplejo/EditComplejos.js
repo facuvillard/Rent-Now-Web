@@ -9,6 +9,7 @@ import { getComplejosById } from "../../../../api/complejos";
 import BasicData from 'components/App/Complejos/EditComplejo/Sections/BasicData'
 import LinkCustom from "components/utils/LinkCustom/LinkCustom";
 import { useParams } from "react-router-dom"
+import ImageVisualizer from "components/App/Complejos/EditComplejo/Sections/ImageVisualizer"
 
 const useStyles = makeStyles((theme) => ({
     expansionPanel: {
@@ -134,9 +135,7 @@ const EditComplejos = () => {
                             <ExpansionPanelDetails>
                                 <Grid item xs={12}>
                                     < hr className={classes.divider} />
-                                    <Typography>
-                                        Aqui van las FOTOS
-                    </Typography>
+                                    <ImageVisualizer complejo={complejo} />
                                 </Grid>
                             </ExpansionPanelDetails>
                         </ExpansionPanel>
