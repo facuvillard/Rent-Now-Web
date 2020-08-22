@@ -11,6 +11,7 @@ import {
 import HomeIcon from "@material-ui/icons/Home";
 import GroupIcon from "@material-ui/icons/Group";
 import Settings from "@material-ui/icons/Settings";
+import SportsSoccerIcon from '@material-ui/icons/SportsSoccer';
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 import { Can } from "Auth/can";
@@ -80,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
   },
   listContainer: {
-    display: "flex",
+    //display: "flex",
     flexDirection: "column",
     height: "100%",
   },
@@ -142,6 +143,17 @@ const Sidebar = (props) => {
             icon={<GroupIcon className={classes.link} />}
             text="Usuarios"
           />
+        </List>
+        <List>
+          <Can I="create" a="espacio">
+            <SideBarButton
+              permiso="create"
+              elemento="espacio"
+              ruta={`/app/complejos/${props.params.idComplejo}/registrar-espacios`}
+              icon={<SportsSoccerIcon className={classes.link} />}
+              text="Registrar Espacios"
+            />
+          </Can>
         </List>
         <List>
           <Can I="update" a="complejo">
