@@ -45,7 +45,12 @@ export const ADMIN_COMPLEJOS = [
   },
 ];
 
-export const APP_REGISTRAR_ESPACIOS = [
+export const APP_ESPACIOS = [
   ...APP_COMPLEJOS,
+  { nombre: "Espacios", ruta: Routes.ESPACIOS },
+];
+
+export const APP_REGISTRAR_ESPACIOS = [
+  ...APP_ESPACIOS,
   { nombre: "Registrar Espacios", ruta: Routes.REGISTRAR_ESPACIOS },
 ];
