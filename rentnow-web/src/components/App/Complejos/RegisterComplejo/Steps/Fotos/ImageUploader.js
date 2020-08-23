@@ -6,10 +6,19 @@ import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import firebase from "firebase";
 import { Button, Typography, CircularProgress, Grid } from "@material-ui/core";
 import DoneAllOutlinedIcon from "@material-ui/icons/DoneAllOutlined";
+import { makeStyles } from '@material-ui/core/styles';
 
 registerPlugin(FilePondPluginImagePreview);
 
+const useStyles = makeStyles((theme) => ({
+  uploader: {
+      marginTop: theme.spacing(3),
+  }
+}));
+
 export const ImageUploader = React.memo(function (props) {
+  const filesQuantity = props.maxFiles || 5;
+  const classes = useStyles();
   const [imgsRefs, setImgs] = useState([]);
   const [imgsUrls, setImgsUrls] = useState([]);
   const [uploaded, setUploaded] = useState(false);
@@ -23,7 +32,7 @@ export const ImageUploader = React.memo(function (props) {
       return firebase
         .storage()
         .ref()
-        .child(`complejos/${props.docRef.id}/imagenes-complejo/${foto.name}`)
+        .child(`${props.url}/${foto.name}`)
         .put(foto)
         .then((snapshot) => {
           setNroImagen((old) => old + 1);
@@ -43,7 +52,7 @@ export const ImageUploader = React.memo(function (props) {
     if (imgsUrls.length === imgsRefs.length && imgsUrls.length > 0) {
       props.getUrls(imgsUrls);
     }
-  }, [imgsUrls, imgsRefs.length, props]);
+  }, [imgsUrls, imgsRefs.length, props.getUrls]);
 
   if (uploading)
     return (
@@ -79,7 +88,7 @@ export const ImageUploader = React.memo(function (props) {
         </Grid>
         <Grid item>
           <Typography variant="h4">
-            {nroImagen} de {imgsRefs.length} imagenes subidas con éxito.
+            {nroImagen} de {imgsRefs.length} imágenes subidas con éxito.
           </Typography>
         </Grid>
       </Grid>
@@ -87,7 +96,7 @@ export const ImageUploader = React.memo(function (props) {
 
   return (
     <>
-      <FilePond
+      <FilePond className={classes.uploader}
         allowMultiple={true}
         maxFileSize="5MB"
         labelMaxFileSizeExceeded="La imágen es demasiado grande"
@@ -98,7 +107,7 @@ export const ImageUploader = React.memo(function (props) {
         acceptedFileTypes={["image/png", "image/jpeg"]}
         labelFileTypeNotAllowed="Formato de imágen inválido"
         fileValidateTypeLabelExpectedTypes="Se espera imágenes en formato .png y .jpeg"
-        maxFiles={5}
+        maxFiles={filesQuantity}
         onaddfile={async (error, fileAdded) => {
           setImgs((oldImgs) => [...oldImgs, fileAdded.file]);
         }}

@@ -11,6 +11,7 @@ import LinkCustom from "components/utils/LinkCustom/LinkCustom";
 import { useParams } from "react-router-dom"
 import ImageVisualizer from "components/App/Complejos/EditComplejo/Sections/ImageVisualizer"
 
+
 const useStyles = makeStyles((theme) => ({
     expansionPanel: {
         width: '100%',
@@ -72,7 +73,7 @@ const EditComplejos = () => {
                                 aria-controls="panel1a-content"
                                 id="panel1a-header"
                             >
-                                <Typography variant="h5" className={classes.heading}>Datos Basicos</Typography>
+                                <Typography variant="h5" className={classes.heading}>Datos Básicos</Typography>
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails>
                                 <Grid item xs={12}>
@@ -135,7 +136,7 @@ const EditComplejos = () => {
                             <ExpansionPanelDetails>
                                 <Grid item xs={12}>
                                     < hr className={classes.divider} />
-                                    <ImageVisualizer complejo={complejo} />
+                                    <ImageVisualizer fotos={complejo.fotos} />
                                 </Grid>
                             </ExpansionPanelDetails>
                         </ExpansionPanel>

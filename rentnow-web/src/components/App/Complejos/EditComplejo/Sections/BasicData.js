@@ -18,6 +18,7 @@ import { useParams } from "react-router-dom"
 const useStyles = makeStyles((theme) => ({
   boton: {
     marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
   },
 }))
 
