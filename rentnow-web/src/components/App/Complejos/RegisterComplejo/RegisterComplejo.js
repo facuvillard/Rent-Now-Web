@@ -90,10 +90,10 @@ const RegistrarComplejo = () => {
               },
               fotos: [],
               ubicacion: {
-                calle: "Calle de prueba",
-                numero: 2134,
-                barrio: "Barrio de prueba",
-                latlng: ''
+                calle: "",
+                numero: 0000 ,
+                barrio: "",
+                latlng: "",
               },
             }}
             onSubmit={(values) => {
@@ -131,8 +131,8 @@ const RegistrarComplejo = () => {
   );
 };
 
-const ComplejoStep = ({ children, errors, touched }) => {
-  return <>{React.cloneElement(children, { errors, touched })}</>;
+const ComplejoStep = ({ children, errors, touched, values }) => {
+  return <>{React.cloneElement(children, { errors, touched, values })}</>;
 };
 
 export default RegistrarComplejo;
