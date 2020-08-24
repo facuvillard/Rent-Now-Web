@@ -10,6 +10,8 @@ import { Formik, Form } from "formik";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { useParams } from "react-router-dom";
 import LinkCustom from "components/utils/LinkCustom/LinkCustom";
+import AlertCustom from "components/utils/AlertCustom/AlertCustom";
+import { createEspacio } from "api/espacios";
 
 const tiposEspacios = [
   "Cancha Futbol",
@@ -35,11 +37,41 @@ const estados = ["En reparación", "Disponible"];
 export default function RegisterEspacios() {
   const { idComplejo } = useParams();
   const [isLoading, setIsLoading] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [contentAlert, setContentAlert] = useState("");
+  const [severityAlert, setSeverityAlert] = useState("");
 
   const registrarEspacio = (espacio) => {
-    console.log(espacio);
-
-    //TO DO: Llamar a Api y registrar espacio
+    if (
+      !espacio.nombre ||
+      !espacio.tipoEspacio ||
+      !espacio.capacidad ||
+      !espacio.tipoPiso ||
+      !espacio.infraestructura ||
+      !espacio.estado ||
+      !espacio.horaDesde ||
+      !espacio.horaHasta
+    ) {
+      setIsLoading(false);
+      setContentAlert("Faltan datos obligatorios!");
+      setSeverityAlert("warning");
+      setOpenAlert(true);
+    } else {
+      setIsLoading(true);
+      createEspacio({ ...espacio, idComplejo: idComplejo }).then((response) => {
+        if (response.status === "OK") {
+          setIsLoading(false);
+          setContentAlert("El espacio ha sido registrado con éxito");
+          setSeverityAlert("success");
+          setOpenAlert(true);
+        } else {
+          setIsLoading(false);
+          setContentAlert("Error al registrar espacio");
+          setSeverityAlert("error");
+          setOpenAlert(true);
+        }
+      });
+    }
   };
 
   return (
@@ -72,8 +104,9 @@ export default function RegisterEspacios() {
               <Grid container spacing={6}>
                 <Grid item xs={6}>
                   <TextField
+                    required
                     name="nombre"
-                    label="Nombre*"
+                    label="Nombre"
                     fullWidth
                     value={values.Nombre}
                     onChange={(e) => {
@@ -83,6 +116,7 @@ export default function RegisterEspacios() {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
+                    required
                     select
                     name="tipoEspacio"
                     label="Tipo de espacio"
@@ -101,9 +135,10 @@ export default function RegisterEspacios() {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
+                    required
                     name="capacidad"
                     type="number"
-                    label="Capacidad (personas)*"
+                    label="Capacidad (personas)"
                     fullWidth
                     values={values.capacidad}
                     onChange={(e) => {
@@ -113,10 +148,11 @@ export default function RegisterEspacios() {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
+                    required
                     name="tipoPiso"
                     select
                     fullWidth
-                    label="Tipo de piso*"
+                    label="Tipo de piso"
                     value={values.tipoPiso}
                     onChange={(e) => {
                       handleChange(e);
@@ -131,9 +167,10 @@ export default function RegisterEspacios() {
                 </Grid>
                 <Grid item xs={6} sm={3}>
                   <TextField
+                    required
                     name="horaDesde"
                     type="time"
-                    label="Hora Desde*"
+                    label="Hora Desde"
                     value={values.horaDesde}
                     onChange={(e) => {
                       handleChange(e);
@@ -143,9 +180,10 @@ export default function RegisterEspacios() {
                 </Grid>
                 <Grid item xs={6} sm={3}>
                   <TextField
+                    required
                     name="horaHasta"
                     type="time"
-                    label="Hora Hasta*"
+                    label="Hora Hasta"
                     value={values.horaHasta}
                     onChange={(e) => {
                       handleChange(e);
@@ -155,10 +193,11 @@ export default function RegisterEspacios() {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
+                    required
                     name="estado"
                     select
                     fullWidth
-                    label="Estado*"
+                    label="Estado"
                     value={values.estado}
                     onChange={(e) => {
                       handleChange(e);
@@ -173,10 +212,11 @@ export default function RegisterEspacios() {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
+                    required
                     name="infraestructura"
                     select
                     fullWidth
-                    label="Infraestructura*"
+                    label="Infraestructura"
                     value={values.infraestructura}
                     onChange={(e) => {
                       handleChange(e);
@@ -240,6 +280,12 @@ export default function RegisterEspacios() {
           )}
         </Formik>
       )}
+      <AlertCustom
+        type={severityAlert}
+        text={contentAlert}
+        open={openAlert}
+        setOpen={setOpenAlert}
+      />
     </>
   );
 }
