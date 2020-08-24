@@ -16,7 +16,10 @@ import { ImageUploader } from 'components/App/Complejos/RegisterComplejo/Steps/F
 import { useParams } from "react-router-dom"
 import { updateComplejoApi } from 'api/complejos'
 import { Alert, AlertTitle } from "@material-ui/lab";
-
+import Dialog from 'components/utils/Dialog/Dialog'
+import DeleteComplejoImage from 'components/App/Complejos/EditComplejo/Sections/DeleteComplejoImage'
+import AlertCustom from "components/utils/AlertCustom/AlertCustom";
+import uuid from 'react-uuid'
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -43,6 +46,14 @@ const ImageVisualizer = (props) => {
     const classes = useStyles();
     const [fotos, setFotos] = useState([]);
     const { idComplejo } = useParams();
+    const [dialogContent, setDialogContent] = useState(null);
+    
+    const [alertCustomOpen, setAlertCustomOpen] = useState(false);
+    const [alertCustomType, setAlertCustomType] = useState();
+    const [alertCustomText, setAlertCustomText] = useState();
+    
+    const [open, setOpen] = useState(false);
+    
     const getUrls = React.useCallback((urls) => {
         setFotos((old) => {
             const newFotos = [...old, ...urls]
@@ -50,59 +61,100 @@ const ImageVisualizer = (props) => {
             return (newFotos)
         })
     }, [])
+    
     useEffect(() => {
         setFotos(() => ([...props.fotos]))
     }, [props.fotos])
 
+
+    const deleteHandler = (i) => {
+        alert(i)
+        const newFotos = [...fotos]
+        // var i = newFotos.indexOf(foto);
+        newFotos.splice( i, 1 );
+        setFotos(newFotos);
+    }
+
+    const deleteDialogHandler = (i) => {
+        alert(i)
+        setDialogContent(
+            <DeleteComplejoImage
+            setOpen={setOpen}
+            deleteHandler={(i)=>{deleteHandler(i)}}
+            />
+            )
+        setOpen(true);
+    };
+
     return (
-        <Grid container spacing={1} className={classes.container}>
-            <Carousel
-                dots
-                arrowLeft={<Arrow back cssColor="black" />}
-                arrowLeftDisabled={<Arrow back cssColor="grey" />}
-                arrowRight={<Arrow cssColor="black" />}
-                arrowRightDisabled={<Arrow cssColor="grey" />}
-                addArrowClickHandler
-            >
-                {fotos.map((foto) => (
-                    <Grid container
-                        direction="column"
-                        justify="center"
-                        alignItems="center"
-                        key={foto}
-                    >
-                        <Grid item xs={12} sm={6}>
-                            <Card>
-                                <CardActionArea href={foto} target="_blank">
-                                    <CardMedia component="img" height={400} image={foto} />
-                                </CardActionArea>
-                            </Card>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <IconButton aria-label="delete" color="secondary" title="Eliminar Imagen">
-                                <DeleteIcon />
-                            </IconButton>
-                        </Grid>
-                    </Grid>
-                ))}
-            </ Carousel>
-            {fotos.length >= 5 ? (
-                <Grid
-                    container
-                    justify="center"
-                    className={classes.imageUploader}
+        <>
+            <Grid container spacing={1} className={classes.container}>
+                <Carousel
+                    dots
+                    arrowLeft={<Arrow back cssColor="black" />}
+                    arrowLeftDisabled={<Arrow back cssColor="grey" />}
+                    arrowRight={<Arrow cssColor="black" />}
+                    arrowRightDisabled={<Arrow cssColor="grey" />}
+                    addArrowClickHandler
                 >
-                    <Alert severity="info">
-                        <AlertTitle>¡Ya tienes demasiadas fotos registradas! No podrás subir ninguna más</AlertTitle>
+                    {fotos.map((foto, i) => (
+                        <Grid container
+                            direction="column"
+                            justify="center"
+                            alignItems="center"
+                            key={uuid()}
+                        >
+                            <Grid item xs={12} sm={6}>
+                                <Card>
+                                    <CardActionArea href={foto} target="_blank">
+                                        <CardMedia component="img" height={400} image={foto} />
+                                    </CardActionArea>
+                                </Card>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <IconButton
+                                    aria-label="delete"
+                                    color="secondary"
+                                    title="Eliminar Imagen"
+                                    onClick={(i)=>{deleteDialogHandler(i)}}>
+                                    <DeleteIcon />
+                                </IconButton>
+                            </Grid>
+                        </Grid>
+                    ))}
+                </ Carousel>
+                {fotos.length >= 5 ? (
+                    <Grid
+                        container
+                        justify="center"
+                        className={classes.imageUploader}
+                    >
+                        <Alert severity="info">
+                            <AlertTitle>¡Ya tienes demasiadas fotos registradas! No podrás subir ninguna más</AlertTitle>
                                         Elimina alguna/s si quieres seguir subiendo mas cantidad
                                         </Alert>
-                </Grid>
-            ) : (
-                    <Grid item xs={12}>
-                        <ImageUploader maxFiles={ 5 - fotos.length } className={classes.imageUploader} url={`complejos/${idComplejo}/imagenes-complejo`} getUrls={getUrls} />
                     </Grid>
-                )}
-        </ Grid>
+                ) : (
+                        <Grid item xs={12}>
+                            <ImageUploader maxFiles={5 - fotos.length} className={classes.imageUploader} url={`complejos/${idComplejo}/imagenes-complejo`} getUrls={getUrls} />
+                        </Grid>
+                    )}
+            </ Grid>
+            <Dialog
+                title='¿Esta seguro que desea eliminar foto seleccionada?'
+                open={open}
+                setOpen={setOpen}
+                size="sm"
+            >
+                {dialogContent}
+            </Dialog>
+            <AlertCustom
+                type={alertCustomType}
+                text={alertCustomText}
+                open={alertCustomOpen}
+                setOpen={setAlertCustomOpen}
+            />
+        </>
     )
 }
 

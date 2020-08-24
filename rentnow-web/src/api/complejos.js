@@ -140,4 +140,16 @@ export async function getComplejosById(id) {
   }
 }
 
+export async function deleteComplejoImageApi(fotos, idComplejo) {
+  try {
+    await firebase.firestore().collection('complejos').doc(idComplejo).update({
+      fotos : fotos
+    })
+    return {status: "OK", message:"Imagen eliminado con exito"}
+  }
+  catch (err){
+    return {status: "ERROR", message: "Error al eliminar la imagen"}
+  }
+  }
+
 
