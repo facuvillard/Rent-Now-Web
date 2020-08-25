@@ -6,14 +6,14 @@ import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import firebase from "firebase";
 import { Button, Typography, CircularProgress, Grid } from "@material-ui/core";
 import DoneAllOutlinedIcon from "@material-ui/icons/DoneAllOutlined";
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
 
 registerPlugin(FilePondPluginImagePreview);
 
 const useStyles = makeStyles((theme) => ({
   uploader: {
-      marginTop: theme.spacing(3),
-  }
+    marginTop: theme.spacing(3),
+  },
 }));
 
 export const ImageUploader = React.memo(function (props) {
@@ -45,6 +45,7 @@ export const ImageUploader = React.memo(function (props) {
     Promise.all(imgsRefs.map((img) => returnPromise(img))).then(() => {
       setUploading(false);
       setUploaded(true);
+      setImgs([])
     });
   };
 
@@ -96,7 +97,8 @@ export const ImageUploader = React.memo(function (props) {
 
   return (
     <>
-      <FilePond className={classes.uploader}
+      <FilePond
+        className={classes.uploader}
         allowMultiple={true}
         maxFileSize="5MB"
         labelMaxFileSizeExceeded="La imágen es demasiado grande"
@@ -120,14 +122,16 @@ export const ImageUploader = React.memo(function (props) {
           });
         }}
       />
-      <Button
-        onClick={handleFileUpload}
-        color="primary"
-        variant="contained"
-        fullWidth
-      >
-        Subir Imágenes
-      </Button>
+      {imgsRefs.length === 0 ? null : (
+        <Button
+          onClick={handleFileUpload}
+          color="primary"
+          variant="contained"
+          fullWidth
+        >
+          Subir Imágenes
+        </Button>
+      )}
     </>
   );
 });
