@@ -37,7 +37,6 @@ export default function Espacios(props) {
     getEspaciosByIdComplejo(idComplejo).then((response) => {
       if (response.status === "OK") {
         setEspacios(response.data);
-        console.log(response.data);
       }
       setIsLoading(false);
     });
@@ -75,7 +74,7 @@ export default function Espacios(props) {
                         component="img"
                         height="140"
                         width="140"
-                        image="https://i1.wp.com/www.parqueygrama.com/wp-content/uploads/2018/02/medidas-reglamentarias-para-canchas-de-futbol-5-6-7-8-9-11.jpg?w=1025&ssl=1"
+                        image=""
                         title={espacio.nombre}
                       />
                       <CardContent>

@@ -104,7 +104,6 @@ export default function RegisterEspacios() {
               <Grid container spacing={6}>
                 <Grid item xs={6}>
                   <TextField
-                    required
                     name="nombre"
                     label="Nombre"
                     fullWidth
@@ -116,7 +115,6 @@ export default function RegisterEspacios() {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
-                    required
                     select
                     name="tipoEspacio"
                     label="Tipo de espacio"
@@ -135,7 +133,6 @@ export default function RegisterEspacios() {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
-                    required
                     name="capacidad"
                     type="number"
                     label="Capacidad (personas)"
@@ -148,7 +145,6 @@ export default function RegisterEspacios() {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
-                    required
                     name="tipoPiso"
                     select
                     fullWidth
@@ -167,7 +163,6 @@ export default function RegisterEspacios() {
                 </Grid>
                 <Grid item xs={6} sm={3}>
                   <TextField
-                    required
                     name="horaDesde"
                     type="time"
                     label="Hora Desde"
@@ -180,7 +175,6 @@ export default function RegisterEspacios() {
                 </Grid>
                 <Grid item xs={6} sm={3}>
                   <TextField
-                    required
                     name="horaHasta"
                     type="time"
                     label="Hora Hasta"
@@ -193,7 +187,6 @@ export default function RegisterEspacios() {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
-                    required
                     name="estado"
                     select
                     fullWidth
@@ -212,7 +205,6 @@ export default function RegisterEspacios() {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
-                    required
                     name="infraestructura"
                     select
                     fullWidth
@@ -265,14 +257,6 @@ export default function RegisterEspacios() {
                     type="submit"
                   >
                     Registrar
-                  </Button>
-                  <Button
-                    style={{ margin: "10px" }}
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                  >
-                    Registrar y continuar
                   </Button>
                 </Grid>
               </Grid>
