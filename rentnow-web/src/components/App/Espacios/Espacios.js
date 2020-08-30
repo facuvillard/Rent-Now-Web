@@ -4,9 +4,11 @@ import {
   CardMedia,
   CardActionArea,
   Card,
+  CardActions,
   Typography,
   Grid,
   CircularProgress,
+  IconButton,
 } from "@material-ui/core";
 import { Alert, AlertTitle } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/core/styles";
@@ -16,6 +18,7 @@ import AddIcon from "@material-ui/icons/Add";
 import { useLocation, useParams } from "react-router-dom";
 import { getEspaciosByIdComplejo } from "api/espacios";
 import imgPlaceHolder from "assets/img/image-placeholder.png";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles((theme) => ({
   addButton: {
@@ -42,6 +45,11 @@ export default function Espacios(props) {
       setIsLoading(false);
     });
   }, [idComplejo]);
+
+  const eliminarEspacio = (espacio) => {
+    //TO DO: Llamar a la api y cambiar estado de espacio a "Eliminado"
+    console.log("Eliminando espacio...", espacio.id);
+  };
 
   return (
     <>
@@ -91,6 +99,15 @@ export default function Espacios(props) {
                         </Typography>
                       </CardContent>
                     </CardActionArea>
+                    <CardActions disableSpacing>
+                      <IconButton
+                        onClick={() => {
+                          eliminarEspacio(espacio);
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </CardActions>
                   </Card>
                 </Grid>
               ))}
