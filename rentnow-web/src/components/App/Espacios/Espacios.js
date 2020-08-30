@@ -15,6 +15,7 @@ import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import { useLocation, useParams } from "react-router-dom";
 import { getEspaciosByIdComplejo } from "api/espacios";
+import imgPlaceHolder from "assets/img/image-placeholder.png";
 
 const useStyles = makeStyles((theme) => ({
   addButton: {
@@ -40,7 +41,7 @@ export default function Espacios(props) {
       }
       setIsLoading(false);
     });
-  }, []);
+  }, [idComplejo]);
 
   return (
     <>
@@ -65,16 +66,16 @@ export default function Espacios(props) {
               </Alert>
             </Grid>
           ) : (
-            <Grid container spacing={6}>
+            <Grid container spacing={3}>
               {espacios.map((espacio) => (
-                <Grid key={espacio.id} item xs={4}>
+                <Grid key={espacio.id} item xs={12} sm={3}>
                   <Card>
                     <CardActionArea>
                       <CardMedia
                         component="img"
                         height="140"
                         width="140"
-                        image=""
+                        image={espacio.foto ? espacio.foto : imgPlaceHolder}
                         title={espacio.nombre}
                       />
                       <CardContent>
@@ -86,7 +87,7 @@ export default function Espacios(props) {
                           color="textSecondary"
                           component="p"
                         >
-                          {espacio.tipoEspacio}
+                          {espacio.tipoEspacio} - {espacio.infraestructura}
                         </Typography>
                       </CardContent>
                     </CardActionArea>

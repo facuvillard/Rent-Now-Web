@@ -90,7 +90,7 @@ export default function RegisterEspacios() {
             capacidad: "",
             tipoPiso: "",
             horaDesde: "07:00",
-            horaHasta: "22:00",
+            horaHasta: "23:00",
             estado: "",
             infraestructura: "",
             descripcion: "",
@@ -105,7 +105,7 @@ export default function RegisterEspacios() {
                 <Grid item xs={6}>
                   <TextField
                     name="nombre"
-                    label="Nombre"
+                    label="Nombre*"
                     fullWidth
                     value={values.Nombre}
                     onChange={(e) => {
@@ -117,7 +117,7 @@ export default function RegisterEspacios() {
                   <TextField
                     select
                     name="tipoEspacio"
-                    label="Tipo de espacio"
+                    label="Tipo de espacio*"
                     fullWidth
                     value={values.tipoEspacio}
                     onChange={(e) => {
@@ -135,7 +135,7 @@ export default function RegisterEspacios() {
                   <TextField
                     name="capacidad"
                     type="number"
-                    label="Capacidad (personas)"
+                    label="Capacidad*"
                     fullWidth
                     values={values.capacidad}
                     onChange={(e) => {
@@ -148,7 +148,7 @@ export default function RegisterEspacios() {
                     name="tipoPiso"
                     select
                     fullWidth
-                    label="Tipo de piso"
+                    label="Tipo de piso*"
                     value={values.tipoPiso}
                     onChange={(e) => {
                       handleChange(e);
@@ -165,7 +165,7 @@ export default function RegisterEspacios() {
                   <TextField
                     name="horaDesde"
                     type="time"
-                    label="Hora Desde"
+                    label="Hora Desde*"
                     value={values.horaDesde}
                     onChange={(e) => {
                       handleChange(e);
@@ -177,7 +177,7 @@ export default function RegisterEspacios() {
                   <TextField
                     name="horaHasta"
                     type="time"
-                    label="Hora Hasta"
+                    label="Hora Hasta*"
                     value={values.horaHasta}
                     onChange={(e) => {
                       handleChange(e);
@@ -190,7 +190,7 @@ export default function RegisterEspacios() {
                     name="estado"
                     select
                     fullWidth
-                    label="Estado"
+                    label="Estado*"
                     value={values.estado}
                     onChange={(e) => {
                       handleChange(e);
@@ -208,7 +208,7 @@ export default function RegisterEspacios() {
                     name="infraestructura"
                     select
                     fullWidth
-                    label="Infraestructura"
+                    label="Infraestructura*"
                     value={values.infraestructura}
                     onChange={(e) => {
                       handleChange(e);
