@@ -12,27 +12,12 @@ import { useParams } from "react-router-dom";
 import LinkCustom from "components/utils/LinkCustom/LinkCustom";
 import AlertCustom from "components/utils/AlertCustom/AlertCustom";
 import { createEspacio } from "api/espacios";
-
-const tiposEspacios = [
-  "Cancha Futbol",
-  "Cancha Basquet",
-  "Cancha Handball",
-  "Cancha Tenis",
-  "Cancha Paddle",
-  "Cancha Hockey",
-  "Quincho",
-  "Asador",
-];
-const tiposPisos = [
-  "Parqué",
-  "Cesped natural",
-  "Cesped sintetico",
-  "Cemento",
-  "Polvo de ladrillo",
-  "Tierra",
-];
-const infraestructuras = ["Abierta con luz", "Abierta sin luz", "Techada"];
-const estados = ["En reparación", "Disponible"];
+import {
+  tiposEspacio,
+  estados,
+  tiposPiso,
+  infraestructuras,
+} from "constants/espacios/constants";
 
 export default function RegisterEspacios() {
   const { idComplejo } = useParams();
@@ -124,7 +109,7 @@ export default function RegisterEspacios() {
                       handleChange(e);
                     }}
                   >
-                    {tiposEspacios.map((tipo) => (
+                    {tiposEspacio.map((tipo) => (
                       <MenuItem key={tipo} value={tipo}>
                         {tipo}
                       </MenuItem>
@@ -154,7 +139,7 @@ export default function RegisterEspacios() {
                       handleChange(e);
                     }}
                   >
-                    {tiposPisos.map((tipo) => (
+                    {tiposPiso.map((tipo) => (
                       <MenuItem key={tipo} value={tipo}>
                         {tipo}
                       </MenuItem>
