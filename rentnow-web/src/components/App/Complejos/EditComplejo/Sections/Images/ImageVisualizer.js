@@ -17,7 +17,7 @@ import { useParams } from "react-router-dom";
 import { updateComplejoApi } from "api/complejos";
 import { Alert, AlertTitle } from "@material-ui/lab";
 import Dialog from "components/utils/Dialog/Dialog";
-import DeleteComplejoImage from "components/App/Complejos/EditComplejo/Sections/DeleteComplejoImage";
+import DeleteComplejoImage from "components/App/Complejos/EditComplejo/Sections/Images/DeleteComplejoImage";
 import AlertCustom from "components/utils/AlertCustom/AlertCustom";
 import uuid from "react-uuid";
 
@@ -96,6 +96,7 @@ const ImageVisualizer = (props) => {
     const deleteDialogHandler = (index) => {
         setDialogContent(
             <DeleteComplejoImage
+                text="La imagen ya no podrá ser utilizada dentro de la aplicación"
                 setOpen={setOpen}
                 deleteHandler={() => {
                     deleteHandler(index);

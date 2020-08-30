@@ -6,11 +6,12 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { getComplejosById } from "../../../../api/complejos";
-import BasicData from 'components/App/Complejos/EditComplejo/Sections/BasicData'
+import BasicData from 'components/App/Complejos/EditComplejo/Sections/BasicData/BasicData'
 import LinkCustom from "components/utils/LinkCustom/LinkCustom";
 import { useParams } from "react-router-dom"
-import ImageVisualizer from "components/App/Complejos/EditComplejo/Sections/ImageVisualizer"
-import * as Routes from "constants/routes"
+import ImageVisualizer from "components/App/Complejos/EditComplejo/Sections/Images/ImageVisualizer"
+import DeleteComplejo from "components/App/Complejos/EditComplejo/Sections/DeleteComplejoRequest/DeleteComplejo"
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -155,15 +156,11 @@ const EditComplejos = () => {
                             <ExpansionPanelDetails>
                                 <Grid item xs={12}>
                                     < hr className={classes.divider} />
-                                    <Typography className={classes.paragraph}>
-                                        Aquí podras solicitar la baja de este complejo. Si das de baja tu complejo, este pasará a estado <b>Deshabilitado</b> y no se podrá acceder ni efectuar reservas en el mismo.
-                                    </Typography>
-                                    <Typography className={classes.paragraph}>
-                                        Esta baja se concretará efectivamente entre 24 y 48 horas, y las reservas en curso para este complejo seran canceladas.
-                                    </Typography>
-                                    <Typography className={classes.paragraph}>
-                                        En el caso de quieras volver a habilitarlo, deberas comunicarte con el equipo de RentNow en el apartado de <b>Contactanos</b> de la <a href={Routes.LANDING}>pagina principal</a> solicitando que tu complejo sea habilitado nuevamente.
-                                    </Typography>
+                                    <DeleteComplejo complejo={{
+                                        nombre: complejo.nombre,
+                                        email: complejo.email,
+                                        telefono: complejo.telefono,
+                                    }} />
                                 </Grid>
                             </ExpansionPanelDetails>
                         </ExpansionPanel>
