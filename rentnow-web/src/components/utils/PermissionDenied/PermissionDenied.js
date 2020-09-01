@@ -19,7 +19,7 @@ const PermissionDenied = (props) => {
         </Grid>
         <Grid item xs={6}>
           <Typography align="center">
-            NO TENES PERMISO PARA ESTA VISTA REY/REYNA
+            NO TENES PERMISO A ESTA SECCIÓN.
           </Typography>
         </Grid>
         <Grid item>

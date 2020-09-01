@@ -84,7 +84,7 @@ const Contacto = () => {
 
   const handleSendEmail = async (data) => {
     const formatedData = {
-      destinatario: "smmag18@gmail.com",
+      destinatario: "contacto.rentnow@gmail.com",
       asunto: "Contacto rentnow",
       contenido: JSON.stringify(data),
       adjuntos: null,

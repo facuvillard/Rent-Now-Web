@@ -43,7 +43,6 @@ function ListComplejos() {
         setComplejos(response.data);
         setIsLoading(false);
         setReload(false);
-        console.log(response.data)
       } else {
         setIsLoading(false);
       }
