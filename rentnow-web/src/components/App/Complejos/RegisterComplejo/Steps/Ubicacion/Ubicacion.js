@@ -96,7 +96,7 @@ const Ubicacion = ({errors, touched}) => {
         const localidadesNames = result.localidades.map(
           (localidad) => localidad.nombre
         );
-        setCiudades(localidadesNames);
+        setCiudades(["",...localidadesNames]);
       }
     } catch (err) {
       alert("hubo un error");
@@ -137,6 +137,7 @@ const Ubicacion = ({errors, touched}) => {
               setCiudadSeleccionada("")
               setCiudad("")
               setFieldValue("ubicacion.ciudad", "");
+              setCiudades([])
               setFieldValue("ubicacion.provincia", e.target.value);
               setProvincia(e.target.value)
             }}
@@ -165,6 +166,7 @@ const Ubicacion = ({errors, touched}) => {
               setCiudadSeleccionada(newValue || "")
               
             }}
+            disabled={provincia === ""}
             inputValue={ciudad}
             onInputChange={(_, value) => {
               handleCitiesChange(value, provincia);
