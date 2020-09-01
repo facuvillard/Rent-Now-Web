@@ -91,7 +91,7 @@ const RegistrarComplejo = () => {
               fotos: [],
               ubicacion: {
                 calle: "",
-                numero: 0000 ,
+                numero: "",
                 barrio: "",
                 latlng: "",
               },

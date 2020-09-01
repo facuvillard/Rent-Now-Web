@@ -24,6 +24,8 @@ const Ubicacion = ({errors, touched}) => {
   const [provincias, setProvincias] = useState([]);
   const [ciudades, setCiudades] = useState([]);
   const [ciudad, setCiudad] = useState("");
+  const [ciudadSeleccionada, setCiudadSeleccionada] = useState("")
+  const [provincia, setProvincia] = useState("")
 
   useEffect(() => {
     if (markerPosition) {
@@ -83,7 +85,7 @@ const Ubicacion = ({errors, touched}) => {
   };
 
   const handleCitiesChange = async (city, province) => {
-    setCiudad(city);
+   setCiudad(city);
 
     if (city.length < 3) {
       return;
@@ -122,7 +124,7 @@ const Ubicacion = ({errors, touched}) => {
           </GoogleMap>
         </LoadScript>
       </Grid>
-      {/* <Grid item xs={12} sm={6}>
+      <Grid item xs={12} sm={6}>
         <FormControl fullWidth>
           <InputLabel id="provincia-select-label">Provincia</InputLabel>
           
@@ -130,10 +132,13 @@ const Ubicacion = ({errors, touched}) => {
             required
             labelId="provincia-select-label"
             name="ubicacion.provincia"
-            value={values.ubicacion.provincia}
+            value={provincia}
             onChange={(e) => {
+              setCiudadSeleccionada("")
+              setCiudad("")
               setFieldValue("ubicacion.ciudad", "");
               setFieldValue("ubicacion.provincia", e.target.value);
+              setProvincia(e.target.value)
             }}
             id="provincia-select"
           >
@@ -150,21 +155,19 @@ const Ubicacion = ({errors, touched}) => {
 
       <Grid item xs={12} sm={6}>
         <FormControl fullWidth>
-          <InputLabel id="ciudad-select-label">Ciudad</InputLabel>
+          {/* <InputLabel id="ciudad-select-label">Ciudad</InputLabel> */}
           <Autocomplete
             label="Ciudad"
-            value={values.ciudad}
+            value={ciudadSeleccionada}
             onChange={(_, newValue) => {
-              const target = {
-                name: "ciudad",
-                value: newValue,
-              };
-
-              handleChange({ target });
+              
+              setFieldValue("ubicacion.ciudad", newValue || "");
+              setCiudadSeleccionada(newValue || "")
+              
             }}
             inputValue={ciudad}
             onInputChange={(_, value) => {
-              handleCitiesChange(value, values.provincia);
+              handleCitiesChange(value, provincia);
             }}
             name="ciudad"
             options={ciudades}
@@ -173,7 +176,7 @@ const Ubicacion = ({errors, touched}) => {
             )}
           />
         </FormControl>
-      </Grid> */}
+      </Grid>
       <Grid item xs={9} md={7}>
         <Field
           name="ubicacion.calle"
