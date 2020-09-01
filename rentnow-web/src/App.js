@@ -16,6 +16,8 @@ import * as Breadcrumbs from "./constants/breadcrumbs";
 import AdminComplejos from "./components/Admin/Complejos/Complejos";
 import EditComplejos from "components/App/Complejos/EditComplejo/EditComplejos";
 import HomeComplejo from "components/App/Complejos/Complejos/HomeComplejo/HomeComplejo";
+import RegisterEspacios from "components/App/Espacios/RegisterEspacios";
+import Espacios from "components/App/Espacios/Espacios";
 function App() {
   return (
     <div className="App">
@@ -59,7 +61,7 @@ function App() {
                 elemento="complejo"
                 breadcrumbs={Breadcrumbs.APP_REGISTRAR_COMPLEJO}
               />
-              
+
               <RouteWithoutSidebar
                 title="Complejos"
                 exact
@@ -91,6 +93,26 @@ function App() {
                 permiso="update"
                 elemento="complejo"
                 breadcrumbs={Breadcrumbs.APP_MODIFICAR_COMPLEJO}
+              />
+              <RouteWithSidebar
+                title="Administrar Espacios"
+                component={() => <Espacios />}
+                exact
+                path={Routes.ESPACIOS}
+                isPrivate={true}
+                permiso="read"
+                elemento="espacio"
+                breadcrumbs={Breadcrumbs.APP_ESPACIOS}
+              />
+              <RouteWithSidebar
+                title="Registrar Espacios"
+                component={() => <RegisterEspacios />}
+                exact
+                path={Routes.REGISTRAR_ESPACIOS}
+                isPrivate={true}
+                permiso="create"
+                elemento="espacio"
+                breadcrumbs={Breadcrumbs.APP_REGISTRAR_ESPACIOS}
               />
 
               <Route path="*" exact component={() => <Landing />} />

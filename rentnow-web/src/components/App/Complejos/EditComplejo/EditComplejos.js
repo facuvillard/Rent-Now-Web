@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Typography, Button, CircularProgress, } from "@material-ui/core";
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import React, { useState, useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import { Grid, Typography, Button, CircularProgress } from "@material-ui/core";
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { getComplejosById } from "../../../../api/complejos";
 import BasicData from 'components/App/Complejos/EditComplejo/Sections/BasicData/BasicData'
 import LinkCustom from "components/utils/LinkCustom/LinkCustom";
@@ -42,27 +42,32 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-
-
 const EditComplejos = () => {
-    const classes = useStyles();
-    const [complejo, setComplejo] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
-    const { idComplejo } = useParams();
+  const classes = useStyles();
+  const [complejo, setComplejo] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const { idComplejo } = useParams();
 
-    useEffect(() => {
-        getComplejosById(idComplejo).then((response) => {
-            if (response.status === "OK") {
-                setComplejo(response.data);
-                setIsLoading(false);
-            } else {
-                setIsLoading(false);
-            }
-        });
-    }, [idComplejo]);
+  useEffect(() => {
+    getComplejosById(idComplejo).then((response) => {
+      if (response.status === "OK") {
+        setComplejo(response.data);
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
+      }
+    });
+  }, [idComplejo]);
 
-
-    return (
+  return (
+    <>
+      {isLoading ? (
+        <Grid container justify="center" className={classes.circularProgress}>
+          <Grid item>
+            <CircularProgress />
+          </Grid>
+        </Grid>
+      ) : (
         <>
             {isLoading ? (
                 <Grid container justify="center" className={classes.circularProgress}>
@@ -180,8 +185,9 @@ const EditComplejos = () => {
                     </>
                 )
             }
-        </>
-    )
-}
+      )}
+    </>
+  );
+};
 
-export default EditComplejos
+export default EditComplejos;

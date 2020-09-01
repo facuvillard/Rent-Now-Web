@@ -11,6 +11,7 @@ import {
 import HomeIcon from "@material-ui/icons/Home";
 import GroupIcon from "@material-ui/icons/Group";
 import Settings from "@material-ui/icons/Settings";
+import SportsSoccerIcon from "@material-ui/icons/SportsSoccer";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 import { Can } from "Auth/can";
@@ -142,7 +143,17 @@ const Sidebar = (props) => {
             icon={<GroupIcon className={classes.link} />}
             text="Usuarios"
           />
+          <Can I="read" a="espacio">
+            <SideBarButton
+              permiso="read"
+              elemento="espacio"
+              ruta={`/app/complejos/${props.params.idComplejo}/espacios`}
+              icon={<SportsSoccerIcon className={classes.link} />}
+              text="Administrar Espacios"
+            />
+          </Can>
         </List>
+
         <List>
           <Can I="update" a="complejo">
             <SideBarButton
