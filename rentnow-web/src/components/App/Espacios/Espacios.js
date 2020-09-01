@@ -20,8 +20,8 @@ import { useLocation, useParams } from "react-router-dom";
 import { getEspaciosByIdComplejo } from "api/espacios";
 import imgPlaceHolder from "assets/img/image-placeholder.png";
 import Modal from "components/utils/Dialog/Dialog";
-import Alertcustom from "components/utils/AlertCustom/AlertCustom";
-import DeleteEspacio from "components/App/Espacios/RegisterEspacios";
+import AlertCustom from "components/utils/AlertCustom/AlertCustom";
+import DeleteEspacio from "components/App/Espacios/DeleteEspacio";
 
 const useStyles = makeStyles((theme) => ({
   addButton: {
@@ -44,6 +44,8 @@ export default function Espacios(props) {
 
   const [openModal, setOpenModal] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
+  const [alertContent, setAlertContent] = useState("");
+  const [alertType, setAlertType] = useState("");
 
   useEffect(() => {
     getEspaciosByIdComplejo(idComplejo).then((response) => {
@@ -133,14 +135,32 @@ export default function Espacios(props) {
         </Fab>
       </LinkCustom>
 
-      <Modal open={openModal}>
+      <Modal
+        size="sm"
+        title={
+          "¿Seguro que desea eliminar el espacio '" +
+          selectedEspacio.nombre +
+          "'?"
+        }
+        open={openModal}
+        setOpen={setOpenModal}
+      >
         <DeleteEspacio
           setOpenAlert={setOpenAlert}
           setOpenModal={setOpenModal}
           setIsLoading={setIsLoading}
           espacio={selectedEspacio}
+          setAlertContent={setAlertContent}
+          setAlertType={setAlertType}
         />
       </Modal>
+
+      <AlertCustom
+        open={openAlert}
+        setOpen={setOpenAlert}
+        text={alertContent}
+        type={alertType}
+      />
     </>
   );
 }
