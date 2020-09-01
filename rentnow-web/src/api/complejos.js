@@ -37,7 +37,7 @@ export async function getComplejosApi() {
       const complejoData = complejo.data();
       return {
         id: complejo.id,
-        ...complejoData
+        ...complejoData,
       };
     });
     return {
@@ -109,10 +109,20 @@ export async function habilitarComplejoApi(idComplejo, value) {
 
 export async function updateComplejoApi(complejo, idComplejo) {
   try {
-    await firebase.firestore().collection("complejos").doc(idComplejo).update(complejo)
-    return { status: "OK", message: "Los datos del complejo han sido actualizados con exito" }
+    await firebase
+      .firestore()
+      .collection("complejos")
+      .doc(idComplejo)
+      .update(complejo);
+    return {
+      status: "OK",
+      message: "Los datos del complejo han sido actualizados con exito",
+    };
   } catch (err) {
-    return { status: "ERROR", message: "Error al actualizar los datos del complejo" }
+    return {
+      status: "ERROR",
+      message: "Error al actualizar los datos del complejo",
+    };
   }
 }
 
@@ -131,7 +141,7 @@ export async function getComplejosById(id) {
       data: complejo,
     };
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return {
       status: "ERROR",
       message: "Se produjo un error al consultar los complejos",
@@ -139,5 +149,3 @@ export async function getComplejosById(id) {
     };
   }
 }
-
-

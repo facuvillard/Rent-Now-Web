@@ -8,17 +8,20 @@ import {
   Typography,
   Grid,
   CircularProgress,
-  IconButton,
+  Button,
+  Fab,
 } from "@material-ui/core";
 import { Alert, AlertTitle } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/core/styles";
 import LinkCustom from "components/utils/LinkCustom/LinkCustom";
-import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { useLocation, useParams } from "react-router-dom";
 import { getEspaciosByIdComplejo } from "api/espacios";
 import imgPlaceHolder from "assets/img/image-placeholder.png";
-import DeleteIcon from "@material-ui/icons/Delete";
+import Modal from "components/utils/Dialog/Dialog";
+import Alertcustom from "components/utils/AlertCustom/AlertCustom";
+import DeleteEspacio from "components/App/Espacios/RegisterEspacios";
 
 const useStyles = makeStyles((theme) => ({
   addButton: {
@@ -33,10 +36,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Espacios(props) {
   const [espacios, setEspacios] = useState([]);
+  const [selectedEspacio, setSelectedEspacio] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const { idComplejo } = useParams();
   const currentLocation = useLocation().pathname;
   const classes = useStyles();
+
+  const [openModal, setOpenModal] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+
   useEffect(() => {
     getEspaciosByIdComplejo(idComplejo).then((response) => {
       if (response.status === "OK") {
@@ -44,12 +52,7 @@ export default function Espacios(props) {
       }
       setIsLoading(false);
     });
-  }, [idComplejo]);
-
-  const eliminarEspacio = (espacio) => {
-    //TO DO: Llamar a la api y cambiar estado de espacio a "Eliminado"
-    console.log("Eliminando espacio...", espacio.id);
-  };
+  }, [isLoading]);
 
   return (
     <>
@@ -69,7 +72,7 @@ export default function Espacios(props) {
             >
               <Alert severity="info">
                 <AlertTitle>No tienes espacios registrados</AlertTitle>
-                ¡Haz click en el botón <strong> Nuevo espacio</strong> y
+                ¡Haz click en el botón <strong>Nuevo espacio</strong> y
                 registralos!
               </Alert>
             </Grid>
@@ -99,14 +102,16 @@ export default function Espacios(props) {
                         </Typography>
                       </CardContent>
                     </CardActionArea>
-                    <CardActions disableSpacing>
-                      <IconButton
+                    <CardActions>
+                      <Button
+                        startIcon={<DeleteIcon />}
                         onClick={() => {
-                          eliminarEspacio(espacio);
+                          setSelectedEspacio(espacio);
+                          setOpenModal(true);
                         }}
                       >
-                        <DeleteIcon />
-                      </IconButton>
+                        Eliminar
+                      </Button>
                     </CardActions>
                   </Card>
                 </Grid>
@@ -115,7 +120,6 @@ export default function Espacios(props) {
           )}
         </>
       )}
-
       <LinkCustom to={currentLocation + "/registrar"}>
         <Fab
           color="primary"
@@ -128,6 +132,15 @@ export default function Espacios(props) {
           Nuevo espacio
         </Fab>
       </LinkCustom>
+
+      <Modal open={openModal}>
+        <DeleteEspacio
+          setOpenAlert={setOpenAlert}
+          setOpenModal={setOpenModal}
+          setIsLoading={setIsLoading}
+          espacio={selectedEspacio}
+        />
+      </Modal>
     </>
   );
 }

@@ -8,6 +8,7 @@ export async function createEspacio(espacio) {
       .doc()
       .set({
         ...espacio,
+        baja: false,
       });
     return { status: "OK", message: "Se registró el espacio con exito" };
   } catch (err) {
@@ -25,6 +26,7 @@ export async function getEspaciosByIdComplejo(idComplejo) {
       .firestore()
       .collection("/espacios")
       .where("idComplejo", "==", idComplejo)
+      .where("baja", "==", false)
       .get();
     const espacios = result.docs.map((espacio) => ({
       id: espacio.id,
@@ -41,6 +43,25 @@ export async function getEspaciosByIdComplejo(idComplejo) {
       status: "ERROR",
       message: "Se produjo un error al consultar los espacios",
       error: err,
+    };
+  }
+}
+
+export async function bajaEspacioApi(idEspacio) {
+  try {
+    await firebase
+      .firestore()
+      .collection("espacios")
+      .doc(idEspacio)
+      .update({ baja: true });
+    return {
+      status: "OK",
+      message: "El espacio ha sido dado de baja con éxito.",
+    };
+  } catch (err) {
+    return {
+      status: "ERROR",
+      message: "El espacio no se ha podido dar de baja.",
     };
   }
 }
