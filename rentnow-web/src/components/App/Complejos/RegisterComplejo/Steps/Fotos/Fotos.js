@@ -18,7 +18,7 @@ const Fotos = (props) => {
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        <ImageUploader docRef={props.docRef} getUrls={getUrls} />
+        <ImageUploader url={`complejos/${props.docRef.id}/imagenes-complejo`} getUrls={getUrls} />
       </Grid>
     </Grid>
   );

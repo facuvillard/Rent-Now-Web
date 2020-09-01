@@ -6,10 +6,21 @@ import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import firebase from "firebase";
 import { Button, Typography, CircularProgress, Grid } from "@material-ui/core";
 import DoneAllOutlinedIcon from "@material-ui/icons/DoneAllOutlined";
+import { makeStyles } from "@material-ui/core/styles";
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 
 registerPlugin(FilePondPluginImagePreview);
+registerPlugin(FilePondPluginFileValidateType);
 
-export const ImageUploader = React.memo(function (props) {
+const useStyles = makeStyles((theme) => ({
+  uploader: {
+    marginTop: theme.spacing(3),
+  },
+}));
+
+export const ImageUploader = React.memo(function ({maxFiles, url, getUrls}) {
+  const filesQuantity = maxFiles || 5;
+  const classes = useStyles();
   const [imgsRefs, setImgs] = useState([]);
   const [imgsUrls, setImgsUrls] = useState([]);
   const [uploaded, setUploaded] = useState(false);
@@ -23,7 +34,7 @@ export const ImageUploader = React.memo(function (props) {
       return firebase
         .storage()
         .ref()
-        .child(`complejos/${props.docRef.id}/imagenes-complejo/${foto.name}`)
+        .child(`${url}/${foto.name}`)
         .put(foto)
         .then((snapshot) => {
           setNroImagen((old) => old + 1);
@@ -36,14 +47,15 @@ export const ImageUploader = React.memo(function (props) {
     Promise.all(imgsRefs.map((img) => returnPromise(img))).then(() => {
       setUploading(false);
       setUploaded(true);
+      setImgs([])
     });
   };
 
   useEffect(() => {
     if (imgsUrls.length === imgsRefs.length && imgsUrls.length > 0) {
-      props.getUrls(imgsUrls);
+      getUrls(imgsUrls);
     }
-  }, [imgsUrls, imgsRefs.length, props]);
+  }, [imgsUrls, imgsRefs.length, getUrls]);
 
   if (uploading)
     return (
@@ -79,7 +91,7 @@ export const ImageUploader = React.memo(function (props) {
         </Grid>
         <Grid item>
           <Typography variant="h4">
-            {nroImagen} de {imgsRefs.length} imagenes subidas con éxito.
+            {nroImagen} de {imgsRefs.length} imágenes subidas con éxito.
           </Typography>
         </Grid>
       </Grid>
@@ -88,6 +100,7 @@ export const ImageUploader = React.memo(function (props) {
   return (
     <>
       <FilePond
+        className={classes.uploader}
         allowMultiple={true}
         maxFileSize="5MB"
         labelMaxFileSizeExceeded="La imágen es demasiado grande"
@@ -98,8 +111,12 @@ export const ImageUploader = React.memo(function (props) {
         acceptedFileTypes={["image/png", "image/jpeg"]}
         labelFileTypeNotAllowed="Formato de imágen inválido"
         fileValidateTypeLabelExpectedTypes="Se espera imágenes en formato .png y .jpeg"
-        maxFiles={5}
+        maxFiles={filesQuantity}
+        dropValidation={true}
         onaddfile={async (error, fileAdded) => {
+          if (error) {
+            return
+          }
           setImgs((oldImgs) => [...oldImgs, fileAdded.file]);
         }}
         onremovefile={async (error, fileRemoved) => {
@@ -111,14 +128,16 @@ export const ImageUploader = React.memo(function (props) {
           });
         }}
       />
-      <Button
-        onClick={handleFileUpload}
-        color="primary"
-        variant="contained"
-        fullWidth
-      >
-        Subir Imágenes
-      </Button>
+      {imgsRefs.length === 0 ? null : (
+        <Button
+          onClick={handleFileUpload}
+          color="primary"
+          variant="contained"
+          fullWidth
+        >
+          Subir Imágenes
+        </Button>
+      )}
     </>
   );
 });
