@@ -75,7 +75,7 @@ function ListUser(props) {
 
   const viewUserDialog = (user) => {
     setDialogTitle("Usuario: " + user.nombres + " " + user.apellidos);
-    setDialogContent(<ViewUser setOpen={setOpen} user={user} />);
+    setDialogContent(<ViewUser user={user} />);
     setDialogSize("sm");
     setOpen(true);
   };
