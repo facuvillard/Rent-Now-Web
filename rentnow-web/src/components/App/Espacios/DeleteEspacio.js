@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Grid, CircularProgress } from "@material-ui/core";
+import { Button, Grid, CircularProgress, Typography } from "@material-ui/core";
 import { bajaEspacioApi } from "api/espacios";
 
 export default function DeleteEspacio(props) {
@@ -32,6 +32,9 @@ export default function DeleteEspacio(props) {
         </Grid>
       ) : (
         <Grid container spacing={2} justify="space-evenly">
+          <Grid item xs={12}>
+            <Typography>El espacio quedará eliminado y no se podrá utilizar en el sistema.</Typography>
+          </Grid>
           <Grid item xs={2}>
             <Button
               color="primary"
