@@ -115,7 +115,7 @@ const EditComplejos = () => {
                       latitud: complejo.ubicacion.latlng.latitude,
                       longitud: complejo.ubicacion.latlng.longitude,
                       numero: complejo.ubicacion.numero,
-                      provincia: complejo.provincia,
+                      provincia: complejo.ubicacion.provincia,
                     }}
                   />
                 </Grid>
