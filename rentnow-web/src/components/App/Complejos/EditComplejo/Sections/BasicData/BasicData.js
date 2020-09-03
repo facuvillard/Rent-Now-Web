@@ -10,7 +10,7 @@ import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import { Formik, Form, Field } from "formik";
-import { updateComplejoApi } from '../../../../../api/complejos'
+import { updateComplejoApi } from '../../../../../../api/complejos'
 import AlertCustom from "components/utils/AlertCustom/AlertCustom";
 import { makeStyles } from '@material-ui/core/styles';
 import { useParams } from "react-router-dom"
@@ -18,6 +18,7 @@ import { useParams } from "react-router-dom"
 const useStyles = makeStyles((theme) => ({
   boton: {
     marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
   },
 }))
 

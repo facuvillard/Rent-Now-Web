@@ -9,6 +9,7 @@ import { createComplejoApi } from "../../../../api/complejos";
 import { RegisterSuccessComplejo } from "./RegisterSuccessComplejo";
 import AlertCustom from "components/utils/AlertCustom/AlertCustom";
 import firebase from "firebase";
+import Ubicacion from "./Steps/Ubicacion/Ubicacion";
 
 const phoneRegex = RegExp(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/);
 
@@ -79,7 +80,7 @@ const RegistrarComplejo = () => {
         >
           <RegisterComplejoStepper
             initialValues={{
-              nombre: "Sebastian",
+              nombre: "",
               email: "",
               telefono: "",
               redes: {
@@ -89,9 +90,10 @@ const RegistrarComplejo = () => {
               },
               fotos: [],
               ubicacion: {
-                calle: "Calle de prueba",
-                numero: 2134,
-                barrio: "Barrio de prueba",
+                calle: "",
+                numero: "",
+                barrio: "",
+                latlng: "",
               },
             }}
             onSubmit={(values) => {
@@ -106,6 +108,9 @@ const RegistrarComplejo = () => {
             </ComplejoStep>
             <ComplejoStep label="Fotos ">
               <Fotos docRef={docRef} />
+            </ComplejoStep>
+            <ComplejoStep label="Ubicacion">
+              <Ubicacion />
             </ComplejoStep>
           </RegisterComplejoStepper>
         </Paper>
@@ -126,8 +131,8 @@ const RegistrarComplejo = () => {
   );
 };
 
-const ComplejoStep = ({ children, errors, touched }) => {
-  return <>{React.cloneElement(children, { errors, touched })}</>;
+const ComplejoStep = ({ children, errors, touched, values }) => {
+  return <>{React.cloneElement(children, { errors, touched, values })}</>;
 };
 
 export default RegistrarComplejo;

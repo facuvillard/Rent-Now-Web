@@ -23,7 +23,7 @@ export default function Modal(props) {
   return (
     <DialogMaterial fullWidth maxWidth={size} open={open} onClose={handleClose}>
       <DialogTitle disableTypography className={classes.dialogTitle}>
-        <Typography variant="h4">{title}</Typography>
+        <Typography variant="h5">{title}</Typography>
       </DialogTitle>
       <DialogContent>{children}</DialogContent>
     </DialogMaterial>

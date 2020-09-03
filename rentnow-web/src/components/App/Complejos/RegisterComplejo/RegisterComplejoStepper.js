@@ -31,9 +31,6 @@ const RegisterComplejoStepper = ({ children, ...props }) => {
       await props.onSubmit(values);
       return;
     }
-    if (isFotosStep()) {
-      return;
-    }
     setActiveStep((step) => step + 1);
   };
 
