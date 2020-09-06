@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   TextField,
@@ -11,13 +11,14 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { useParams } from "react-router-dom";
 import LinkCustom from "components/utils/LinkCustom/LinkCustom";
 import AlertCustom from "components/utils/AlertCustom/AlertCustom";
-import { createEspacio } from "api/espacios";
+import { createEspacio, getDocRefApi } from "api/espacios";
 import {
   tiposEspacio,
   estados,
   tiposPiso,
   infraestructuras,
 } from "constants/espacios/constants";
+import { ImageUploader } from "components/App/Complejos/RegisterComplejo/Steps/Fotos/ImageUploader";
 
 export default function RegisterEspacios() {
   const { idComplejo } = useParams();
@@ -25,6 +26,20 @@ export default function RegisterEspacios() {
   const [openAlert, setOpenAlert] = useState(false);
   const [contentAlert, setContentAlert] = useState("");
   const [severityAlert, setSeverityAlert] = useState("");
+  const [docRef, setDocRef] = useState({});
+  const [foto, setFoto] = useState("");
+
+  useEffect(() => {
+    getDocRefApi().then((resp) => {
+      if (resp.status === "OK") {
+        setDocRef(resp.data);
+      }
+    });
+  }, []);
+
+  const getUrls = React.useCallback((urls) => {
+    setFoto(urls);
+  }, []);
 
   const registrarEspacio = (espacio) => {
     if (
@@ -43,19 +58,21 @@ export default function RegisterEspacios() {
       setOpenAlert(true);
     } else {
       setIsLoading(true);
-      createEspacio({ ...espacio, idComplejo: idComplejo }).then((response) => {
-        if (response.status === "OK") {
-          setIsLoading(false);
-          setContentAlert("El espacio ha sido registrado con éxito");
-          setSeverityAlert("success");
-          setOpenAlert(true);
-        } else {
-          setIsLoading(false);
-          setContentAlert("Error al registrar espacio");
-          setSeverityAlert("error");
-          setOpenAlert(true);
+      createEspacio(docRef, { ...espacio, idComplejo: idComplejo }).then(
+        (response) => {
+          if (response.status === "OK") {
+            setIsLoading(false);
+            setContentAlert("El espacio ha sido registrado con éxito");
+            setSeverityAlert("success");
+            setOpenAlert(true);
+          } else {
+            setIsLoading(false);
+            setContentAlert("Error al registrar espacio");
+            setSeverityAlert("error");
+            setOpenAlert(true);
+          }
         }
-      });
+      );
     }
   };
 
@@ -81,7 +98,7 @@ export default function RegisterEspacios() {
             descripcion: "",
           }}
           onSubmit={(values) => {
-            registrarEspacio({ ...values });
+            registrarEspacio({ ...values, foto: foto });
           }}
         >
           {({ values, handleChange }) => (
@@ -217,6 +234,13 @@ export default function RegisterEspacios() {
                     onChange={(e) => {
                       handleChange(e);
                     }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <ImageUploader
+                    maxFiles={1}
+                    url={`espacios/${docRef}/imagen-espacio`}
+                    getUrls={getUrls}
                   />
                 </Grid>
                 <Grid
