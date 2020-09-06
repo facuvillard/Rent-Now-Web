@@ -52,5 +52,10 @@ export const APP_ESPACIOS = [
 
 export const APP_REGISTRAR_ESPACIOS = [
   ...APP_ESPACIOS,
-  { nombre: "Registrar Espacios", ruta: Routes.REGISTRAR_ESPACIOS },
+  { nombre: "Registrar Espacios", ruta: Routes.REGISTRAR_ESPACIO },
 ];
+export const APP_MODIFICAR_ESPACIO = [
+  ...APP_ESPACIOS,
+  { nombre: "Modificar Espacios", ruta: Routes.MODIFICAR_ESPACIO },
+];
+
