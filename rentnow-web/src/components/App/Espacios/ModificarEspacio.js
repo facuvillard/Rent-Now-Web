@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   TextField,
   MenuItem,
   Button,
   CircularProgress,
+  TextareaAutosize,
 } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { useParams } from "react-router-dom";
 import LinkCustom from "components/utils/LinkCustom/LinkCustom";
 import AlertCustom from "components/utils/AlertCustom/AlertCustom";
-import { createEspacio } from "api/espacios";
+import { getEspacioById } from "api/espacios";
 import {
   tiposEspacio,
   estados,
@@ -20,43 +21,24 @@ import {
 } from "constants/espacios/constants";
 
 export default function ModificarEspacio() {
-  const { idComplejo } = useParams();
-  const [isLoading, setIsLoading] = useState(false);
+  const { idComplejo, idEspacio } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
   const [openAlert, setOpenAlert] = useState(false);
   const [contentAlert, setContentAlert] = useState("");
   const [severityAlert, setSeverityAlert] = useState("");
+  const [espacio, setEspacio] = useState({});
 
-  const registrarEspacio = (espacio) => {
-    if (
-      !espacio.nombre ||
-      !espacio.tipoEspacio ||
-      !espacio.capacidad ||
-      !espacio.tipoPiso ||
-      !espacio.infraestructura ||
-      !espacio.estado ||
-      !espacio.horaDesde ||
-      !espacio.horaHasta
-    ) {
-      setIsLoading(false);
-      setContentAlert("Faltan datos obligatorios!");
-      setSeverityAlert("warning");
-      setOpenAlert(true);
-    } else {
-      setIsLoading(true);
-      createEspacio({ ...espacio, idComplejo: idComplejo }).then((response) => {
-        if (response.status === "OK") {
-          setIsLoading(false);
-          setContentAlert("El espacio ha sido registrado con éxito");
-          setSeverityAlert("success");
-          setOpenAlert(true);
-        } else {
-          setIsLoading(false);
-          setContentAlert("Error al registrar espacio");
-          setSeverityAlert("error");
-          setOpenAlert(true);
-        }
-      });
-    }
+  useEffect(() => {
+    getEspacioById(idEspacio).then((resp) => {
+      if (resp.status === "OK") {
+        setEspacio(resp.data);
+        setIsLoading(false);
+      }
+    });
+  });
+
+  const modificarEspacio = (data) => {
+    console.log(data);
   };
 
   return (
@@ -70,18 +52,18 @@ export default function ModificarEspacio() {
       ) : (
         <Formik
           initialValues={{
-            nombre: "",
-            tipoEspacio: "",
-            capacidad: "",
-            tipoPiso: "",
-            horaDesde: "07:00",
-            horaHasta: "23:00",
-            estado: "",
-            infraestructura: "",
-            descripcion: "",
+            nombre: espacio.nombre,
+            tipoEspacio: espacio.tipoEspacio,
+            capacidad: espacio.capacidad,
+            tipoPiso: espacio.tipoPiso,
+            horaDesde: espacio.horaDesde,
+            horaHasta: espacio.horaHasta,
+            estado: espacio.estado,
+            infraestructura: espacio.infraestructura,
+            descripcion: espacio.descripcion,
           }}
           onSubmit={(values) => {
-            registrarEspacio({ ...values });
+            modificarEspacio({ ...values });
           }}
         >
           {({ values, handleChange }) => (
@@ -92,7 +74,7 @@ export default function ModificarEspacio() {
                     name="nombre"
                     label="Nombre*"
                     fullWidth
-                    value={values.Nombre}
+                    value={values.nombre}
                     onChange={(e) => {
                       handleChange(e);
                     }}
@@ -241,7 +223,7 @@ export default function ModificarEspacio() {
                     color="primary"
                     type="submit"
                   >
-                    Registrar
+                    Guardar
                   </Button>
                 </Grid>
               </Grid>
