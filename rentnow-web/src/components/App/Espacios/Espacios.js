@@ -87,7 +87,11 @@ export default function Espacios(props) {
                       component="img"
                       height="140"
                       width="140"
-                      image={espacio.foto ? espacio.foto[0] : imgPlaceHolder}
+                      image={
+                        espacio.foto.length === 0
+                          ? imgPlaceHolder
+                          : espacio.foto[0]
+                      }
                       title={espacio.nombre}
                     />
                     <CardContent>

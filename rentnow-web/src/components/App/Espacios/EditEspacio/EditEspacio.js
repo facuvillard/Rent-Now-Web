@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import BasicData from "components/App/Espacios/EditEspacio/Sections/BasicData";
+import Images from "components/App/Espacios/EditEspacio/Sections/Images";
 import LinkCustom from "components/utils/LinkCustom/LinkCustom";
 
 import { getEspacioById } from "api/espacios";
@@ -101,7 +102,7 @@ export default function EditEspacio() {
             <ExpansionPanelDetails>
               <Grid item xs={12}>
                 <hr className={classes.divider} />
-                <div>FOTOS DE COMPLEJO</div>
+                <Images fotos={espacio.foto} />
               </Grid>
             </ExpansionPanelDetails>
           </ExpansionPanel>
