@@ -5,7 +5,6 @@ import {
   MenuItem,
   Button,
   CircularProgress,
-  TextareaAutosize,
 } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -19,6 +18,7 @@ import {
   tiposPiso,
   infraestructuras,
 } from "constants/espacios/constants";
+import { ImageUploader } from "components/App/Complejos/RegisterComplejo/Steps/Fotos/ImageUploader";
 
 export default function ModificarEspacio() {
   const { idComplejo, idEspacio } = useParams();
@@ -27,19 +27,26 @@ export default function ModificarEspacio() {
   const [contentAlert, setContentAlert] = useState("");
   const [severityAlert, setSeverityAlert] = useState("");
   const [espacio, setEspacio] = useState({});
+  const [foto, setFoto] = useState(espacio.foto)
 
   useEffect(() => {
     getEspacioById(idEspacio).then((resp) => {
       if (resp.status === "OK") {
         setEspacio(resp.data);
         setIsLoading(false);
+        console.log(resp.data);
       }
     });
-  });
+  }, [idEspacio]);
+
+  const getUrls = React.useCallback((urls) => {
+    setFoto(urls);
+  }, []);
 
   const modificarEspacio = (data) => {
     console.log(data);
   };
+
 
   return (
     <>
@@ -101,10 +108,9 @@ export default function ModificarEspacio() {
                 <Grid item xs={6}>
                   <TextField
                     name="capacidad"
-                    type="number"
                     label="Capacidad*"
                     fullWidth
-                    values={values.capacidad}
+                    value={values.capacidad}
                     onChange={(e) => {
                       handleChange(e);
                     }}
@@ -199,6 +205,13 @@ export default function ModificarEspacio() {
                     onChange={(e) => {
                       handleChange(e);
                     }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <ImageUploader
+                    maxFiles={1 - espacio.foto.lenght }
+                    url={`espacios/${espacio.id}/imagen-espacio`}
+                    getUrls={getUrls}
                   />
                 </Grid>
                 <Grid

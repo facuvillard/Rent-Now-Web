@@ -116,7 +116,7 @@ function App() {
                 breadcrumbs={Breadcrumbs.APP_REGISTRAR_ESPACIOS}
               />
               <RouteWithSidebar
-                title="Registrar Espacios"
+                title="Modificar Espacios"
                 component={() => <ModificarEspacio />}
                 exact
                 path={Routes.MODIFICAR_ESPACIO}

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   CardContent,
   CardMedia,
-  CardActionArea,
   Card,
   CardActions,
   Typography,
@@ -16,7 +15,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import LinkCustom from "components/utils/LinkCustom/LinkCustom";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { useLocation, useParams, Redirect } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { getEspaciosByIdComplejo } from "api/espacios";
 import imgPlaceHolder from "assets/img/image-placeholder.png";
 import Modal from "components/utils/Dialog/Dialog";
@@ -55,7 +54,7 @@ export default function Espacios(props) {
       }
       setIsLoading(false);
     });
-  }, [isLoading]);
+  }, [isLoading, idComplejo]);
 
   return (
     <>
