@@ -18,7 +18,7 @@ import EditComplejos from "components/App/Complejos/EditComplejo/EditComplejos";
 import HomeComplejo from "components/App/Complejos/Complejos/HomeComplejo/HomeComplejo";
 import RegisterEspacios from "components/App/Espacios/RegisterEspacios";
 import Espacios from "components/App/Espacios/Espacios";
-import ModificarEspacio from "components/App/Espacios/ModificarEspacio"
+import EditEspacio from "components/App/Espacios/EditEspacio/EditEspacio"
 function App() {
   return (
     <div className="App">
@@ -117,7 +117,7 @@ function App() {
               />
               <RouteWithSidebar
                 title="Modificar Espacios"
-                component={() => <ModificarEspacio />}
+                component={() => <EditEspacio />}
                 exact
                 path={Routes.MODIFICAR_ESPACIO}
                 isPrivate={true}
