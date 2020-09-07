@@ -239,7 +239,7 @@ export default function RegisterEspacios() {
                 <Grid item xs={12}>
                   <ImageUploader
                     maxFiles={1}
-                    url={`espacios/${docRef}/imagen-espacio`}
+                    url={`espacios/${docRef.id}/imagen-espacio`}
                     getUrls={getUrls}
                   />
                 </Grid>
