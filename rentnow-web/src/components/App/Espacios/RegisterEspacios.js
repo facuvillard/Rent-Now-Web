@@ -122,7 +122,7 @@ export default function RegisterEspacios() {
                     type="number"
                     label="Capacidad*"
                     fullWidth
-                    values={values.capacidad}
+                    value={values.capacidad}
                     onChange={(e) => {
                       handleChange(e);
                     }}

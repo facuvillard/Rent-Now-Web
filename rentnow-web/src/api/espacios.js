@@ -89,3 +89,22 @@ export async function getEspacioById(id) {
     };
   }
 }
+
+export async function updateEspacioApi(espacio, idEspacio) {
+  try {
+    await firebase
+      .firestore()
+      .collection("espacios")
+      .doc(idEspacio)
+      .update(espacio);
+    return {
+      status: "OK",
+      message: "Los datos del espacio han sido actualizados con exito",
+    };
+  } catch (err) {
+    return {
+      status: "ERROR",
+      message: "Error al actualizar los datos del espacio",
+    };
+  }
+}
