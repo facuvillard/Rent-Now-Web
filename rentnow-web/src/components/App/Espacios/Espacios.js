@@ -83,6 +83,7 @@ export default function Espacios(props) {
               {espacios.map((espacio) => (
                 <Grid key={espacio.id} item xs={12} sm={3}>
                   <Card>
+
                     <CardMedia
                       component="img"
                       height="140"

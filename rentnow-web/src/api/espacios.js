@@ -1,15 +1,11 @@
 import firebase from "firebase";
 
-export async function createEspacio(espacio) {
+export async function createEspacio(docRef, espacio) {
   try {
-    await firebase
-      .firestore()
-      .collection("/espacios")
-      .doc()
-      .set({
-        ...espacio,
-        baja: false,
-      });
+    await docRef.set({
+      ...espacio,
+      baja: false,
+    });
     return { status: "OK", message: "Se registró el espacio con exito" };
   } catch (err) {
     return {
@@ -66,6 +62,7 @@ export async function bajaEspacioApi(idEspacio) {
   }
 }
 
+
 export async function getEspacioById(id) {
   try {
     const result = await firebase
@@ -90,6 +87,25 @@ export async function getEspacioById(id) {
   }
 }
 
+
+export async function getDocRefApi() {
+  try {
+    const result = await firebase.firestore().collection("/espacios").doc();
+    return {
+      status: "OK",
+      message: "Se trajo la referencia a documento de espacio con éxito",
+      data: result,
+    };
+  } catch (err) {
+    return {
+      status: "ERROR",
+      message: "Se produjo un error al traer la referencia a documento espacio",
+      error: err,
+    };
+  }
+}
+
+
 export async function updateEspacioApi(espacio, idEspacio) {
   try {
     await firebase
@@ -108,3 +124,4 @@ export async function updateEspacioApi(espacio, idEspacio) {
     };
   }
 }
+
