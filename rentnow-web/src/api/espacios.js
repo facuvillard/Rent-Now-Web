@@ -62,6 +62,32 @@ export async function bajaEspacioApi(idEspacio) {
   }
 }
 
+
+export async function getEspacioById(id) {
+  try {
+    const result = await firebase
+      .firestore()
+      .collection("espacios")
+      .doc(id)
+      .get();
+
+    const espacio = { id: result.id, ...result.data() };
+    return {
+      status: "OK",
+      message: "Se consulto el espacio con exito",
+      data: espacio,
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      status: "ERROR",
+      message: "Se produjo un error al consultar espacio",
+      error: err,
+    };
+  }
+}
+
+
 export async function getDocRefApi() {
   try {
     const result = await firebase.firestore().collection("/espacios").doc();
@@ -78,3 +104,24 @@ export async function getDocRefApi() {
     };
   }
 }
+
+
+export async function updateEspacioApi(espacio, idEspacio) {
+  try {
+    await firebase
+      .firestore()
+      .collection("espacios")
+      .doc(idEspacio)
+      .update(espacio);
+    return {
+      status: "OK",
+      message: "Los datos del espacio han sido actualizados con exito",
+    };
+  } catch (err) {
+    return {
+      status: "ERROR",
+      message: "Error al actualizar los datos del espacio",
+    };
+  }
+}
+

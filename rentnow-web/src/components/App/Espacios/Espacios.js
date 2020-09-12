@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   CardContent,
   CardMedia,
-  CardActionArea,
   Card,
   CardActions,
   Typography,
@@ -22,6 +21,7 @@ import imgPlaceHolder from "assets/img/image-placeholder.png";
 import Modal from "components/utils/Dialog/Dialog";
 import AlertCustom from "components/utils/AlertCustom/AlertCustom";
 import DeleteEspacio from "components/App/Espacios/DeleteEspacio";
+import EditIcon from "@material-ui/icons/Edit";
 
 const useStyles = makeStyles((theme) => ({
   addButton: {
@@ -54,7 +54,7 @@ export default function Espacios(props) {
       }
       setIsLoading(false);
     });
-  }, [isLoading]);
+  }, [isLoading, idComplejo]);
 
   return (
     <>
@@ -83,27 +83,30 @@ export default function Espacios(props) {
               {espacios.map((espacio) => (
                 <Grid key={espacio.id} item xs={12} sm={3}>
                   <Card>
-                    <CardActionArea>
-                      <CardMedia
-                        component="img"
-                        height="140"
-                        width="140"
-                        image={espacio.foto ? espacio.foto[0] : imgPlaceHolder}
-                        title={espacio.nombre}
-                      />
-                      <CardContent>
-                        <Typography gutterBottom variant="h5" component="h2">
-                          {espacio.nombre}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          color="textSecondary"
-                          component="p"
-                        >
-                          {espacio.tipoEspacio} - {espacio.infraestructura}
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
+
+                    <CardMedia
+                      component="img"
+                      height="140"
+                      width="140"
+                      image={
+                        espacio.foto.length === 0
+                          ? imgPlaceHolder
+                          : espacio.foto[0]
+                      }
+                      title={espacio.nombre}
+                    />
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {espacio.nombre}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        component="p"
+                      >
+                        {espacio.tipoEspacio} - {espacio.infraestructura}
+                      </Typography>
+                    </CardContent>
                     <CardActions>
                       <Button
                         startIcon={<DeleteIcon />}
@@ -114,6 +117,11 @@ export default function Espacios(props) {
                       >
                         Eliminar
                       </Button>
+                      <LinkCustom
+                        to={currentLocation + "/" + espacio.id + "/modificar"}
+                      >
+                        <Button startIcon={<EditIcon />}>Editar</Button>
+                      </LinkCustom>
                     </CardActions>
                   </Card>
                 </Grid>
