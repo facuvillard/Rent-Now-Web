@@ -22,6 +22,11 @@ const RegisterComplejoStepper = ({ children, ...props }) => {
   const isFotosStep = () => {
     return activeStep === 1; // 1 : fotos
   };
+
+  const isHorariosStep = () => {
+    return activeStep === 3
+  }
+
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
@@ -34,7 +39,7 @@ const RegisterComplejoStepper = ({ children, ...props }) => {
     setActiveStep((step) => step + 1);
   };
 
-  const BackNextBtns = () => {
+  const BackNextBtns = (props) => {
     return (
       <Grid
         container
@@ -52,7 +57,7 @@ const RegisterComplejoStepper = ({ children, ...props }) => {
           </Button>
         </Grid>
         <Grid item>
-          <Button variant="contained" color="primary" type="submit">
+          <Button variant="contained" disabled={props.disabled} color="primary" type="submit">
             {isLastStep() ? "Registrar" : "Siguiente"}
           </Button>
         </Grid>
@@ -95,7 +100,7 @@ const RegisterComplejoStepper = ({ children, ...props }) => {
               errors,
               touched
             })}
-            {isFotosStep() && values.fotos.length === 0 ? null : <BackNextBtns />}
+            {isFotosStep() && values.fotos.length === 0 ? null : <BackNextBtns disabled={isHorariosStep() && Object.keys(values.horarios).length < 8 } />}
           </Form>
         )}
       </Formik>
