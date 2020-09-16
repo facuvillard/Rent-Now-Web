@@ -10,6 +10,7 @@ import { RegisterSuccessComplejo } from "./RegisterSuccessComplejo";
 import AlertCustom from "components/utils/AlertCustom/AlertCustom";
 import firebase from "firebase";
 import Ubicacion from "./Steps/Ubicacion/Ubicacion";
+import Horarios from "./Steps/Horarios/Horarios"
 
 const phoneRegex = RegExp(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/);
 
@@ -95,6 +96,7 @@ const RegistrarComplejo = () => {
                 barrio: "",
                 latlng: "",
               },
+              horarios: {}
             }}
             onSubmit={(values) => {
               registerComplejo(values);
@@ -111,6 +113,9 @@ const RegistrarComplejo = () => {
             </ComplejoStep>
             <ComplejoStep label="Ubicacion">
               <Ubicacion />
+            </ComplejoStep>
+            <ComplejoStep label="Horarios">
+              <Horarios />
             </ComplejoStep>
           </RegisterComplejoStepper>
         </Paper>
