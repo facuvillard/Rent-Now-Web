@@ -5,6 +5,7 @@ import {
   Button,
   CircularProgress,
   MenuItem,
+  InputAdornment,
 } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import { updateEspacioApi } from "api/espacios";
@@ -16,6 +17,7 @@ import {
   tiposPiso,
   infraestructuras,
 } from "constants/espacios/constants";
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 
 const useStyles = makeStyles((theme) => ({
   boton: {
@@ -59,8 +61,8 @@ export default function BasicData(props) {
           tipoEspacio: props.espacio.tipoEspacio,
           capacidad: props.espacio.capacidad,
           tipoPiso: props.espacio.tipoPiso,
-          horaDesde: props.espacio.horaDesde,
-          horaHasta: props.espacio.horaHasta,
+          precioTurno: props.espacio.precioTurno,
+          precioMedioTurno: props.espacio.precioMedioTurno,
           estado: props.espacio.estado,
           infraestructura: props.espacio.infraestructura,
           descripcion: props.espacio.descripcion,
@@ -134,10 +136,17 @@ export default function BasicData(props) {
               </Grid>
               <Grid item xs={6} sm={3}>
                 <TextField
-                  name="horaDesde"
-                  type="time"
-                  label="Hora Desde*"
-                  value={values.horaDesde}
+                  name="precioTurno"
+                  type="number"
+                  label="Precio de turno*"
+                  value={values.precioTurno}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AttachMoneyIcon />
+                      </InputAdornment>
+                    ),
+                  }}
                   onChange={(e) => {
                     handleChange(e);
                   }}
@@ -146,10 +155,17 @@ export default function BasicData(props) {
               </Grid>
               <Grid item xs={6} sm={3}>
                 <TextField
-                  name="horaHasta"
-                  type="time"
-                  label="Hora Hasta*"
-                  value={values.horaHasta}
+                  name="precioMedioTurno"
+                  type="number"
+                  label="Precio de 1/2 turno"
+                  value={values.precioMedioTurno}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AttachMoneyIcon />
+                      </InputAdornment>
+                    ),
+                  }}
                   onChange={(e) => {
                     handleChange(e);
                   }}
