@@ -20,6 +20,9 @@ import RegisterEspacios from "components/App/Espacios/RegisterEspacios";
 import Espacios from "components/App/Espacios/Espacios";
 import EditEspacio from "components/App/Espacios/EditEspacio/EditEspacio";
 import Ayuda from "components/Ayuda/Ayuda";
+
+
+
 function App() {
   return (
     <div className="App">
@@ -59,7 +62,9 @@ function App() {
                 component={() => <Ayuda />}
                 path={Routes.AYUDA}
                 isPrivate={true}
-                breadcrumbs={Breadcrumbs.APP_COMPLEJOS}
+                permiso="read"
+                elemento="ayuda"
+                breadcrumbs={Breadcrumbs.APP_AYUDAS}
               />
 
               <RouteWithoutSidebar
