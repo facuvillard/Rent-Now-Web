@@ -11,12 +11,13 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ExitToAppTwoToneIcon from "@material-ui/icons/ExitToAppTwoTone";
 import logoHorizontal from "../../assets/img/logos/rentnow-letra.png";
 import { signOut } from "../../api/auth";
+import HelpIcon from '@material-ui/icons/Help';
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
-  
+
   navBar: {
     zIndex: theme.zIndex.drawer,
     transition: theme.transitions.create(["width", "margin"], {
@@ -91,13 +92,18 @@ function Navbar(props) {
               {props.isSideBarOpen ? <ChevronLeftIcon /> : <MenuIcon />}
             </IconButton>
             <Typography align="center" className={classes.title} />
-          
           </>
         ) : (
           <Typography align="left" className={classes.title}>
             <img src={logoHorizontal} alt="logo" className={classes.logo} />
           </Typography>
         )}
+
+        <Link to="/app/ayuda" className={classes.link}>
+          <IconButton>
+            <HelpIcon />
+          </IconButton>
+        </Link>
 
         <Link to="/login" className={classes.link}>
           <IconButton onClick={handleLogout}>
