@@ -69,7 +69,7 @@ const EditComplejos = () => {
         </Grid>
       ) : (
           <>
-            <ExpansionPanel className={classes.expansionPanel}>
+            <ExpansionPanel className={classes.expansionPanel} defaultExpanded={true}>
               <ExpansionPanelSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1a-content"
