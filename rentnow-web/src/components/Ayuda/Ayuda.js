@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Ayuda(props) {
   const classes = useStyles();
   const { currentUser } = useContext(AuthContext);
-
+  console.log(currentUser)
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [alertParams, setAlertParams] = useState({
@@ -37,9 +37,15 @@ export default function Ayuda(props) {
   });
 
   const handleSubmit = (values) => {
-    const { motivo, descripcion } = values;
     setIsLoading(true);
-
+    const { motivo, descripcion } = values;
+    const mensaje = { remitente: currentUser.email, motivo, descripcion };
+    const formatedData = {
+      destinatario: "facuvillard@gmail.com",
+      asunto: "Ayuda con Rent Now",
+      contenido: JSON.stringify(mensaje),
+      adjuntos: null,
+    };
     if (motivo === "" || descripcion === "") {
       setAlertParams({
         ...alertParams,
@@ -48,6 +54,26 @@ export default function Ayuda(props) {
       });
       setOpen(true);
       setIsLoading(false);
+    } else {
+      sendEmailApi(formatedData).then((resp) => {
+        if (resp.status === "OK") {
+          setAlertParams({
+            ...alertParams,
+            text: "Consulta enviada con éxito!",
+            type: "success",
+          });
+          setOpen(true);
+          setIsLoading(false);
+        } else {
+          setAlertParams({
+            ...alertParams,
+            text: "Error al enviar consulta!",
+            type: "error",
+          });
+          setOpen(true);
+          setIsLoading(false);
+        }
+      });
     }
   };
   return (
@@ -82,7 +108,6 @@ export default function Ayuda(props) {
                       value="Error en el sistema"
                       required
                       as={Radio}
-                      multiline
                       rows={6}
                     />
                     Error en el sistema
@@ -96,6 +121,16 @@ export default function Ayuda(props) {
                       as={Radio}
                     />
                     Dudas respecto al sistema
+                  </Typography>
+                  <Typography component={"label"} variant={"body1"}>
+                    <Field
+                      type="radio"
+                      name="motivo"
+                      value="Alta de complejo"
+                      required
+                      as={Radio}
+                    />
+                    Quiero solicitar el alta de mi complejo
                   </Typography>
                   <Typography component={"label"} variant={"body1"}>
                     <Field
