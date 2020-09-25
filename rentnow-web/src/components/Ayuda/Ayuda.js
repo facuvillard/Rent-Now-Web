@@ -27,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
 export default function Ayuda(props) {
   const classes = useStyles();
   const { currentUser } = useContext(AuthContext);
-  console.log(currentUser)
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [alertParams, setAlertParams] = useState({
@@ -161,11 +160,16 @@ export default function Ayuda(props) {
                 alignItems="center"
               >
                 <Grid item xs={2}>
-                  <Button color="primary" variant="contained" type="submit">
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    type="submit"
+                    disabled={isLoading}
+                  >
                     {isLoading ? (
                       <CircularProgress color="secondary" />
                     ) : (
-                      "Aceptar"
+                      "Enviar"
                     )}
                   </Button>
                 </Grid>
