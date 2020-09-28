@@ -9,6 +9,7 @@ export const LOGIN = "/login"
 export const FAQ = "/faq"
 
 //APP
+export const AYUDA = `${APP}/ayuda`
 export const COMPLEJOS = `${APP}/complejos`
 export const REGISTRAR_COMPLEJO = `${APP}/complejos/registrar`
 export const COMPLEJO = `${APP}/complejos/:idComplejo`

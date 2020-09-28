@@ -12,6 +12,7 @@ import { useParams } from "react-router-dom";
 import ImageVisualizer from "components/App/Complejos/EditComplejo/Sections/Images/ImageVisualizer";
 import DeleteComplejo from "components/App/Complejos/EditComplejo/Sections/DeleteComplejoRequest/DeleteComplejo";
 import Location from "components/App/Complejos/EditComplejo/Sections/Location/Location"
+import Days from "components/App/Complejos/EditComplejo/Sections/DaysAndSchedule/Days"
 
 const useStyles = makeStyles((theme) => ({
   expansionPanel: {
@@ -68,7 +69,7 @@ const EditComplejos = () => {
         </Grid>
       ) : (
           <>
-            <ExpansionPanel className={classes.expansionPanel}>
+            <ExpansionPanel className={classes.expansionPanel} defaultExpanded={true}>
               <ExpansionPanelSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1a-content"
@@ -134,7 +135,7 @@ const EditComplejos = () => {
               <ExpansionPanelDetails>
                 <Grid item xs={12}>
                   <hr className={classes.divider} />
-                  <Typography>Aqui van los datos de DIAS Y HORARIOS</Typography>
+                  <Days horarios={complejo.horarios}/>
                 </Grid>
               </ExpansionPanelDetails>
             </ExpansionPanel>

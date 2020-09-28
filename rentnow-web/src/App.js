@@ -20,6 +20,10 @@ import RegisterEspacios from "components/App/Espacios/RegisterEspacios";
 import Espacios from "components/App/Espacios/Espacios";
 import EditEspacio from "components/App/Espacios/EditEspacio/EditEspacio";
 import ReservasByEspacio from "components/App/Reservas/ReservaByEspacio/ReservasByEspacio";
+import Ayuda from "components/Ayuda/Ayuda";
+
+
+
 
 function App() {
   return (
@@ -52,6 +56,17 @@ function App() {
                 permiso="admin"
                 elemento="complejo"
                 breadcrumbs={Breadcrumbs.ADMIN_COMPLEJOS}
+              />
+
+               <RouteWithoutSidebar
+                title="Ayuda"
+                exact
+                component={() => <Ayuda />}
+                path={Routes.AYUDA}
+                isPrivate={true}
+                permiso="read"
+                elemento="ayuda"
+                breadcrumbs={Breadcrumbs.APP_AYUDAS}
               />
 
               <RouteWithoutSidebar
