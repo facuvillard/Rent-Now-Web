@@ -12,6 +12,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import GroupIcon from "@material-ui/icons/Group";
 import Settings from "@material-ui/icons/Settings";
 import SportsSoccerIcon from "@material-ui/icons/SportsSoccer";
+import TodayIcon from '@material-ui/icons/Today';
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 import { Can } from "Auth/can";
@@ -129,6 +130,7 @@ const Sidebar = (props) => {
       <Divider />
       <div className={classes.listContainer}>
         <List style={{ flexGrow: "1" }}>
+          {/* ADMIN */}
           <SideBarButton
             permiso="admin"
             elemento="complejo"
@@ -143,6 +145,17 @@ const Sidebar = (props) => {
             icon={<GroupIcon className={classes.link} />}
             text="Usuarios"
           />
+
+          {/* APP */}
+          <Can I="read" a="espacio">
+            <SideBarButton
+              permiso="read"
+              elemento="reserva"
+              ruta={`/app/complejos/${props.params.idComplejo}/calendario`}
+              icon={<TodayIcon className={classes.link} />}
+              text="Calendario"
+            />
+          </Can>
           <Can I="read" a="espacio">
             <SideBarButton
               permiso="read"

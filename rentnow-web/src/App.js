@@ -18,7 +18,9 @@ import EditComplejos from "components/App/Complejos/EditComplejo/EditComplejos";
 import HomeComplejo from "components/App/Complejos/Complejos/HomeComplejo/HomeComplejo";
 import RegisterEspacios from "components/App/Espacios/RegisterEspacios";
 import Espacios from "components/App/Espacios/Espacios";
-import EditEspacio from "components/App/Espacios/EditEspacio/EditEspacio"
+import EditEspacio from "components/App/Espacios/EditEspacio/EditEspacio";
+import ReservasByEspacio from "components/App/Reservas/ReservaByEspacio/ReservasByEspacio";
+
 function App() {
   return (
     <div className="App">
@@ -124,6 +126,16 @@ function App() {
                 permiso="create"
                 elemento="espacio"
                 breadcrumbs={Breadcrumbs.APP_MODIFICAR_ESPACIO}
+              />
+              <RouteWithSidebar
+                title="Calendario de Reservas"
+                component={() => <ReservasByEspacio />}
+                exact
+                path={Routes.CALENDARIO}
+                isPrivate={true}
+                permiso="read"
+                elemento="reserva"
+                breadcrumbs={Breadcrumbs.APP_COMPLEJO_CALENDARIO}
               />
               <Route path="*" exact component={() => <Landing />} />
             </Switch>
