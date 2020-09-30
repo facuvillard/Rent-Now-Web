@@ -17,6 +17,7 @@ import AlarmOffIcon from "@material-ui/icons/AlarmOff";
 import { useParams } from "react-router-dom";
 import { registerReservaApi, getReservasByWeekAndEspacio } from "api/reservas";
 import * as constants from "constants/reservas/constants";
+import RegisterCliente from "components/App/Reservas/RegisterReserva/RegisterCliente";
 
 const RegisterReserva = ({ espacio }) => {
   const [fechaInicio, setFechaInicio] = useState(moment().toDate());
@@ -117,7 +118,7 @@ const RegisterReserva = ({ espacio }) => {
 
         hoursToBlock.push(reserva.fechaInicio);
       });
-     
+
       setTimesToExclude(hoursToBlock);
     });
   }, [fechaInicio]);
@@ -269,6 +270,9 @@ const RegisterReserva = ({ espacio }) => {
             }
             label="Es fijo?"
           />
+        </Grid>
+        <Grid md xs={12}>
+          <RegisterCliente />
         </Grid>
         <Grid item xs={12}>
           <Typography>
