@@ -20,6 +20,8 @@ import * as constants from "constants/reservas/constants";
 import RegisterCliente from "components/App/Reservas/RegisterReserva/RegisterCliente";
 
 const RegisterReserva = ({ espacio }) => {
+  const [esClienteNuevo, setEsClienteNuevo] = useState(false);
+  const [cliente, setCliente] = useState({});
   const [fechaInicio, setFechaInicio] = useState(moment().toDate());
   const [fechaFin, setFechaFin] = useState(moment().add(1, "hour").toDate());
   const [duracion, setDuracion] = useState(1);
@@ -271,8 +273,13 @@ const RegisterReserva = ({ espacio }) => {
             label="Es fijo?"
           />
         </Grid>
-        <Grid md xs={12}>
-          <RegisterCliente />
+        <Grid item md={12} xs={12}>
+          <RegisterCliente
+            esClienteNuevo={esClienteNuevo}
+            setEsClienteNuevo={setEsClienteNuevo}
+            cliente={cliente}
+            setCliente={setCliente}
+          />
         </Grid>
         <Grid item xs={12}>
           <Typography>
