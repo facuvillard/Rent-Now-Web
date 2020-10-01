@@ -74,9 +74,11 @@ const BasicData = (props) => {
               <Field
                 name="nombre"
                 label="Nombre"
-                disabled
                 fullWidth
                 as={TextField}
+                InputProps={{
+                  readOnly: true,
+                }}
               />
             </Grid>
             <Grid item md={6}>

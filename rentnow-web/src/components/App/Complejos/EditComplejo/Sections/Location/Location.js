@@ -34,19 +34,64 @@ const Location = (props) => {
                     </LoadScript>
                 </Grid>
                 <Grid item xs={5}>
-                    <TextField disabled id="provincia" label="Provincia" fullWidth margin='normal' value={complejo.provincia} />
+                    <TextField
+                        id="provincia"
+                        label="Provincia"
+                        fullWidth
+                        margin='normal'
+                        value={complejo.provincia}
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                    />
                 </Grid>
                 <Grid item xs={5}>
-                    <TextField disabled id="ciudad" label="Ciudad" fullWidth margin='normal' value={complejo.ciudad} />
+                    <TextField
+                        id="ciudad"
+                        label="Ciudad"
+                        fullWidth
+                        margin='normal'
+                        value={complejo.ciudad}
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                    />
                 </Grid>
                 <Grid item xs={4}>
-                    <TextField disabled id="calle" label="Calle" fullWidth margin='normal' value={complejo.calle} />
+                    <TextField
+                        id="calle"
+                        label="Calle"
+                        fullWidth
+                        margin='normal'
+                        value={complejo.calle}
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                    />
                 </Grid>
                 <Grid item xs={2}>
-                    <TextField disabled id="numero" label="Numero" fullWidth margin='normal' value={complejo.numero} />
+                    <TextField
+                        id="numero"
+                        label="Numero"
+                        fullWidth
+                        margin='normal'
+                        value={complejo.numero}
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                    />
                 </Grid>
                 <Grid item xs={4}>
-                    <TextField disabled id="barrio" label="Barrio" fullWidth margin='normal' value={complejo.barrio} />
+                    <TextField
+                        id="barrio"
+                        label="Barrio"
+                        fullWidth
+                        margin='normal'
+                        value={complejo.barrio}
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                    />
                 </Grid>
             </Grid>
             <Grid container justify="center" className={classes.alert}>
