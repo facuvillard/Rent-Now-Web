@@ -18,6 +18,11 @@ export default function RegisterCliente(props) {
   const [encontroCliente, setEncontroCliente] = useState(false);
   const [cliente, setCliente] = useState({});
 
+  useEffect(() => {
+    setEncontroCliente(false);
+    setCliente({ ...cliente, numTelefono: null });
+  }, [esClienteNuevo]);
+
   const buscarCliente = () => {
     setIsSearching(true);
     getClienteByNumeroTelefono(idComplejo, numTelefono).then((resp) => {
@@ -39,29 +44,35 @@ export default function RegisterCliente(props) {
           <h3>Datos del cliente: </h3>
         </Grid>
         <Grid item md={6} xs={12}>
-          <TextField
-            disabled={isSearching || esClienteNuevo}
-            fullWidth
-            required
-            label="Ingresar numero de telefono sin 0 y 15"
-            type="number"
-            variant="outlined"
-            onChange={(e) => {
-              setNumTelefono(e.target.value);
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    disabled={isSearching || esClienteNuevo}
-                    onClick={buscarCliente}
-                  >
-                    {isSearching ? <CircularProgress /> : <SearchIcon />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
+          {!esClienteNuevo ? (
+            <TextField
+              disabled={isSearching || esClienteNuevo}
+              fullWidth
+              required
+              label="Ingresar numero de telefono sin 0 y 15"
+              type="number"
+              variant="outlined"
+              onChange={(e) => {
+                setNumTelefono(e.target.value);
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      disabled={isSearching || esClienteNuevo}
+                      onClick={buscarCliente}
+                    >
+                      {isSearching ? <CircularProgress /> : <SearchIcon />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          ) : (
+            <p>
+              Ingrese los datos del nuevo <b>cliente:</b>
+            </p>
+          )}
         </Grid>
         <Grid item md={6}>
           <FormControlLabel
@@ -80,15 +91,11 @@ export default function RegisterCliente(props) {
         spacing={4}
         style={encontroCliente ? {} : { display: "none" }}
       >
-        <Grid item md={6}>
-          <TextField fullWidth variant="outlined" disabled label="Nombre">
-            {cliente.nombre}
-          </TextField>
+        <Grid item md={3}>
+          <b>Nombre: </b> {cliente.nombre}
         </Grid>
-        <Grid item md={6}>
-          <TextField fullWidth variant="outlined" disabled label="Apellido">
-            {cliente.apellido}
-          </TextField>
+        <Grid item md={3}>
+          <b>Apellido: </b> {cliente.apellido}
         </Grid>
       </Grid>
 
@@ -97,11 +104,6 @@ export default function RegisterCliente(props) {
         container
         spacing={4}
       >
-        <Grid item md={12}>
-          <span>
-            Ingrese los datos del nuevo <b>cliente</b>:
-          </span>
-        </Grid>
         <Grid item md={4}>
           <TextField
             fullWidth
