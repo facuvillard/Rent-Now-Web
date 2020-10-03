@@ -1,46 +1,66 @@
 import React, { useState, useEffect } from "react";
-import { Grid, TextField, Checkbox, FormControlLabel } from "@material-ui/core";
-import { Autocomplete } from "@material-ui/lab";
-
-const clientes = [
-  { nombre: "Facundo", apellido: "Villard", numeroContacto: 3825438378 },
-  { nombre: "Juan Pablo", apellido: "Bergues", numeroContacto: 3829492339 },
-  { nombre: "Sebastian", apellido: "Magnaldi", numeroContacto: 32132 },
-];
+import {
+  Grid,
+  TextField,
+  Checkbox,
+  FormControlLabel,
+  InputAdornment,
+  IconButton,
+  CircularProgress,
+} from "@material-ui/core";
+import SearchIcon from "@material-ui/icons/Search";
+import { getClienteByNumeroTelefono } from "api/complejos";
 
 export default function RegisterCliente(props) {
-  const { esClienteNuevo, setEsClienteNuevo, cliente, setCliente } = props;
+  const { setEsClienteNuevo, esClienteNuevo, idComplejo } = props;
+  const [numTelefono, setNumTelefono] = useState();
+  const [isSearching, setIsSearching] = useState(false);
+  const [encontroCliente, setEncontroCliente] = useState(false);
+  const [cliente, setCliente] = useState({});
 
-  const onChangeOption = (selection) => {
-    setCliente(selection);
+  const buscarCliente = () => {
+    setIsSearching(true);
+    getClienteByNumeroTelefono(idComplejo, numTelefono).then((resp) => {
+      if (resp.status === "OK") {
+        setCliente(resp.data[0]);
+        setIsSearching(false);
+        setEncontroCliente(true);
+      } else {
+        setIsSearching(false);
+        setEncontroCliente(false);
+        alert(resp.error);
+      }
+    });
   };
-
-  useEffect(() => {
-    setCliente({});
-  }, [esClienteNuevo]);
-
   return (
     <>
-      <Grid container spacing={4}>
+      <Grid container spacing={3}>
         <Grid item md={12} xs={12}>
           <h3>Datos del cliente: </h3>
         </Grid>
         <Grid item md={6} xs={12}>
-          <Autocomplete
-            freeSolo
-            disabled={esClienteNuevo}
-            options={clientes}
-            getOptionLabel={(option) => option.nombre + " " + option.apellido}
-            onChange={(e, option) => {
-              onChangeOption(option);
+          <TextField
+            disabled={isSearching || esClienteNuevo}
+            fullWidth
+            required
+            label="Ingresar numero de telefono sin 0 y 15"
+            type="number"
+            variant="outlined"
+            onChange={(e) => {
+              setNumTelefono(e.target.value);
             }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Buscar cliente..."
-                variant="outlined"
-              />
-            )}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    disabled={isSearching || esClienteNuevo}
+                    onClick={buscarCliente}
+                  >
+                    {isSearching ? <CircularProgress /> : <SearchIcon />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
         </Grid>
         <Grid item md={6}>
@@ -53,6 +73,22 @@ export default function RegisterCliente(props) {
             }
             label="¿Es cliente nuevo?"
           />
+        </Grid>
+      </Grid>
+      <Grid
+        container
+        spacing={4}
+        style={encontroCliente ? {} : { display: "none" }}
+      >
+        <Grid item md={6}>
+          <TextField fullWidth variant="outlined" disabled label="Nombre">
+            {cliente.nombre}
+          </TextField>
+        </Grid>
+        <Grid item md={6}>
+          <TextField fullWidth variant="outlined" disabled label="Apellido">
+            {cliente.apellido}
+          </TextField>
         </Grid>
       </Grid>
 
@@ -72,9 +108,7 @@ export default function RegisterCliente(props) {
             required
             label="Nombre"
             variant="outlined"
-            onChange={(e) => {
-              setCliente({ ...cliente, nombre: e.target.value });
-            }}
+            onChange={(e) => {}}
           />
         </Grid>
         <Grid item md={4}>
@@ -83,9 +117,7 @@ export default function RegisterCliente(props) {
             required
             label="Apellido"
             variant="outlined"
-            onChange={(e) => {
-              setCliente({ ...cliente, apellido: e.target.value });
-            }}
+            onChange={(e) => {}}
           />
         </Grid>
         <Grid item md={4}>
@@ -94,9 +126,7 @@ export default function RegisterCliente(props) {
             required
             label="Numero contacto"
             variant="outlined"
-            onChange={(e) => {
-              setCliente({ ...cliente, numeroContacto: e.target.value });
-            }}
+            onChange={(e) => {}}
           />
         </Grid>
       </Grid>

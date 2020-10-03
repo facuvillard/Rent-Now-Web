@@ -149,3 +149,26 @@ export async function getComplejosById(id) {
     };
   }
 }
+
+export async function getClienteByNumeroTelefono(idComplejo, numeroTelefono) {
+  try {
+    const result = await firebase
+      .firestore()
+      .collection("complejos/" + idComplejo + "/clientes")
+      .where("numeroTelefono", "==", numeroTelefono)
+      .get();
+
+    const cliente = result.docs.map((docs) => docs.data());
+    return {
+      status: "OK",
+      message: "Se encontro el cliente con exito",
+      data: cliente,
+    };
+  } catch (err) {
+    return {
+      status: "Error",
+      message: "Se encontro el cliente con exito",
+      error: err,
+    };
+  }
+}

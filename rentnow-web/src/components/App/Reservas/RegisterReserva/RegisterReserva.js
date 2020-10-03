@@ -21,7 +21,6 @@ import RegisterCliente from "components/App/Reservas/RegisterReserva/RegisterCli
 
 const RegisterReserva = ({ espacio }) => {
   const [esClienteNuevo, setEsClienteNuevo] = useState(false);
-  const [cliente, setCliente] = useState({});
   const [fechaInicio, setFechaInicio] = useState(moment().toDate());
   const [fechaFin, setFechaFin] = useState(moment().add(1, "hour").toDate());
   const [duracion, setDuracion] = useState(1);
@@ -277,8 +276,7 @@ const RegisterReserva = ({ espacio }) => {
           <RegisterCliente
             esClienteNuevo={esClienteNuevo}
             setEsClienteNuevo={setEsClienteNuevo}
-            cliente={cliente}
-            setCliente={setCliente}
+            idComplejo={idComplejo}
           />
         </Grid>
         <Grid item xs={12}>
