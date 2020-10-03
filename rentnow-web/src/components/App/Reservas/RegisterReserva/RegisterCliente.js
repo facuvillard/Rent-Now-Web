@@ -43,6 +43,17 @@ export default function RegisterCliente(props) {
         <Grid item md={12} xs={12}>
           <h3>Datos del cliente: </h3>
         </Grid>
+        <Grid item md={12}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={esClienteNuevo}
+                onChange={() => setEsClienteNuevo(!esClienteNuevo)}
+              />
+            }
+            label="¿Es cliente nuevo?"
+          />
+        </Grid>
         <Grid item md={6} xs={12}>
           {!esClienteNuevo ? (
             <TextField
@@ -69,21 +80,8 @@ export default function RegisterCliente(props) {
               }}
             />
           ) : (
-            <p>
-              Ingrese los datos del nuevo <b>cliente:</b>
-            </p>
+            ""
           )}
-        </Grid>
-        <Grid item md={6}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={esClienteNuevo}
-                onChange={() => setEsClienteNuevo(!esClienteNuevo)}
-              />
-            }
-            label="¿Es cliente nuevo?"
-          />
         </Grid>
       </Grid>
       <Grid
@@ -104,6 +102,11 @@ export default function RegisterCliente(props) {
         container
         spacing={4}
       >
+        <Grid item md={12}>
+          <p>
+            Ingrese los datos del nuevo <b>cliente</b>:{" "}
+          </p>
+        </Grid>
         <Grid item md={4}>
           <TextField
             fullWidth
