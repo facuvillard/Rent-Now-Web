@@ -178,4 +178,36 @@ export async function getClienteByNumeroTelefono(idComplejo, numTelefono) {
   }
 }
 
-export async function addCliente(idComplejo, cliente) {}
+export async function addClienteToComplejo(idComplejo, cliente) {
+  try {
+    const result = await getClienteByNumeroTelefono(
+      idComplejo,
+      cliente.numTelefono
+    );
+    if (result.status === "OK") {
+      return {
+        status: "ERROR",
+        message: "Cliente ya existe!",
+      };
+    } else {
+      const result = await firebase
+        .firestore()
+        .collection("complejos")
+        .doc(idComplejo)
+        .collection("clientes")
+        .doc()
+        .set({ ...cliente });
+
+      return {
+        status: "OK",
+        message: "Cliente registrado con éxito",
+      };
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      status: "ERROR",
+      message: "Error al registrar nuevo cliente",
+    };
+  }
+}

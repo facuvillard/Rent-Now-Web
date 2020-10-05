@@ -16,6 +16,7 @@ import AlarmIcon from "@material-ui/icons/Alarm";
 import AlarmOffIcon from "@material-ui/icons/AlarmOff";
 import { useParams } from "react-router-dom";
 import { registerReservaApi, getReservasByWeekAndEspacio } from "api/reservas";
+import { addClienteToComplejo } from "api/complejos";
 import * as constants from "constants/reservas/constants";
 import RegisterCliente from "components/App/Reservas/RegisterReserva/RegisterCliente";
 
@@ -157,17 +158,29 @@ const RegisterReserva = ({ espacio }) => {
       reserva.cliente.apellido === "" ||
       reserva.cliente.numTelefono === ""
     ) {
-      //TO DO: NOTIFICAR QUE NO SE SELECCIONO CLIENTE O LOS CAMPOS DEL CLIENTE ESTAN VACIOS
+      alert(
+        "Cliente no seleccionado, por favor seleccione un cliente o en caso de no existir cliente registrelo"
+      );
     } else {
       if (esClienteNuevo) {
-        //TO DO: Agregar cliente a complejo y luego registrar reserva
+        const result = await addClienteToComplejo(idComplejo, reserva.cliente);
+        if (result.status === "OK") {
+          const result = await registerReservaApi(reserva);
+          if (result.status === "OK") {
+            alert("Reserva creada y cliente registrado.");
+          } else {
+            alert("Error al crear reserva");
+          }
+        } else {
+          alert(result.message);
+        }
       } else {
-        //TO DO: Registrar solamente la reserva
+        const result = await registerReservaApi(reserva);
+        if (result.status === "OK") {
+          alert(result.message);
+        }
       }
     }
-
-    //const result = await registerReservaApi(reserva);
-    //alert(result.message);
   };
 
   return (

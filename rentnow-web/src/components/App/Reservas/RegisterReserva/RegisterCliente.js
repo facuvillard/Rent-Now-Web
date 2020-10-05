@@ -50,7 +50,7 @@ export default function RegisterCliente(props) {
       } else {
         setIsSearching(false);
         setEncontroCliente(false);
-        alert(resp.error);
+        alert("No se encontró cliente, registrelo.");
       }
     });
   };
