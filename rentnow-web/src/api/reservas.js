@@ -1,5 +1,6 @@
 import firebase from "firebase";
 import moment from "moment";
+
 export async function registerReservaApi(reserva) {
   const semana = moment(reserva.fechaInicio).week();
   const mes = moment(reserva.fechaInicio).month();
@@ -97,6 +98,25 @@ export async function getReservasSixWeeksAndEspacioRealTime(
       status: "ERROR",
       message: "Se produjo un error al registrar la reserva",
       error: err,
+    };
+  }
+}
+
+export async function updateReservaStateAndPayment(reserva, id) {
+  try {
+    await firebase
+      .firestore()
+      .collection("reservas")
+      .doc(id)
+      .update(reserva);
+    return {
+      status: "OK",
+      message: "Los datos de la reserva han sido actualizados con exito",
+    };
+  } catch (err) {
+    return {
+      status: "ERROR",
+      message: "Error al actualizar los datos de la reserva",
     };
   }
 }
