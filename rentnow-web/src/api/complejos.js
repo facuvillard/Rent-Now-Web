@@ -150,15 +150,20 @@ export async function getComplejosById(id) {
   }
 }
 
-export async function getClienteByNumeroTelefono(idComplejo, numeroTelefono) {
+export async function getClienteByNumeroTelefono(idComplejo, numTelefono) {
   try {
     const result = await firebase
       .firestore()
-      .collection("complejos/" + idComplejo + "/clientes")
-      .where("numeroTelefono", "==", numeroTelefono)
+      .collection("complejos")
+      .doc(idComplejo)
+      .collection("clientes")
+      .where("numTelefono", "==", numTelefono)
       .get();
 
     const cliente = result.docs.map((docs) => docs.data());
+    if (cliente.length === 0) {
+      throw "No existe usuario";
+    }
     return {
       status: "OK",
       message: "Se encontro el cliente con exito",
@@ -167,8 +172,10 @@ export async function getClienteByNumeroTelefono(idComplejo, numeroTelefono) {
   } catch (err) {
     return {
       status: "Error",
-      message: "Se encontro el cliente con exito",
+      message: "No se encontro el cliente buscado",
       error: err,
     };
   }
 }
+
+export async function addCliente(idComplejo, cliente) {}

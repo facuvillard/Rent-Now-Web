@@ -45,6 +45,11 @@ const RegisterReserva = ({ espacio }) => {
       descripcion: "",
     },
     estado: constants.estados.confirmada,
+    cliente: {
+      nombre: "",
+      apellido: "",
+      numTelefono: "",
+    },
   });
 
   const { idComplejo } = useParams();
@@ -147,8 +152,22 @@ const RegisterReserva = ({ espacio }) => {
   };
 
   const handleRegistroReserva = async () => {
-    const result = await registerReservaApi(reserva);
-    alert(result.message);
+    if (
+      reserva.cliente.nombre === "" ||
+      reserva.cliente.apellido === "" ||
+      reserva.cliente.numTelefono === ""
+    ) {
+      //TO DO: NOTIFICAR QUE NO SE SELECCIONO CLIENTE O LOS CAMPOS DEL CLIENTE ESTAN VACIOS
+    } else {
+      if (esClienteNuevo) {
+        //TO DO: Agregar cliente a complejo y luego registrar reserva
+      } else {
+        //TO DO: Registrar solamente la reserva
+      }
+    }
+
+    //const result = await registerReservaApi(reserva);
+    //alert(result.message);
   };
 
   return (
@@ -277,11 +296,12 @@ const RegisterReserva = ({ espacio }) => {
             esClienteNuevo={esClienteNuevo}
             setEsClienteNuevo={setEsClienteNuevo}
             idComplejo={idComplejo}
+            reserva={reserva}
+            setReserva={setReserva}
           />
         </Grid>
         <Grid item xs={12}>
           <Typography>
-            {" "}
             El monto a abonar es <b>${reserva.monto}</b>
           </Typography>
         </Grid>

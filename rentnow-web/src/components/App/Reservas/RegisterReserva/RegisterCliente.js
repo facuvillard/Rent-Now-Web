@@ -12,22 +12,39 @@ import SearchIcon from "@material-ui/icons/Search";
 import { getClienteByNumeroTelefono } from "api/complejos";
 
 export default function RegisterCliente(props) {
-  const { setEsClienteNuevo, esClienteNuevo, idComplejo } = props;
+  const {
+    setEsClienteNuevo,
+    esClienteNuevo,
+    idComplejo,
+    setReserva,
+    reserva,
+  } = props;
   const [numTelefono, setNumTelefono] = useState();
   const [isSearching, setIsSearching] = useState(false);
   const [encontroCliente, setEncontroCliente] = useState(false);
-  const [cliente, setCliente] = useState({});
 
   useEffect(() => {
     setEncontroCliente(false);
-    setCliente({ ...cliente, numTelefono: null });
+    setNumTelefono("");
+    setReserva({
+      ...reserva,
+      cliente: { nombre: "", apellido: "", numTelefono: "" },
+    });
   }, [esClienteNuevo]);
 
   const buscarCliente = () => {
     setIsSearching(true);
     getClienteByNumeroTelefono(idComplejo, numTelefono).then((resp) => {
       if (resp.status === "OK") {
-        setCliente(resp.data[0]);
+        const cliente = resp.data[0];
+        setReserva({
+          ...reserva,
+          cliente: {
+            nombre: cliente.nombre,
+            apellido: cliente.apellido,
+            numTelefono: cliente.numTelefono,
+          },
+        });
         setIsSearching(false);
         setEncontroCliente(true);
       } else {
@@ -36,6 +53,17 @@ export default function RegisterCliente(props) {
         alert(resp.error);
       }
     });
+  };
+
+  const onChangeNumTelefono = (e) => {
+    if (encontroCliente) {
+      setEncontroCliente(false);
+      setReserva({
+        ...reserva,
+        cliente: { nombre: "", apellido: "", numTelefono: "" },
+      });
+    }
+    setNumTelefono(e.target.value);
   };
   return (
     <>
@@ -64,7 +92,7 @@ export default function RegisterCliente(props) {
               type="number"
               variant="outlined"
               onChange={(e) => {
-                setNumTelefono(e.target.value);
+                onChangeNumTelefono(e);
               }}
               InputProps={{
                 endAdornment: (
@@ -90,10 +118,10 @@ export default function RegisterCliente(props) {
         style={encontroCliente ? {} : { display: "none" }}
       >
         <Grid item md={3}>
-          <b>Nombre: </b> {cliente.nombre}
+          <b>Nombre: </b> {reserva.cliente.nombre}
         </Grid>
         <Grid item md={3}>
-          <b>Apellido: </b> {cliente.apellido}
+          <b>Apellido: </b> {reserva.cliente.apellido}
         </Grid>
       </Grid>
 
@@ -104,7 +132,7 @@ export default function RegisterCliente(props) {
       >
         <Grid item md={12}>
           <p>
-            Ingrese los datos del nuevo <b>cliente</b>:{" "}
+            Ingrese los datos del nuevo <b>cliente</b>
           </p>
         </Grid>
         <Grid item md={4}>
@@ -113,7 +141,12 @@ export default function RegisterCliente(props) {
             required
             label="Nombre"
             variant="outlined"
-            onChange={(e) => {}}
+            onChange={(e) => {
+              setReserva({
+                ...reserva,
+                cliente: { ...reserva.cliente, nombre: e.target.value },
+              });
+            }}
           />
         </Grid>
         <Grid item md={4}>
@@ -122,16 +155,26 @@ export default function RegisterCliente(props) {
             required
             label="Apellido"
             variant="outlined"
-            onChange={(e) => {}}
+            onChange={(e) => {
+              setReserva({
+                ...reserva,
+                cliente: { ...reserva.cliente, apellido: e.target.value },
+              });
+            }}
           />
         </Grid>
         <Grid item md={4}>
           <TextField
             fullWidth
             required
-            label="Numero contacto"
+            label="Numero Telefono"
             variant="outlined"
-            onChange={(e) => {}}
+            onChange={(e) => {
+              setReserva({
+                ...reserva,
+                cliente: { ...reserva.cliente, numTelefono: e.target.value },
+              });
+            }}
           />
         </Grid>
       </Grid>
