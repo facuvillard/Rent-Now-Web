@@ -4,7 +4,8 @@ import { Checkbox, Grid, Typography, Button, TextField, MenuItem, } from '@mater
 import { Formik, Field, Form } from "formik";
 import InputAdornment from '@material-ui/core/InputAdornment';
 import moment from "moment";
-
+import firebase from "firebase";
+import * as constants from 'constants/reservas/constants'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -19,9 +20,36 @@ const useStyles = makeStyles((theme) => ({
 
 const UpdateReserva = (props) => {
     const classes = useStyles();
-    const posiblesEstados = props.posiblesEstados;
-
-    moment.locale('es'); 
+    const estadoActual = props.reserva.estados ? props.reserva.estados[props.reserva.estados.length - 1].estado : "";
+    const motivoActual = props.reserva.estados ? props.reserva.estados[props.reserva.estados.length - 1].motivo : "";
+    let posiblesEstados = []
+    switch (estadoActual) {
+        case "Confirmado":
+            posiblesEstados = ["Confirmado", "En Curso", "Cancelado", "Sin Concurrencia"]
+            break;
+        case "En Curso":
+            posiblesEstados = ["En Curso", "Finalizado", "Cancelado"]
+            break;
+        case "Creado":
+            posiblesEstados = ["Creado", "Confirmado", "Cancelado"]
+            break;
+        case "Cancelado":
+            posiblesEstados = ["Cancelado"]
+            break;
+        case "Sin Concurrencia":
+            posiblesEstados = ["Sin Concurrencia"]
+            break;
+        case "Finalizado":
+            posiblesEstados = ["Finalizado"]
+            break;
+        case "":
+            posiblesEstados = [""]
+            break;
+    }
+    const fechaActualizacion = new firebase.firestore.Timestamp.fromDate(
+        moment().toDate()
+    );
+    moment.locale('es');
     return (
         <>
             <Formik
@@ -36,13 +64,17 @@ const UpdateReserva = (props) => {
                     telefonoCliente: "2995969371",
                     monto: props.reserva.monto,
                     estaPagado: props.reserva.estaPagado,
-                    estado: props.reserva.estado,
-                    motivo: ""
+                    estado: estadoActual,
+                    estados: props.reserva.estados,
+                    motivo: motivoActual,
                 }}
                 onSubmit={async (values) => {
+                    if (estadoActual != values.estado || motivoActual != values.motivo){
+                        values.estados.push({ estado: values.estado, fecha: fechaActualizacion, motivo: values.motivo})
+                    }
                     props.updateHandler(values);
                     props.setOpen(false);
-                  }}
+                }}
             >
                 {({ values, handleChange }) => (
                     <Form>
@@ -61,7 +93,7 @@ const UpdateReserva = (props) => {
                                     margin='normal'
                                     InputProps={{
                                         readOnly: true,
-                                      }}
+                                    }}
                                 />
                             </Grid>
                             <Grid item xs={6}>
@@ -74,7 +106,7 @@ const UpdateReserva = (props) => {
                                     margin='normal'
                                     InputProps={{
                                         readOnly: true,
-                                      }}
+                                    }}
                                 />
                             </Grid>
                             <Grid item xs={6}>
@@ -87,7 +119,7 @@ const UpdateReserva = (props) => {
                                     margin='normal'
                                     InputProps={{
                                         readOnly: true,
-                                      }}
+                                    }}
                                 />
                             </Grid>
                             <Grid item xs={6}>
@@ -100,7 +132,7 @@ const UpdateReserva = (props) => {
                                     margin='normal'
                                     InputProps={{
                                         readOnly: true,
-                                      }}
+                                    }}
                                 />
                             </Grid>
                             <Grid item xs={6}>
@@ -113,7 +145,7 @@ const UpdateReserva = (props) => {
                                     margin='normal'
                                     InputProps={{
                                         readOnly: true,
-                                      }}
+                                    }}
                                 />
                             </Grid>
                             <Grid item xs={6}>
@@ -126,7 +158,7 @@ const UpdateReserva = (props) => {
                                     margin='normal'
                                     InputProps={{
                                         readOnly: true,
-                                      }}
+                                    }}
                                 />
                             </Grid>
                             <Grid item xs={6}>
@@ -140,7 +172,7 @@ const UpdateReserva = (props) => {
                                     InputProps={{
                                         startAdornment: <InputAdornment position="start">$</InputAdornment>,
                                         readOnly: true,
-                                      }}
+                                    }}
                                 />
                             </Grid>
                             <Grid item xs={6}>
@@ -153,7 +185,7 @@ const UpdateReserva = (props) => {
                                     margin='normal'
                                     onChange={(e) => {
                                         handleChange(e);
-                                      }}
+                                    }}
                                 >
                                     <MenuItem value="" disabled>
                                         <b><em>Estado</em></b>
@@ -167,17 +199,17 @@ const UpdateReserva = (props) => {
                             </Grid>
                             {values.estado === "Cancelado" ? (
                                 <Grid item xs={12}>
-                                <Field
-                                    name="observacion"
-                                    label="Observación"
-                                    fullWidth
-                                    as={TextField}
-                                    value={values.motivo}
-                                    margin='normal'
-                                    helperText="Detalle la razon por la cual la turno/reserva fue cancelado"
-                                />
-                            </Grid>
-                            ):(null)}
+                                    <Field
+                                        name="motivo"
+                                        label="Motivo Cancelación"
+                                        fullWidth
+                                        as={TextField}
+                                        value={values.motivo}
+                                        margin='normal'
+                                        helperText="Detalle la razon por la cual la turno/reserva fue cancelada"
+                                    />
+                                </Grid>
+                            ) : (null)}
                             <Grid item xs={3}>
                                 <Typography>
                                     <Field type="checkbox" name="estaPagado" as={Checkbox} />
@@ -186,17 +218,17 @@ const UpdateReserva = (props) => {
                             </Grid>
                             <Grid item xs={3}>
                                 <Typography>
-                                    <Field type="checkbox" name="esFijo" as={Checkbox} disabled/>
+                                    <Field type="checkbox" name="esFijo" as={Checkbox} disabled />
                                 Es un turno fijo
                                 </Typography>
                             </Grid>
                             <Grid
                                 container
                                 direction="row"
-                                alignItems="center" 
+                                alignItems="center"
                                 justify="space-evenly"
                                 className={classes.grid}
-                                >
+                            >
                                 <Grid item xs={2} >
                                     <Button
                                         variant="contained"
@@ -204,7 +236,7 @@ const UpdateReserva = (props) => {
                                             props.setOpen(false);
                                         }}
                                         color="secondary"
-                                        
+
                                     >
                                         Volver
                                 </Button>
@@ -214,7 +246,7 @@ const UpdateReserva = (props) => {
                                         color="primary"
                                         variant="contained"
                                         type="submit"
-                                        
+
                                     >
                                         Guardar
                                 </Button>

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Calendar, Views, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
-import { getReservasSixWeeksAndEspacioRealTime } from "api/reservas";
+import { getReservasSixWeeksAndEspacioRealTime, updateReservaStateAndPayment } from "api/reservas";
 import UpdateReserva from "components/App/Reservas/ReservaByEspacio/UpdateReserva"
 import Dialog from "components/utils/Dialog/Dialog";
 import AlertCustom from "components/utils/AlertCustom/AlertCustom";
-import { updateReservaStateAndPayment } from 'api/reservas'
+
 
 
 const EspacioCalendar = ({ espacio }) => {
@@ -33,7 +33,6 @@ const EspacioCalendar = ({ espacio }) => {
         monto: reserva.monto,
         espacio: reserva.espacio,
         complejo: reserva.complejo,
-        estado: reserva.estado,
         estados: reserva.estados,
       }));
     }
@@ -55,34 +54,16 @@ const EspacioCalendar = ({ espacio }) => {
   }, [espacio, fecha]);
 
   const updateDialogHandler = (reserva) => {
-    let posiblesEstados = []
-    switch (reserva.estado) {
-      case "Confirmado":
-        posiblesEstados = ["Confirmado", "En Curso", "Cancelado", "Sin Concurrencia"]
-        break;
-      case "En Curso":
-        posiblesEstados = ["En Curso", "Finalizado", "Cancelado"]
-        break;
-      case "Creado":
-        posiblesEstados = ["Creado", "Confirmado", "Cancelado"]
-        break;
-      case "Cancelado":
-        posiblesEstados = ["Cancelado"]
-        break;
-      case "Sin Concurrencia":
-        posiblesEstados = ["Sin Concurrencia"]
-        break;
-    }
+
     console.log(reserva)
     setDialogContent(
       <UpdateReserva
-        updateHandler={(values) => {
-          updateHandler(values);
-        }}
+      updateHandler={(values) => {
+        updateHandler(values);
+      }}
         reserva={reserva}
         text="Modificando Reserva"
         setOpen={setOpen}
-        posiblesEstados={posiblesEstados}
       />
     );
     setOpen(true);
@@ -91,8 +72,8 @@ const EspacioCalendar = ({ espacio }) => {
   const updateHandler = async (values) => {
     const id = values.id
     let reservaToUpdate = {
-      estado : values.estado,
-      estaPagado : values.estaPagado,
+      estados: values.estados,
+      estaPagado: values.estaPagado,
     }
     updateReservaStateAndPayment(reservaToUpdate, id).then((response) => {
       if (response.status === "OK") {
@@ -110,6 +91,8 @@ const EspacioCalendar = ({ espacio }) => {
       }
     });
   }
+
+
 
   return (
     <>
