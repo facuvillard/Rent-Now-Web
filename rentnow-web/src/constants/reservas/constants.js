@@ -8,15 +8,20 @@ export const estados = {
     finalizada: 'FINALIZADA'
 }
 
-export const posiblesEstados = {}
-posiblesEstados = {
-    creada : [confirmada, cancelada],
-    confirmada : [enHorario, cancelada, sinConcurrencia],
-    enHorario : [enCurso, cancelada, sinConcurrencia],
-    enCurso : [finalizada, cancelada],
-    sinConcurrencia : [],
-    cancelada: [],
-    finalizada: [],
+export const posiblesEstados = {
+    "CREADA"            : [estados.confirmada, estados.cancelada],
+    "CONFIRMADA"        : [estados.enHorario, estados.cancelada],
+    "EN HORARIO"        : [estados.enCurso, estados.cancelada, estados.sinConcurrencia],
+    "EN CURSO"          : [estados.finalizada, estados.cancelada],
+    "SIN CONCURRENCIA"  : [],
+    "CANCELADA"         : [],
+    "FINALIZADA"        : [],
 }
+
+
+
+
+
+
 
 
