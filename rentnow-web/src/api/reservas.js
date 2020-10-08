@@ -2,6 +2,7 @@ import firebase from "firebase";
 import moment from "moment";
 
 export async function registerReservaApi(reserva) {
+  const dia = moment(reserva.fechaInicio).date();
   const semana = moment(reserva.fechaInicio).week();
   const año = moment(reserva.fechaInicio).year();
   const fechaRegistro = new firebase.firestore.Timestamp.fromDate(moment().toDate())
@@ -18,7 +19,7 @@ export async function registerReservaApi(reserva) {
     const result = await firebase
       .firestore()
       .collection("reservas")
-      .add({ ...reserva, semana, año, fechaRegistro });
+      .add({ ...reserva, dia, semana, año, fechaRegistro });
 
     return { status: "OK", message: "Se registró la reserva con exito" };
   } catch (err) {
