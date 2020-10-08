@@ -160,7 +160,7 @@ export async function getClienteByNumeroTelefono(idComplejo, numTelefono) {
       .where("numTelefono", "==", numTelefono)
       .get();
 
-    const cliente = result.docs.map((docs) => docs.data());
+    const cliente = result.docs.map((doc) => ({...doc.data(), id: doc.id}));
     if (cliente.length === 0) {
       throw "No existe usuario";
     }
@@ -195,12 +195,12 @@ export async function addClienteToComplejo(idComplejo, cliente) {
         .collection("complejos")
         .doc(idComplejo)
         .collection("clientes")
-        .doc()
-        .set({ ...cliente });
-
+        .add(cliente)
+        console.log(result)
       return {
         status: "OK",
         message: "Cliente registrado con éxito",
+        data: {...cliente, id: result.id}
       };
     }
   } catch (err) {

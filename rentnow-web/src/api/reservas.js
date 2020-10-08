@@ -1,5 +1,6 @@
 import firebase from "firebase";
 import moment from "moment";
+
 export async function registerReservaApi(reserva) {
   const semana = moment(reserva.fechaInicio).week();
   const año = moment(reserva.fechaInicio).year();
@@ -11,6 +12,7 @@ export async function registerReservaApi(reserva) {
   reserva.fechaFin = new firebase.firestore.Timestamp.fromDate(
     reserva.fechaFin
   );
+  reserva.estados.push({estado: "CONFIRMADA", fecha: new firebase.firestore.Timestamp.now(), motivo: ""});
 
   try {
     const result = await firebase

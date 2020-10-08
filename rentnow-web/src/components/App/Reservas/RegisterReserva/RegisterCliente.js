@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import { getClienteByNumeroTelefono } from "api/complejos";
+import AlertCustom from "components/utils/AlertCustom/AlertCustom"
 
 export default function RegisterCliente(props) {
   const {
@@ -22,6 +23,10 @@ export default function RegisterCliente(props) {
   const [numTelefono, setNumTelefono] = useState();
   const [isSearching, setIsSearching] = useState(false);
   const [encontroCliente, setEncontroCliente] = useState(false);
+
+  const [alertCustomOpen, setAlertCustomOpen] = useState(false);
+  const [alertCustomType, setAlertCustomType] = useState();
+  const [alertCustomText, setAlertCustomText] = useState();
 
   useEffect(() => {
     setEncontroCliente(false);
@@ -43,14 +48,20 @@ export default function RegisterCliente(props) {
             nombre: cliente.nombre,
             apellido: cliente.apellido,
             numTelefono: cliente.numTelefono,
+            id: cliente.id,
           },
         });
         setIsSearching(false);
         setEncontroCliente(true);
+        setAlertCustomText("¡Cliente encontrado!");
+        setAlertCustomType("success");
+        setAlertCustomOpen(true);
       } else {
         setIsSearching(false);
         setEncontroCliente(false);
-        alert("No se encontró cliente, registrelo.");
+        setAlertCustomText("No se encontró al Cliente con ese número telefonico, por favor, registrelo.");
+        setAlertCustomType("error");
+        setAlertCustomOpen(true);
       }
     });
   };
@@ -67,108 +78,94 @@ export default function RegisterCliente(props) {
   };
   return (
     <>
-      <Grid container spacing={3}>
-        <Grid item md={12} xs={12}>
-          <h3>Datos del cliente: </h3>
-        </Grid>
-        <Grid item md={12}>
+      <Grid
+        container
+        direction="row"
+        justify="center"
+        alignItems="center"
+        spacing={5}
+        >
+        <Grid item md={2}>
           <FormControlLabel
             control={
               <Checkbox
-                checked={esClienteNuevo}
-                onChange={() => setEsClienteNuevo(!esClienteNuevo)}
+              checked={esClienteNuevo}
+              onChange={() => setEsClienteNuevo(!esClienteNuevo)}
               />
             }
-            label="¿Es cliente nuevo?"
-          />
-        </Grid>
-        <Grid item md={6} xs={12}>
-          {!esClienteNuevo ? (
-            <TextField
-              disabled={isSearching || esClienteNuevo}
-              fullWidth
-              required
-              label="Ingresar numero de telefono sin 0 y 15"
-              type="number"
-              variant="outlined"
-              onChange={(e) => {
-                onChangeNumTelefono(e);
-              }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      disabled={isSearching || esClienteNuevo}
-                      onClick={buscarCliente}
-                    >
-                      {isSearching ? <CircularProgress /> : <SearchIcon />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
+            label="Nuevo Cliente"
             />
-          ) : (
+        </Grid>
+        </Grid>
+        {!esClienteNuevo ? (
+          <Grid
+            container
+            direction="row"
+            justify="center"
+            alignItems="center"
+            spacing={5}>
+            <Grid item md={3} xs={10}>
+              <TextField
+                style={{ marginTop: "23px" }}
+                disabled={isSearching || esClienteNuevo}
+                fullWidth
+                required
+                label="Número de Telefono"
+                type="number"
+                helperText="Todo junto, sin 0 y sin el 15"
+                onChange={(e) => {
+                  onChangeNumTelefono(e);
+                }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        disabled={isSearching || esClienteNuevo}
+                        onClick={buscarCliente}
+                      >
+                        {isSearching ? <CircularProgress /> : <SearchIcon />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>
+            <Grid item md={3} xs={10}>
+              <TextField
+                fullWidth
+                required
+                label="Nombre"
+                value={reserva.cliente.nombre}
+              />
+            </Grid>
+            <Grid item md={3} xs={10}>
+              <TextField
+                fullWidth
+                required
+                label="Apellido"
+                value={reserva.cliente.apellido}
+              />
+            </Grid>
+          </Grid>
+        ) : (
             ""
           )}
-        </Grid>
-      </Grid>
-      <Grid
-        container
-        spacing={4}
-        style={encontroCliente ? {} : { display: "none" }}
-      >
-        <Grid item md={3}>
-          <b>Nombre: </b> {reserva.cliente.nombre}
-        </Grid>
-        <Grid item md={3}>
-          <b>Apellido: </b> {reserva.cliente.apellido}
-        </Grid>
-      </Grid>
-
       <Grid
         style={esClienteNuevo ? {} : { display: "none" }}
         container
-        spacing={4}
+        direction="row"
+        justify="center"
+        alignItems="center"
+        spacing={5}
       >
-        <Grid item md={12}>
-          <p>
-            Ingrese los datos del nuevo <b>cliente</b>
-          </p>
-        </Grid>
-        <Grid item md={4}>
+        <Grid item md={3} xs={10}>
           <TextField
+            style={{ marginTop: "23px" }}
             fullWidth
             required
-            label="Nombre"
-            variant="outlined"
-            onChange={(e) => {
-              setReserva({
-                ...reserva,
-                cliente: { ...reserva.cliente, nombre: e.target.value },
-              });
-            }}
-          />
-        </Grid>
-        <Grid item md={4}>
-          <TextField
-            fullWidth
-            required
-            label="Apellido"
-            variant="outlined"
-            onChange={(e) => {
-              setReserva({
-                ...reserva,
-                cliente: { ...reserva.cliente, apellido: e.target.value },
-              });
-            }}
-          />
-        </Grid>
-        <Grid item md={4}>
-          <TextField
-            fullWidth
-            required
-            label="Numero Telefono"
-            variant="outlined"
+            type="number"
+            label="Número de Telefono"
+            helperText="Todo junto, sin 0 y sin el 15"
             onChange={(e) => {
               setReserva({
                 ...reserva,
@@ -177,7 +174,39 @@ export default function RegisterCliente(props) {
             }}
           />
         </Grid>
+        <Grid item md={3} xs={10}>
+          <TextField
+            fullWidth
+            required
+            label="Nombre"
+            onChange={(e) => {
+              setReserva({
+                ...reserva,
+                cliente: { ...reserva.cliente, nombre: e.target.value },
+              });
+            }}
+          />
+        </Grid>
+        <Grid item md={3} xs={10}>
+          <TextField
+            fullWidth
+            required
+            label="Apellido"
+            onChange={(e) => {
+              setReserva({
+                ...reserva,
+                cliente: { ...reserva.cliente, apellido: e.target.value },
+              });
+            }}
+          />
+        </Grid>
       </Grid>
+      <AlertCustom
+        type={alertCustomType}
+        text={alertCustomText}
+        open={alertCustomOpen}
+        setOpen={setAlertCustomOpen}
+      />
     </>
   );
 }
