@@ -149,3 +149,65 @@ export async function getComplejosById(id) {
     };
   }
 }
+
+export async function getClienteByNumeroTelefono(idComplejo, numTelefono) {
+  try {
+    const result = await firebase
+      .firestore()
+      .collection("complejos")
+      .doc(idComplejo)
+      .collection("clientes")
+      .where("numTelefono", "==", numTelefono)
+      .get();
+
+    const cliente = result.docs.map((doc) => ({...doc.data(), id: doc.id}));
+    if (cliente.length === 0) {
+      throw "No existe usuario";
+    }
+    return {
+      status: "OK",
+      message: "Se encontro el cliente con exito",
+      data: cliente,
+    };
+  } catch (err) {
+    return {
+      status: "Error",
+      message: "No se encontro el cliente buscado",
+      error: err,
+    };
+  }
+}
+
+export async function addClienteToComplejo(idComplejo, cliente) {
+  try {
+    const result = await getClienteByNumeroTelefono(
+      idComplejo,
+      cliente.numTelefono
+    );
+    if (result.status === "OK") {
+      return {
+        status: "ERROR",
+        message: "Cliente ya existe!",
+      };
+    } else {
+      const result = await firebase
+        .firestore()
+        .collection("complejos")
+        .doc(idComplejo)
+        .collection("clientes")
+        .add(cliente)
+        console.log(result)
+      return {
+        status: "OK",
+        message: "Cliente registrado con éxito",
+        data: {...cliente, id: result.id}
+      };
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      status: "ERROR",
+      message: "Error al registrar nuevo cliente",
+    };
+  }
+}

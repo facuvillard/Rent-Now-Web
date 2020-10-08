@@ -119,7 +119,7 @@ const ReservasByEspacio = () => {
       ) : null}
 
       <Fab
-        color="primary"
+        color={!showRegistroReserva ? "primary":"secondary"}
         aria-label="add"
         title="Registrar una reserva"
         className={classes.addButton}
