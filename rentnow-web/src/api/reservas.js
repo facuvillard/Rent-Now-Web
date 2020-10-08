@@ -4,8 +4,11 @@ import moment from "moment";
 export async function registerReservaApi(reserva) {
   const dia = moment(reserva.fechaInicio).date();
   const semana = moment(reserva.fechaInicio).week();
+  const mes = moment(reserva.fechaInicio).month();
   const año = moment(reserva.fechaInicio).year();
-  const fechaRegistro = new firebase.firestore.Timestamp.fromDate(moment().toDate())
+  const fechaRegistro = new firebase.firestore.Timestamp.fromDate(
+    moment().toDate()
+  );
 
   reserva.fechaInicio = new firebase.firestore.Timestamp.fromDate(
     reserva.fechaInicio
@@ -16,10 +19,11 @@ export async function registerReservaApi(reserva) {
   reserva.estados.push({estado: "CONFIRMADA", fecha: new firebase.firestore.Timestamp.now(), motivo: ""});
 
   try {
-    const result = await firebase
+    await firebase
       .firestore()
       .collection("reservas")
       .add({ ...reserva, dia, semana, año, fechaRegistro });
+
 
     return { status: "OK", message: "Se registró la reserva con exito" };
   } catch (err) {
@@ -54,6 +58,43 @@ export async function getReservasByWeekAndEspacio(fecha, idEspacio) {
     });
 
     return reservas;
+  } catch (err) {
+    console.log(err);
+    return {
+      status: "ERROR",
+      message: "Se produjo un error al registrar la reserva",
+      error: err,
+    };
+  }
+}
+
+export async function getReservasSixWeeksAndEspacioRealTime(
+  fecha,
+  idEspacio,
+  runWhenChange
+) {
+  try {
+    const firstWeek = moment(fecha).startOf("month").week() - 1;
+    const lastWeek = moment(fecha).endOf("month").week() + 1;
+    const year = moment(fecha).year();
+
+    const result = await firebase
+      .firestore()
+      .collection("reservas")
+      .where("espacio.id", "==", idEspacio)
+      .where("semana", ">=", firstWeek)
+      .where("semana", "<=", lastWeek)
+      .where("año", "==", year)
+      .onSnapshot((querySnapshot) => {
+        let reservas = [];
+
+        querySnapshot.forEach((reservaDoc) => {
+          reservas.push({ ...reservaDoc.data(), id: reservaDoc.id });
+        });
+        runWhenChange(reservas);
+      });
+
+    return result;
   } catch (err) {
     console.log(err);
     return {

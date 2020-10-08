@@ -14,9 +14,8 @@ import AddIcon from "@material-ui/icons/Add";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { getEspaciosByIdComplejo } from "api/espacios";
 import { useParams } from "react-router-dom";
-import { Calendar, Views, momentLocalizer } from "react-big-calendar";
-import moment from "moment";
 import RegisterReserva from "components/App/Reservas/RegisterReserva/RegisterReserva";
+import EspacioCalendar from "./EspacioCalendar/EspacioCalendar";
 
 const useStyles = makeStyles((theme) => ({
   addButton: {
@@ -26,64 +25,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const reservas = [
-  {
-    id: 1,
-    start: moment([2020, 8, 20, 5, 0, 0]).toDate(),
-    end: moment("20/9/2020 7:00", "DD/MM/YYYY HH:mm").toDate(),
-    espacio: "cLlPtCaJRfMlKl6faVs3",
-    title: "Juan, Bergues",
-    pagado: true,
-  },
-  {
-    id: 2,
-    start: moment([2020, 8, 20, 7, 0, 0]).toDate(),
-    end: moment("20/9/2020 8:30", "DD/MM/YYYY HH:mm").toDate(),
-    espacio: "cLlPtCaJRfMlKl6faVs3",
-    title: "Juan, Bergues",
-    pagado: true,
-  },
-  {
-    id: 3,
-    start: moment([2020, 8, 20, 15, 0, 0]).toDate(),
-    end: moment("20/9/2020 17:00", "DD/MM/YYYY HH:mm").toDate(),
-    espacio: "cLlPtCaJRfMlKl6faVs3",
-    title: "Juan, Bergues",
-    pagado: true,
-  },
-  {
-    id: 4,
-    start: moment([2020, 8, 20, 17, 30, 0]).toDate(),
-    end: moment("20/9/2020 18:30", "DD/MM/YYYY HH:mm").toDate(),
-    espacio: "cLlPtCaJRfMlKl6faVs3",
-    title: "Juan, Bergues",
-    pagado: true,
-  },
-  {
-    id: 5,
-    start: moment([2020, 8, 20, 23, 0, 0]).toDate(),
-    end: moment("20/9/2020 00:30", "DD/MM/YYYY HH:mm").toDate(),
-    espacio: "cLlPtCaJRfMlKl6faVs3",
-    title: "Juan, Bergues",
-    pagado: true,
-  },
-  {
-    id: 6,
-    start: moment([2020, 8, 20, 23, 0, 0]).toDate(),
-    end: moment("20/9/2020  00:30", "DD/MM/YYYY HH:mm").toDate(),
-    espacio: "cLlPtCaJRfMlKl6faVs3",
-    title: "Juan, Bergues",
-    pagado: true,
-  },
-  {
-    id: 7,
-    start: moment([2020, 8, 20, 20, 0, 0]).toDate(),
-    end: moment("20/9/2020 22:00", "DD/MM/YYYY HH:mm").toDate(),
-    espacio: "BxTNgb7EwirGLMMKxq5F",
-    title: "Juan, Bergues",
-    pagado: true,
-  },
-];
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -112,8 +53,6 @@ const ReservasByEspacio = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [value, setValue] = useState();
   const [showRegistroReserva, setShowRegistroReserva] = useState(false);
-  moment.locale("es");
-  const localizer = momentLocalizer(moment);
 
   useEffect(() => {
     setIsLoading(true);
@@ -170,34 +109,8 @@ const ReservasByEspacio = () => {
           {espacios.map((espacio) => (
             <TabPanel value={value} index={espacio.id} key={espacio.id}>
               {!showRegistroReserva ? (
-                // COMPONENTE
-                <Calendar
-                  style={{
-                    fontFamily: "Segoe UI",
-                    backgroundColor: "#FAFAFA",
-                    marginBottom: "1rem",
-                    height: "70vh",
-                  }}
-                  step={60}
-                  timeslots={2}
-                  localizer={localizer}
-                  defaultView={Views.DAY}
-                  defaultDate={moment().toDate()}
-                  events={reservas.filter(
-                    (reserva) => reserva.espacio === espacio.id
-                  )}
-                  min={moment().hour(5).minutes(0).toDate()}
-                  formats={{
-                    timeGutterFormat: "HH:mm",
-                    eventTimeRangeFormat: (dates) => {
-                      return `${moment(dates.start).format("HH:mm")} - ${moment(
-                        dates.end
-                      ).format("HH:mm")}`;
-                    },
-                  }}
-                />
+                <EspacioCalendar espacio={espacio} />
               ) : (
-                //COMPONENTE
                 <RegisterReserva espacio={espacio} />
               )}
             </TabPanel>
