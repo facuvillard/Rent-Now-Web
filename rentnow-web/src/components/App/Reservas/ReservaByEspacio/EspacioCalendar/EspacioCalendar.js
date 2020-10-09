@@ -27,13 +27,14 @@ const EspacioCalendar = ({ espacio }) => {
         id: reserva.id,
         start: reserva.fechaInicio.toDate(),
         end: reserva.fechaFin.toDate(),
-        title: "RESERVA",
+        title: reserva.cliente.apellido + ", " + reserva.cliente.nombre,
         esFijo: reserva.esFijo,
         estaPagado: reserva.estaPagado,
         monto: reserva.monto,
         espacio: reserva.espacio,
         complejo: reserva.complejo,
         estados: reserva.estados,
+        telefonoCliente: reserva.cliente.numTelefono
       }));
     }
     setReservas(formattedReservas);
@@ -54,8 +55,6 @@ const EspacioCalendar = ({ espacio }) => {
   }, [espacio, fecha]);
 
   const updateDialogHandler = (reserva) => {
-
-    console.log(reserva)
     setDialogContent(
       <UpdateReserva
       updateHandler={(values) => {

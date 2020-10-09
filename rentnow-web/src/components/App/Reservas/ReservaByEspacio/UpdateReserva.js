@@ -6,6 +6,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import moment from "moment";
 import firebase from "firebase";
 import * as constants from 'constants/reservas/constants'
+import { Alert, AlertTitle } from "@material-ui/lab";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -16,36 +17,22 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(3),
         marginTop: theme.spacing(3),
     },
+    checkboxes:{
+        marginTop:'20px',
+        marginLeft:'30px'
+    },
 }));
 
 const UpdateReserva = (props) => {
     const classes = useStyles();
     const estadoActual = props.reserva.estados ? props.reserva.estados[props.reserva.estados.length - 1].estado : "";
     const motivoActual = props.reserva.estados ? props.reserva.estados[props.reserva.estados.length - 1].motivo : "";
-    let posiblesEstados = []
-    switch (estadoActual) {
-        case "Confirmado":
-            posiblesEstados = ["Confirmado", "En Curso", "Cancelado", "Sin Concurrencia"]
-            break;
-        case "En Curso":
-            posiblesEstados = ["En Curso", "Finalizado", "Cancelado"]
-            break;
-        case "Creado":
-            posiblesEstados = ["Creado", "Confirmado", "Cancelado"]
-            break;
-        case "Cancelado":
-            posiblesEstados = ["Cancelado"]
-            break;
-        case "Sin Concurrencia":
-            posiblesEstados = ["Sin Concurrencia"]
-            break;
-        case "Finalizado":
-            posiblesEstados = ["Finalizado"]
-            break;
-        case "":
-            posiblesEstados = [""]
-            break;
+    let posiblesEstados = [];
+    posiblesEstados = constants.posiblesEstados[estadoActual];
+    if (!posiblesEstados.includes(estadoActual)) {
+        posiblesEstados.unshift(estadoActual)
     }
+
     const fechaActualizacion = new firebase.firestore.Timestamp.fromDate(
         moment().toDate()
     );
@@ -60,8 +47,8 @@ const UpdateReserva = (props) => {
                     horaInicio: moment(props.reserva.start).format('Do MMMM YYYY, HH:mm '),
                     horaFin: moment(props.reserva.end).format('Do MMMM YYYY, HH:mm '),
                     esFijo: props.reserva.esFijo,
-                    descripcionCliente: "Juan Perez",
-                    telefonoCliente: "2995969371",
+                    descripcionCliente: props.reserva.title,
+                    telefonoCliente: props.reserva.telefonoCliente,
                     monto: props.reserva.monto,
                     estaPagado: props.reserva.estaPagado,
                     estado: estadoActual,
@@ -69,8 +56,8 @@ const UpdateReserva = (props) => {
                     motivo: motivoActual,
                 }}
                 onSubmit={async (values) => {
-                    if (estadoActual != values.estado || motivoActual != values.motivo){
-                        values.estados.push({ estado: values.estado, fecha: fechaActualizacion, motivo: values.motivo})
+                    if (estadoActual !== values.estado || motivoActual !== values.motivo) {
+                        values.estados.push({ estado: values.estado, fecha: fechaActualizacion, motivo: values.motivo })
                     }
                     props.updateHandler(values);
                     props.setOpen(false);
@@ -85,19 +72,6 @@ const UpdateReserva = (props) => {
                             alignItems="center">
                             <Grid item xs={6}>
                                 <Field
-                                    name="descripcionComplejo"
-                                    label="Nombre Complejo"
-                                    fullWidth
-                                    as={TextField}
-                                    value={values.descripcionComplejo}
-                                    margin='normal'
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Field
                                     name="descripcionEspacio"
                                     label="Nombre Espacio"
                                     fullWidth
@@ -108,6 +82,18 @@ const UpdateReserva = (props) => {
                                         readOnly: true,
                                     }}
                                 />
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Typography className={classes.checkboxes}>
+                                    <Field type="checkbox" name="estaPagado" as={Checkbox} />
+                                    <b>PAGADO</b>
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Typography className={classes.checkboxes}>
+                                    <Field type="checkbox" name="esFijo" as={Checkbox} disabled />
+                                    <b>FIJO</b>
+                                </Typography>
                             </Grid>
                             <Grid item xs={6}>
                                 <Field
@@ -197,7 +183,7 @@ const UpdateReserva = (props) => {
                                     ))}
                                 </TextField>
                             </Grid>
-                            {values.estado === "Cancelado" ? (
+                            {values.estado === constants.estados.cancelada ? (
                                 <Grid item xs={12}>
                                     <Field
                                         name="motivo"
@@ -210,17 +196,13 @@ const UpdateReserva = (props) => {
                                     />
                                 </Grid>
                             ) : (null)}
-                            <Grid item xs={3}>
-                                <Typography>
-                                    <Field type="checkbox" name="estaPagado" as={Checkbox} />
-                                Pagado
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={3}>
-                                <Typography>
-                                    <Field type="checkbox" name="esFijo" as={Checkbox} disabled />
-                                Es un turno fijo
-                                </Typography>
+                            <Grid container justify="center" className={classes.alert}>
+                                <Alert severity="info">
+                                    <AlertTitle>
+                                        Solo podras modificar el Pago y el Estado de la Reserva
+                                    </AlertTitle>
+                                Si deseas modificar algun otro dato, deberas Cancelar la Reserva actual y volver a Registrar una nueva.
+                            </Alert>
                             </Grid>
                             <Grid
                                 container
@@ -259,6 +241,5 @@ const UpdateReserva = (props) => {
         </>
     )
 }
-
 
 export default UpdateReserva
