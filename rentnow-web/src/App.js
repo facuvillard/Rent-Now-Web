@@ -22,9 +22,6 @@ import EditEspacio from "components/App/Espacios/EditEspacio/EditEspacio";
 import ReservasByEspacio from "components/App/Reservas/ReservaByEspacio/ReservasByEspacio";
 import Ayuda from "components/Ayuda/Ayuda";
 
-
-
-
 function App() {
   return (
     <div className="App">
@@ -58,7 +55,7 @@ function App() {
                 breadcrumbs={Breadcrumbs.ADMIN_COMPLEJOS}
               />
 
-               <RouteWithoutSidebar
+              <RouteWithoutSidebar
                 title="Ayuda"
                 exact
                 component={() => <Ayuda />}
@@ -92,7 +89,7 @@ function App() {
               />
 
               <RouteWithSidebar
-                title="Complejo"
+                title="Home del complejo"
                 component={() => <HomeComplejo />}
                 exact
                 path={Routes.COMPLEJO}
