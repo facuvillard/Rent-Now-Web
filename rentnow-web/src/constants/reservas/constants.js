@@ -19,6 +19,14 @@ export const posiblesEstados = {
 }
 
 
+export const colorsByEstado = {
+    "EN CURSO": "#9ccc65",
+    "CONFIRMADA": "#42a5f5",
+    "FINALIZADA": "#757575",
+    "EN HORARIO": "#26a69a",
+    "CANCELADA": "#ef5350",
+    "SIN CONCURRENCIA": "#ffa726",
+}
 
 
 

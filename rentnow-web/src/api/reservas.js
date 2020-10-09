@@ -22,7 +22,7 @@ export async function registerReservaApi(reserva) {
     await firebase
       .firestore()
       .collection("reservas")
-      .add({ ...reserva, dia, semana, año, fechaRegistro });
+      .add({ ...reserva, dia, semana, mes, año, fechaRegistro });
 
 
     return { status: "OK", message: "Se registró la reserva con exito" };
