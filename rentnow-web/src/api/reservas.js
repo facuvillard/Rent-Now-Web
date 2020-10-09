@@ -104,3 +104,22 @@ export async function getReservasSixWeeksAndEspacioRealTime(
     };
   }
 }
+
+export async function updateReservaStateAndPayment(reserva, id) {
+  try {
+    await firebase
+      .firestore()
+      .collection("reservas")
+      .doc(id)
+      .update(reserva);
+    return {
+      status: "OK",
+      message: "Los datos de la reserva han sido actualizados con exito",
+    };
+  } catch (err) {
+    return {
+      status: "ERROR",
+      message: "Error al actualizar los datos de la reserva",
+    };
+  }
+}

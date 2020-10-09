@@ -1,13 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { Calendar, Views, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
-import { getReservasSixWeeksAndEspacioRealTime } from "api/reservas";
+import { getReservasSixWeeksAndEspacioRealTime, updateReservaStateAndPayment } from "api/reservas";
+import UpdateReserva from "components/App/Reservas/ReservaByEspacio/UpdateReserva"
+import Dialog from "components/utils/Dialog/Dialog";
+import AlertCustom from "components/utils/AlertCustom/AlertCustom";
+
+
 
 const EspacioCalendar = ({ espacio }) => {
   const [reservas, setReservas] = useState([]);
   const [fecha, setFecha] = useState(moment().toDate());
   moment.locale("es");
   const localizer = momentLocalizer(moment);
+
+  const [dialogContent, setDialogContent] = useState(null);
+  const [open, setOpen] = useState(false);
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertProps, setAlertProps] = useState({});
 
   const formatReservas = (reservas) => {
     let formattedReservas = [];
@@ -16,7 +27,14 @@ const EspacioCalendar = ({ espacio }) => {
         id: reserva.id,
         start: reserva.fechaInicio.toDate(),
         end: reserva.fechaFin.toDate(),
-        title: "RESERVA",
+        title: reserva.cliente.apellido + ", " + reserva.cliente.nombre,
+        esFijo: reserva.esFijo,
+        estaPagado: reserva.estaPagado,
+        monto: reserva.monto,
+        espacio: reserva.espacio,
+        complejo: reserva.complejo,
+        estados: reserva.estados,
+        telefonoCliente: reserva.cliente.numTelefono
       }));
     }
     setReservas(formattedReservas);
@@ -36,6 +54,45 @@ const EspacioCalendar = ({ espacio }) => {
     )
   }, [espacio, fecha]);
 
+  const updateDialogHandler = (reserva) => {
+    setDialogContent(
+      <UpdateReserva
+      updateHandler={(values) => {
+        updateHandler(values);
+      }}
+        reserva={reserva}
+        text="Modificando Reserva"
+        setOpen={setOpen}
+      />
+    );
+    setOpen(true);
+  };
+
+  const updateHandler = async (values) => {
+    const id = values.id
+    let reservaToUpdate = {
+      estados: values.estados,
+      estaPagado: values.estaPagado,
+    }
+    updateReservaStateAndPayment(reservaToUpdate, id).then((response) => {
+      if (response.status === "OK") {
+        setAlertProps({
+          type: "success",
+          text: response.message,
+        });
+        setShowAlert(true);
+      } else {
+        setAlertProps({
+          type: "error",
+          text: response.message,
+        });
+        setShowAlert(true);
+      }
+    });
+  }
+
+
+
   return (
     <>
       <Calendar
@@ -52,6 +109,7 @@ const EspacioCalendar = ({ espacio }) => {
         defaultDate={fecha}
         onNavigate={dateChange}
         events={reservas}
+        onSelectEvent={event => updateDialogHandler(event)}
         min={moment(fecha).hour(5).minutes(0).toDate()}
         formats={{
           timeGutterFormat: "HH:mm",
@@ -61,6 +119,20 @@ const EspacioCalendar = ({ espacio }) => {
             ).format("HH:mm")}`;
           },
         }}
+      />
+      <Dialog
+        title="Modificar Reserva"
+        open={open}
+        setOpen={setOpen}
+        size="md"
+      >
+        {dialogContent}
+      </Dialog>
+      <AlertCustom
+        type={alertProps.type}
+        text={alertProps.text}
+        open={showAlert}
+        setOpen={setShowAlert}
       />
     </>
   );
