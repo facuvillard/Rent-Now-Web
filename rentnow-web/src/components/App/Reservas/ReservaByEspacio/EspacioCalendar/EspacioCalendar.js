@@ -5,6 +5,7 @@ import { getReservasSixWeeksAndEspacioRealTime, updateReservaStateAndPayment } f
 import UpdateReserva from "components/App/Reservas/ReservaByEspacio/UpdateReserva"
 import Dialog from "components/utils/Dialog/Dialog";
 import AlertCustom from "components/utils/AlertCustom/AlertCustom";
+import {colorsByEstado} from 'constants/reservas/constants'
 
 
 
@@ -109,6 +110,21 @@ const EspacioCalendar = ({ espacio }) => {
         defaultDate={fecha}
         onNavigate={dateChange}
         events={reservas}
+        eventPropGetter= {function(event, start, end, isSelected) {
+          const estadoReserva = event.estados[event.estados.length -1].estado
+          var backgroundColor = colorsByEstado[estadoReserva];
+          var style = {
+              backgroundColor: backgroundColor,
+              borderRadius: '3px',
+              opacity: 0.8,
+              color: 'black',
+              fontWeight: 'bold',
+              border: '1px solid black',
+          };
+          return {
+              style: style
+          };
+      }}
         onSelectEvent={event => updateDialogHandler(event)}
         min={moment(fecha).hour(5).minutes(0).toDate()}
         formats={{
