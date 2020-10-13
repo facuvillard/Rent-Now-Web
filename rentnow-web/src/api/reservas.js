@@ -16,14 +16,17 @@ export async function registerReservaApi(reserva) {
   reserva.fechaFin = new firebase.firestore.Timestamp.fromDate(
     reserva.fechaFin
   );
-  reserva.estados.push({estado: "CONFIRMADA", fecha: new firebase.firestore.Timestamp.now(), motivo: ""});
+  reserva.estados.push({
+    estado: "CONFIRMADA",
+    fecha: new firebase.firestore.Timestamp.now(),
+    motivo: "",
+  });
 
   try {
     await firebase
       .firestore()
       .collection("reservas")
       .add({ ...reserva, dia, semana, año, fechaRegistro });
-
 
     return { status: "OK", message: "Se registró la reserva con exito" };
   } catch (err) {
@@ -101,6 +104,28 @@ export async function getReservasSixWeeksAndEspacioRealTime(
       status: "ERROR",
       message: "Se produjo un error al registrar la reserva",
       error: err,
+    };
+  }
+}
+
+export async function getCantReservasByIdComplejo(idComplejo) {
+  try {
+    const result = await firebase
+      .firestore()
+      .collection("reservas")
+      .where("complejo.id", "==", idComplejo)
+      .get()
+      .then((snap) => snap.size);
+
+    return {
+      status: "OK",
+      message: "Se consultaron correctamente las reservas",
+      data: result,
+    };
+  } catch (err) {
+    return {
+      status: "ERROR",
+      message: err,
     };
   }
 }
