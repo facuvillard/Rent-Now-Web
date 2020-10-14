@@ -63,7 +63,12 @@ export const APP_MODIFICAR_ESPACIO = [
 export const APP_COMPLEJO_CALENDARIO = [
   ...APP_COMPLEJO,
   { nombre: "Calendario", ruta: Routes.CALENDARIO },
-  ];
+];
+
+export const APP_COMPLEJO_RESERVAS_LISTADO = [
+  ...APP_COMPLEJO,
+  { nombre: "Listado de Reservas", ruta: Routes.LISTADO_RESERVAS },
+];
 
 export const APP_AYUDAS = [
   {
