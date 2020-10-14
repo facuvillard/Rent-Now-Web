@@ -9,15 +9,18 @@ import {
     ExpansionPanelSummary,
     Typography,
     Grid,
-    Button
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import DateRangeIcon from "@material-ui/icons/DateRange";
 import moment from "moment";
-import { getReservasBetweenTwoDates } from "api/reservas";
+import { getReservasBetweenTwoDates, updateReservaStateAndPayment } from "api/reservas";
 import { useParams } from "react-router-dom";
 import Chip from '@material-ui/core/Chip';
 import { colorsByEstado } from 'constants/reservas/constants'
+import UpdateReserva from "components/App/Reservas/ReservaByEspacio/UpdateReserva"
+import Dialog from "components/utils/Dialog/Dialog";
+import AlertCustom from "components/utils/AlertCustom/AlertCustom";
+
 
 const useStyles = makeStyles((theme) => ({
     heading: {
@@ -40,27 +43,59 @@ const useStyles = makeStyles((theme) => ({
 const ReservasList = () => {
     const [reservas, setReservas] = useState([]);
     const [fecha, setFecha] = useState(moment().toDate());
+
     const classes = useStyles();
     const { idComplejo } = useParams();
+
+    const [dialogContent, setDialogContent] = useState(null);
+    const [open, setOpen] = useState(false);
+
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertProps, setAlertProps] = useState({});
 
     useEffect(() => {
         getReservasBetweenTwoDates(fecha, idComplejo, setReservas)
     }, [fecha, idComplejo, setReservas])
-    
-    const handleFiltrarReservas = () => {
-        getReservasBetweenTwoDates(fecha, idComplejo, setReservas)
-        // .then((response) => {
-        //     if (response.status === "OK") {
-        //         setReservas(response.data)
-        //     } else {
-        //         console.log(response.error)
-        //     }
-        // })
+
+    const updateDialogHandler = (reserva) => {
+        setDialogContent(
+            <UpdateReserva
+                updateHandler={(values) => {
+                    updateHandler(values);
+                }}
+                reserva={reserva}
+                text="Modificando Reserva"
+                setOpen={setOpen}
+            />
+        );
+        setOpen(true);
+    };
+
+    const updateHandler = async (values) => {
+        const id = values.id
+        let reservaToUpdate = {
+            estados: values.estados,
+            estaPagado: values.estaPagado,
+        }
+        updateReservaStateAndPayment(reservaToUpdate, id).then((response) => {
+            if (response.status === "OK") {
+                setAlertProps({
+                    type: "success",
+                    text: response.message,
+                });
+                setShowAlert(true);
+            } else {
+                setAlertProps({
+                    type: "error",
+                    text: response.message,
+                });
+                setShowAlert(true);
+            }
+        });
     }
 
-    function customRender(value, renderType, renderFunc, field, ...args) {
+    const customRender = (value, renderType, renderFunc, field, ...args) => {
         if (renderType === 'row') {
-            console.log(value)
             return <Chip label={value.estado} style={{ backgroundColor: colorsByEstado[value.estado], color: '#FAFAFA' }} />
         }
         if (renderType === 'group') {
@@ -69,7 +104,7 @@ const ReservasList = () => {
     }
 
     //normal render function
-    function renderCellData(status) {
+    const renderCellData = (status) => {
         //do stuff
     }
 
@@ -111,15 +146,6 @@ const ReservasList = () => {
                                     />
                                 } />
                         </Grid>
-                        <Grid item md={3} xs={6}>
-                            <Button
-                                onClick={handleFiltrarReservas}
-                                variant="contained"
-                                color="primary"
-                            >
-                                Filtrar
-                        </Button>
-                        </Grid>
                     </Grid>
                 </ExpansionPanelDetails>
             </ExpansionPanel>
@@ -133,10 +159,6 @@ const ReservasList = () => {
                         title: "Estado",
                         field: "estado",
                         render: (value, renderType) => customRender(value, renderType, renderCellData, 'estado')
-
-
-
-
                     },
                     { title: "Cliente", field: "nombreCompleto" },
                     { title: "Telefono", field: "cliente.numTelefono" }
@@ -146,7 +168,7 @@ const ReservasList = () => {
                         icon: 'edit',
                         tooltip: 'Modificar Reserva',
                         onClick: (event, rowData) => {
-                            console.log(rowData)
+                            updateDialogHandler(rowData)
                         }
                     }
                 ]}
@@ -164,8 +186,22 @@ const ReservasList = () => {
                     },
                 }}
                 localization={{
-                    grouping: {placeholder:"Arrastre alguna columna aqui para agrupar"}
+                    grouping: { placeholder: "Arrastre alguna columna aquí para agrupar datos" }
                 }}
+            />
+            <Dialog
+                title="Modificar Reserva"
+                open={open}
+                setOpen={setOpen}
+                size="md"
+            >
+                {dialogContent}
+            </Dialog>
+            <AlertCustom
+                type={alertProps.type}
+                text={alertProps.text}
+                open={showAlert}
+                setOpen={setShowAlert}
             />
         </>
     )
