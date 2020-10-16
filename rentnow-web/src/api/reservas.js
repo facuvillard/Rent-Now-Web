@@ -124,7 +124,7 @@ export async function updateReservaStateAndPayment(reserva, id) {
   }
 }
 
-export async function getReservasBetweenTwoDates(fecha, idComplejo, runWhenChange) {
+export async function getReservasByMonthAndYear(fecha, idComplejo, runWhenChange) {
   try {
     const month = moment(fecha).month();
     const year = moment(fecha).year();

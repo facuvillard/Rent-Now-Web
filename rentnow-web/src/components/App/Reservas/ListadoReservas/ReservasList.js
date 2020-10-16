@@ -13,18 +13,19 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import DateRangeIcon from "@material-ui/icons/DateRange";
 import moment from "moment";
-import { getReservasBetweenTwoDates, updateReservaStateAndPayment } from "api/reservas";
+import { getReservasByMonthAndYear, updateReservaStateAndPayment } from "api/reservas";
 import { useParams } from "react-router-dom";
 import Chip from '@material-ui/core/Chip';
 import { colorsByEstado } from 'constants/reservas/constants'
 import UpdateReserva from "components/App/Reservas/ReservaByEspacio/UpdateReserva"
 import Dialog from "components/utils/Dialog/Dialog";
 import AlertCustom from "components/utils/AlertCustom/AlertCustom";
+import { Pagination } from '@material-ui/lab';
 
 
 const useStyles = makeStyles((theme) => ({
     heading: {
-        fontSize: theme.typography.pxToRem(15),
+        fontSize: theme.typography.pxToRem(20),
         flexBasis: '33.33%',
         flexShrink: 0,
     },
@@ -54,7 +55,7 @@ const ReservasList = () => {
     const [alertProps, setAlertProps] = useState({});
 
     useEffect(() => {
-        getReservasBetweenTwoDates(fecha, idComplejo, setReservas)
+        getReservasByMonthAndYear(fecha, idComplejo, setReservas)
     }, [fecha, idComplejo, setReservas])
 
     const updateDialogHandler = (reserva) => {
@@ -134,7 +135,7 @@ const ReservasList = () => {
                                 showMonthYearPicker
                                 customInput={
                                     <TextField
-                                        label="Fecha Hasta"
+                                        label="Mes y Año a Filtrar"
                                         fullWidth
                                         InputProps={{
                                             endAdornment: (
@@ -150,18 +151,19 @@ const ReservasList = () => {
                 </ExpansionPanelDetails>
             </ExpansionPanel>
             <MaterialTable
+                title="RESERVAS"
                 data={reservas}
                 columns={[
-                    { title: "Nombre Espacio", field: "espacio.descripcion" },
-                    { title: "Fecha Inicio", field: "fechaInicioString", type: "datetime" },
-                    { title: "Fecha Fin", field: "fechaFinString", type: "datetime" },
+                    { title: "ESPACIO", field: "espacio.descripcion" },
+                    { title: "FECHA INICIO", field: "fechaInicioString", type: "datetime" },
+                    { title: "FECHA FIN", field: "fechaFinString", type: "datetime" },
                     {
-                        title: "Estado",
+                        title: "ESTADO",
                         field: "estado",
                         render: (value, renderType) => customRender(value, renderType, renderCellData, 'estado')
                     },
-                    { title: "Cliente", field: "nombreCompleto" },
-                    { title: "Telefono", field: "cliente.numTelefono" }
+                    { title: "CLIENTE", field: "nombreCompleto" },
+                    { title: "TELEFONO", field: "cliente.numTelefono" }
                 ]}
                 actions={[
                     {
@@ -181,12 +183,16 @@ const ReservasList = () => {
                         backgroundColor: "#FAFAFA",
                     },
                     headerStyle: {
-                        backgroundColor: "#656b74",
-                        color: "#FFF",
+                        backgroundColor: "#FFF4E5",
                     },
+                    exportButton: true,
                 }}
                 localization={{
-                    grouping: { placeholder: "Arrastre alguna columna aquí para agrupar datos" }
+                    body: { emptyDataSourceMessage: "¡No existen reservas en la fecha seleccionada!"},
+                    grouping: { placeholder: "Arrastre alguna columna aquí para agrupar datos", groupedBy: "Agrupando por: " },
+                    toolbar: { exportTitle: "Exportar como Excel", exportName: "Exportar como Excel", searchTooltip: "Buscar", searchPlaceholder: "Buscar" },
+                    pagination: { lastTooltip: "Ultima Pagina", firstTooltip: "Primera Pagina", nextTooltip: "Siguiente Pagina", previousTooltip: "Pagina Anterior", labelDisplayedRows: "{from}-{to} de {count}" },
+                    header: { actions: "ACCIONES" }
                 }}
             />
             <Dialog
