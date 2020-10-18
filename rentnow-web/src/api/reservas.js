@@ -108,14 +108,37 @@ export async function getReservasSixWeeksAndEspacioRealTime(
   }
 }
 
-export async function getCantReservasByIdComplejo(idComplejo) {
+export async function getCantReservasByIdComplejoYMes(idComplejo, mes) {
+  try {
+    const result = await firebase
+      .firestore()
+      .collection("reservas")
+      .where("complejo.id", "==", idComplejo)
+      .where("mes", "==", mes)
+      .get()
+      .then((snap) => snap.size);
+
+    return {
+      status: "OK",
+      message: "Se consultaron correctamente las reservas",
+      data: result,
+    };
+  } catch (err) {
+    return {
+      status: "ERROR",
+      message: err,
+    };
+  }
+}
+
+export async function getReservas(idComplejo) {
   try {
     const result = await firebase
       .firestore()
       .collection("reservas")
       .where("complejo.id", "==", idComplejo)
       .get()
-      .then((snap) => snap.size);
+      .then((snap) => snap.docs.map((reservas) => reservas.data()));
 
     return {
       status: "OK",

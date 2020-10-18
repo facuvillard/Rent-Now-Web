@@ -4,14 +4,13 @@ import { ResponsiveBar } from "@nivo/bar";
 const ResponsiveBarChart = ({ data }) => (
   <ResponsiveBar
     data={data}
-    keys={["hot dog"]}
-    indexBy="country"
+    keys={["cantReservas"]}
+    indexBy="nombre"
     margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
-    padding={0.3}
-    width={900}
-    height={500}
-    colors={{ scheme: "yellow_orange_red" }}
+    padding={0.8}
+    colors={{ scheme: "nivo" }}
     borderColor={{ from: "color", modifiers: [["darker", 1.6]] }}
+    borderWidth={3}
     axisTop={null}
     axisRight={null}
     axisBottom={{
@@ -20,7 +19,7 @@ const ResponsiveBarChart = ({ data }) => (
       tickRotation: 0,
       legend: "Espacios",
       legendPosition: "middle",
-      legendOffset: 32,
+      legendOffset: 60,
     }}
     axisLeft={{
       tickSize: 5,
@@ -32,7 +31,7 @@ const ResponsiveBarChart = ({ data }) => (
     }}
     labelSkipWidth={12}
     labelSkipHeight={12}
-    labelTextColor={{ from: "color", modifiers: [["darker", 1.6]] }}
+    labelTextColor={{ from: "color", modifiers: [["darker", 2]] }}
     legends={[
       {
         dataFrom: "keys",
@@ -44,7 +43,7 @@ const ResponsiveBarChart = ({ data }) => (
         itemsSpacing: 2,
         itemWidth: 100,
         itemHeight: 20,
-        itemDirection: "left-to-right",
+        itemDirection: "right-to-left",
         itemOpacity: 0.85,
         symbolSize: 20,
         effects: [
@@ -58,6 +57,7 @@ const ResponsiveBarChart = ({ data }) => (
       },
     ]}
     animate={true}
+    enableGridY={true}
     motionStiffness={90}
     motionDamping={15}
   />
