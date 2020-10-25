@@ -9,9 +9,13 @@ import { colorsByEstado } from 'constants/reservas/constants';
 import StateReferences from "components/App/Reservas/ReservaByEspacio/EspacioCalendar/StateReferences";
 import Popover from '@material-ui/core/Popover';
 import Button from '@material-ui/core/Button';
-import { Grid } from "@material-ui/core";
+import { Grid, Paper } from "@material-ui/core";
 import HelpOutline from '@material-ui/icons/HelpOutline'
-
+import Typography from '@material-ui/core/Typography'
+import { estados } from 'constants/reservas/constants'
+import firebase from "firebase";
+import MonetizationOnRounded from '@material-ui/icons/MonetizationOnRounded'
+import MoneyOff from '@material-ui/icons/MoneyOff'
 
 
 const EspacioCalendar = ({ espacio }) => {
@@ -97,6 +101,31 @@ const EspacioCalendar = ({ espacio }) => {
     });
   }
 
+  const iniciarReservaHandler = async (event) => {
+    const fechaActualizacion = new firebase.firestore.Timestamp.fromDate(moment().toDate());
+    const id = event.id ;
+    let estadosNuevos = event.estados
+    estadosNuevos.push({ estado: estados.enCurso, fecha: fechaActualizacion, motivo: "" })
+    let reservaToUpdate = {
+      estados: estadosNuevos
+    }
+    updateReservaStateAndPayment(reservaToUpdate, id).then((response) => {
+      if (response.status === "OK") {
+        setAlertProps({
+          type: "success",
+          text: response.message,
+        });
+        setShowAlert(true);
+      } else {
+        setAlertProps({
+          type: "error",
+          text: response.message,
+        });
+        setShowAlert(true);
+      }
+    });
+  }
+
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleHelpClick = (event) => {
@@ -109,6 +138,26 @@ const EspacioCalendar = ({ espacio }) => {
 
   const helpOpen = Boolean(anchorEl);
   const id = helpOpen ? 'simple-popover' : undefined;
+
+  const CustomEvent = ({ event }) => {
+    const estadoActual = event.estados ? event.estados[event.estados.length - 1].estado : "";
+    return (
+      <div style={{ marginLeft: '15px', marginTop: '-4px' }}>
+        <Typography>
+          <b>{event.title}</b> - {estadoActual}{event.estaPagado ? " - $" : ""}
+          {estadoActual === estados.enHorario ? (
+            <Button style={{ marginRight: '80px', float: 'right' }} size="small" variant="contained" color="secondary" onClick={(e) => {
+              iniciarReservaHandler(event)
+              e.stopPropagation()
+            }}>
+              INICIAR
+            </Button>
+          ) : (null)
+          }
+        </ Typography>
+      </div>
+    )
+  };
 
 
   return (
@@ -136,13 +185,16 @@ const EspacioCalendar = ({ espacio }) => {
             backgroundColor: backgroundColor,
             borderRadius: '3px',
             opacity: 0.8,
-            color: 'black',
+            color: '#FAFAFA',
             fontWeight: 'bold',
             border: '1px solid black',
           };
           return {
             style: style
           };
+        }}
+        components={{
+          event: CustomEvent,
         }}
         onSelectEvent={event => updateDialogHandler(event)}
         min={moment(fecha).hour(5).minutes(0).toDate()}
@@ -169,7 +221,7 @@ const EspacioCalendar = ({ espacio }) => {
             startIcon={<HelpOutline />}
             color='inherit'
           >
-            Ayuda
+            Referencias
       </Button>
           <Popover
             id={id}
