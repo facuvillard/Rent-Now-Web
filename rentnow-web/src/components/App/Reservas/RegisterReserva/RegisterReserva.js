@@ -245,7 +245,7 @@ const RegisterReserva = ({ espacio }) => {
       </Grid>
       <hr className={classes.divider} />
       {/* FECHA DE RESERVA */}
-      <ExpansionPanel className={classes.expansionPanel} expanded="true">
+      <ExpansionPanel className={classes.expansionPanel} expanded={true}>
         <ExpansionPanelSummary
           aria-controls="turnoPanel"
           id="turnoPanel"
@@ -380,7 +380,7 @@ const RegisterReserva = ({ espacio }) => {
           </Grid>
         </ExpansionPanelDetails>
       </ExpansionPanel>
-      <ExpansionPanel className={classes.expansionPanel} expanded="true">
+      <ExpansionPanel className={classes.expansionPanel} expanded={true}>
         <ExpansionPanelSummary
           aria-controls="turnoPanel"
           id="turnoPanel"
