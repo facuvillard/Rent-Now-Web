@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Drawer,
@@ -7,6 +7,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Collapse,
 } from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/Home";
 import GroupIcon from "@material-ui/icons/Group";
@@ -19,6 +20,10 @@ import { Can } from "Auth/can";
 import logoSinLetraAmarillo from "../../assets/img/logos/logo-amarillo-sin-letra.png";
 import logoConLetraAmarillo from "../../assets/img/logos/logo-horizontal-blanco.png";
 import * as Routes from "../../constants/routes";
+import ListAltOutlined from '@material-ui/icons/ListAltOutlined'
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import MenuBook from '@material-ui/icons/MenuBook';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -86,6 +91,9 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     height: "100%",
   },
+  icon:{
+    color: theme.palette.grey[50]
+  }
 }));
 
 const SideBarButton = (props) => {
@@ -104,6 +112,7 @@ const SideBarButton = (props) => {
 
 const Sidebar = (props) => {
   const classes = useStyles();
+  const [openReservas, setOpenReservas] = useState(false);
 
   return (
     <Drawer
@@ -156,16 +165,29 @@ const Sidebar = (props) => {
               text="Home"
             />
           </Can>
-          <Can I="read" a="espacio">
-            <SideBarButton
-              permiso="read"
-              elemento="reserva"
-              ruta={`/app/complejos/${props.params.idComplejo}/calendario`}
-              icon={<TodayIcon className={classes.link} />}
-              text="Calendario"
-            />
+          <Can I="read" a="reserva">
+            <ListItem button onClick={()=>{setOpenReservas(old => !old)}} className={classes.link}>
+              <ListItemIcon><MenuBook className={classes.icon}/></ListItemIcon>
+              <ListItemText primary="Reservas" />
+              {openReservas ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={openReservas} timeout="auto" unmountOnExit>
+              <SideBarButton
+                permiso="read"
+                elemento="reserva"
+                ruta={`/app/complejos/${props.params.idComplejo}/calendario`}
+                icon={<TodayIcon className={classes.link} />}
+                text="Calendario"
+              />
+              <SideBarButton             
+                permiso="read"
+                elemento="reserva"
+                ruta={`/app/complejos/${props.params.idComplejo}/reservas/listado`}
+                icon={<ListAltOutlined className={classes.link} />}
+                text="Listado de Reservas"
+              />
+            </Collapse>
           </Can>
-
           <Can I="read" a="espacio">
             <SideBarButton
               permiso="read"

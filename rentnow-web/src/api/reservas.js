@@ -123,3 +123,58 @@ export async function updateReservaStateAndPayment(reserva, id) {
     };
   }
 }
+
+export async function getReservasByMonthAndYear(fecha, idComplejo, runWhenChange) {
+  try {
+    const month = moment(fecha).month();
+    const year = moment(fecha).year();
+
+    const result = await firebase
+      .firestore()
+      .collection("reservas")
+      .where('complejo.id','==',idComplejo)
+      .where('año','==', year)
+      .where('mes','==', month)
+      .orderBy("fechaInicio", "asc")
+      .onSnapshot((querySnapshot) => {
+        let reservas = [];
+
+        querySnapshot.forEach((reservaDoc) => {
+          const reserva = reservaDoc.data()
+          reservas.push({
+            id: reservaDoc.id,
+            fechaInicioString: reserva.fechaInicio.toDate(),
+            fechaFinString: reserva.fechaFin.toDate(),
+            estado: reserva.estados[reserva.estados.length - 1].estado,
+            nombreCompleto: `${reserva.cliente.apellido}, ${reserva.cliente.nombre}`,
+            ...reserva,}
+          );
+        });
+        runWhenChange(reservas);
+      });
+
+      const reservas = result.docs.map((reservaDoc) => {
+        const reserva = reservaDoc.data();
+        return {
+          fechaInicioString: reserva.fechaInicio.toDate(),
+          fechaFinString: reserva.fechaFin.toDate(),
+          estado: reserva.estados[reserva.estados.length - 1].estado,
+          nombreCompleto: `${reserva.cliente.apellido}, ${reserva.cliente.nombre}`,
+          ...reserva,
+        };
+      });
+    
+      return {
+        status: "OK",
+        message: "Se consultaron las reservas con éxito",
+        data: reservas,
+      };
+
+  } catch (err) {
+    return {
+      status: "ERROR",
+      message: "Se produjo un error al obtener las reservas",
+      error: err,
+    };
+  }
+}
