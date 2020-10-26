@@ -9,6 +9,7 @@ import { Typography, Grid, Paper } from "@material-ui/core";
 //API
 import { getCantReservasByIdComplejoYMes, getReservas } from "api/reservas";
 import { getEspaciosByIdComplejo } from "api/espacios";
+
 //Moment
 import moment from "moment";
 import "moment/locale/es";
@@ -52,10 +53,15 @@ const HomeComplejo = () => {
           if (resp.status === "OK") {
             const espacios = resp.data;
             espacios.map((espacio) => {
-              var obj = { nombre: espacio.nombre, cantReservas: 0 };
+              var obj = {
+                nombre: espacio.nombre,
+                cantReservasConfirmadas: 0,
+                cantReservasCanceladas: 0,
+              };
               for (let i = 0; i < reservas.length; i++) {
                 if (espacio.id === reservas[i].espacio.id) {
-                  obj.cantReservas += 1;
+                  obj.cantReservasConfirmadas += 1;
+                  obj.cantReservasCanceladas += 1;
                 }
               }
               console.log(obj);
@@ -67,7 +73,7 @@ const HomeComplejo = () => {
       }
     });
 
-    getCantReservasByIdComplejoYMes(idComplejo, moment().month() - 1).then(
+    getCantReservasByIdComplejoYMes(idComplejo, moment().month()).then(
       (resp) => {
         if (resp.status === "OK") {
           setCantUltMes(resp.data);
@@ -92,7 +98,7 @@ const HomeComplejo = () => {
               </CardHeader>
               <CardBody>
                 <Typography variant="h4">
-                  Reservas totales: {cantidadReservas}
+                  Reservas totales historico: {cantidadReservas}
                 </Typography>
               </CardBody>
             </Card>
@@ -123,7 +129,7 @@ const HomeComplejo = () => {
               </CardHeader>
               <CardBody>
                 <Typography variant="h4">
-                  Reservas ultimo mes: {cantUltMes}
+                  Reservas corriente mes: {cantUltMes}
                 </Typography>
               </CardBody>
             </Card>
