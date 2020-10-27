@@ -24,6 +24,8 @@ import ListAltOutlined from "@material-ui/icons/ListAltOutlined";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import MenuBook from "@material-ui/icons/MenuBook";
+import BarChartIcon from "@material-ui/icons/BarChart";
+import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -164,7 +166,7 @@ const Sidebar = (props) => {
               className={classes.link}
             >
               <ListItemIcon>
-                <MenuBook className={classes.icon} />
+                <TrendingUpIcon className={classes.icon} />
               </ListItemIcon>
               <ListItemText primary="Estadisticas" />
               {openEstadisticas ? <ExpandLess /> : <ExpandMore />}
@@ -174,7 +176,7 @@ const Sidebar = (props) => {
                 permiso="admin"
                 elemento="estadisticas"
                 ruta={Routes.RANKING_CONCURRENCIA}
-                icon={<TodayIcon className={classes.link} />}
+                icon={<BarChartIcon className={classes.link} />}
                 text="Ranking Concurrencia"
               />
             </Collapse>
