@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, ButtonGroup, Grid, Paper } from "@material-ui/core";
+import { Button, ButtonGroup, Grid } from "@material-ui/core";
 import BarChart from "./BarChart";
 import MaterialTable from "material-table";
 
@@ -18,16 +18,16 @@ export default function RankingConcurrencia(props) {
     <Grid container spacing={3}>
       <Grid item xs={12}>
         <ButtonGroup color="primary" variant="contained">
-          <Button>Un año</Button>
-          <Button>3 meses</Button>
           <Button>Mes actual</Button>
+          <Button>3 meses</Button>
+          <Button>Un año</Button>
         </ButtonGroup>
       </Grid>
       <Grid item xs={12}>
         <div
           style={{
             width: "100%",
-            height: "25em",
+            height: "30em",
           }}
         >
           <BarChart data={data} />
