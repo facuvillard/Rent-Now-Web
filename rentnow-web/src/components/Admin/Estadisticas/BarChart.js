@@ -53,7 +53,7 @@ export default function BarChart({ data }) {
   return (
     <ResponsiveBar
       layout="horizontal"
-      margin={{ top: 26, right: 120, bottom: 26, left: 60 }}
+      margin={{ top: 26, right: 10, bottom: 26, left: 10 }}
       data={data}
       indexBy="id"
       keys={["value"]}

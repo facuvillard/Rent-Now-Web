@@ -16,7 +16,11 @@ const data = [
 export default function RankingConcurrencia(props) {
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12}>
+      <Grid
+        item
+        xs={12}
+        style={{ display: "flex", justifyContent: "flex-end" }}
+      >
         <ButtonGroup color="primary" variant="contained">
           <Button>Mes actual</Button>
           <Button>3 meses</Button>
@@ -35,7 +39,6 @@ export default function RankingConcurrencia(props) {
       </Grid>
       <Grid item xs={12}>
         <MaterialTable
-          title="Ranking Concurrencia"
           columns={[
             { title: "Ranking", field: "ranking" },
             { title: "Complejo", field: "complejo" },
