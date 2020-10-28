@@ -22,9 +22,9 @@ export default function RankingConcurrencia(props) {
         style={{ display: "flex", justifyContent: "flex-end" }}
       >
         <ButtonGroup color="primary" variant="contained">
-          <Button>Mes actual</Button>
-          <Button>3 meses</Button>
           <Button>Un año</Button>
+          <Button>3 meses</Button>
+          <Button>Mes actual</Button>
         </ButtonGroup>
       </Grid>
       <Grid item xs={12}>
