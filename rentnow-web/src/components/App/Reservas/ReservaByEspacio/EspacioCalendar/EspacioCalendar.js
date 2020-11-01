@@ -225,7 +225,6 @@ const EspacioCalendar = ({ espacio }) => {
             size="small"
             aria-describedby={id}
             variant="contained"
-            color="primary"
             onClick={handleHelpClick}
             startIcon={<HelpOutline />}
             color='inherit'
