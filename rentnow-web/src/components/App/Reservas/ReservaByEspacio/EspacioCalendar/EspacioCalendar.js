@@ -9,16 +9,15 @@ import { colorsByEstado } from 'constants/reservas/constants';
 import StateReferences from "components/App/Reservas/ReservaByEspacio/EspacioCalendar/StateReferences";
 import Popover from '@material-ui/core/Popover';
 import Button from '@material-ui/core/Button';
-import { Grid, Paper } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import HelpOutline from '@material-ui/icons/HelpOutline'
 import Typography from '@material-ui/core/Typography'
 import { estados } from 'constants/reservas/constants'
 import firebase from "firebase";
-import MonetizationOnRounded from '@material-ui/icons/MonetizationOnRounded'
-import MoneyOff from '@material-ui/icons/MoneyOff'
 
 
 const EspacioCalendar = ({ espacio }) => {
+  require('moment/locale/es.js');
   const [reservas, setReservas] = useState([]);
   const [fecha, setFecha] = useState(moment().toDate());
   moment.locale("es");
@@ -103,7 +102,7 @@ const EspacioCalendar = ({ espacio }) => {
 
   const iniciarReservaHandler = async (event) => {
     const fechaActualizacion = new firebase.firestore.Timestamp.fromDate(moment().toDate());
-    const id = event.id ;
+    const id = event.id;
     let estadosNuevos = event.estados
     estadosNuevos.push({ estado: estados.enCurso, fecha: fechaActualizacion, motivo: "" })
     let reservaToUpdate = {
@@ -171,6 +170,16 @@ const EspacioCalendar = ({ espacio }) => {
           marginBottom: "1rem",
           height: "70vh",
         }}
+        culture='es'
+        messages={{
+          'today': 'Hoy',
+          'previous': 'Anterior',
+          'next': 'Siguiente',
+          'month': 'Mes',
+          'week': 'Semana',
+          'agenda': 'Agenda',
+          'day': 'Dia',
+        }}
         step={60}
         timeslots={2}
         localizer={localizer}
@@ -197,7 +206,7 @@ const EspacioCalendar = ({ espacio }) => {
           event: CustomEvent,
         }}
         onSelectEvent={event => updateDialogHandler(event)}
-        min={moment(fecha).hour(5).minutes(0).toDate()}
+        min={moment(fecha).hour(9).minutes(0).toDate()}
         formats={{
           timeGutterFormat: "HH:mm",
           eventTimeRangeFormat: (dates) => {
