@@ -71,3 +71,8 @@ export const APP_AYUDAS = [
     ruta: Routes.AYUDA,
   },
 ];
+
+export const APP_REPORTES_CONCURRENCIA = [
+  ...APP_COMPLEJO,
+  { nombre: "Concurrencia", ruta: Routes.REPORTES_CONCURRENCIA },
+  ];

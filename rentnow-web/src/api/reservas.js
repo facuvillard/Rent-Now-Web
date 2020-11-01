@@ -1,11 +1,42 @@
 import firebase from "firebase";
 import moment from "moment";
 
+const diasStrings = {
+  Monday : 'Lunes',
+  Tuesday: 'Martes',
+  Thirsday: 'Miercoles',
+  Wednesday: 'Jueves',
+  Friday: 'Viernes',
+  Saturday: 'Sabado',
+  Sunday: 'Domingo'
+}
+
+function getFranjaHoraria(hora) {
+  switch(hora){
+    case (hora > 5 && hora < 13) : {
+      return 'Maniana'
+    } 
+    case (hora > 12 && hora < 16) : {
+      return 'Siesta'
+    } 
+    case (hora > 15 && hora < 19) : {
+      return 'Tarde'
+    } 
+    case (hora > 18 && hora < 24) : {
+      return 'Noche'
+    } 
+  }
+}
+
+
+
 export async function registerReservaApi(reserva) {
   const dia = moment(reserva.fechaInicio).date();
   const semana = moment(reserva.fechaInicio).week();
   const mes = moment(reserva.fechaInicio).month();
   const año = moment(reserva.fechaInicio).year();
+  const diaString = diasStrings[moment(reserva.fechaInicio).format('dddd')]
+  const franjaHoraria = getFranjaHoraria(5)
   const fechaRegistro = new firebase.firestore.Timestamp.fromDate(
     moment().toDate()
   );
@@ -22,7 +53,7 @@ export async function registerReservaApi(reserva) {
     await firebase
       .firestore()
       .collection("reservas")
-      .add({ ...reserva, dia, semana, mes, año, fechaRegistro });
+      .add({ ...reserva, dia, diaString, semana, mes, año, fechaRegistro });
 
 
     return { status: "OK", message: "Se registró la reserva con exito" };
@@ -120,6 +151,40 @@ export async function updateReservaStateAndPayment(reserva, id) {
     return {
       status: "ERROR",
       message: "Error al actualizar los datos de la reserva",
+    };
+  }
+}
+
+
+export async function getReservasComplejoHistorico(idComplejo) {
+  try {
+
+    const result = await firebase
+      .firestore()
+      .collection("reservas")
+      .where("complejo.id", "==", idComplejo)
+      .get();
+
+    const reservas = result.docs.map((reservaDoc) => {
+      const reserva = reservaDoc.data();
+      return {
+        ...reserva,
+        fechaInicio: reserva.fechaInicio.toDate(),
+        fechaFin: reserva.fechaFin.toDate(),
+      };
+    });
+
+    return {
+      status: "OK",
+      message: "Se recuperaron las reservas correctamente",
+      data: reservas,
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      status: "ERROR",
+      message: "Se produjo un error al registrar la reserva",
+      error: err,
     };
   }
 }
