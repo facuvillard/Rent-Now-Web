@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const RegisterReserva = ({ espacio }) => {
+const RegisterReserva = ({ espacio, handleClickReservaRegistradaConExito }) => {
   const classes = useStyles();
   const [esClienteNuevo, setEsClienteNuevo] = useState(false);
   const [fechaInicio, setFechaInicio] = useState(moment().toDate());
@@ -205,9 +205,7 @@ const RegisterReserva = ({ espacio }) => {
           reserva.cliente = clienteRegistrado.data
           const result = await registerReservaApi(reserva);
           if (result.status === "OK") {
-            setAlertCustomText("Cliente y Reserva registrados con éxito");
-            setAlertCustomType("success");
-            setAlertCustomOpen(true);
+            handleClickReservaRegistradaConExito()
           } else {
             setAlertCustomText("Error al crear la Reserva");
             setAlertCustomType("error");
@@ -215,15 +213,13 @@ const RegisterReserva = ({ espacio }) => {
           }
         } else {
           setAlertCustomText(clienteRegistrado.message);
-          setAlertCustomType("success");
+          setAlertCustomType("error");
           setAlertCustomOpen(true);
         }
       } else {
         const result = await registerReservaApi(reserva);
         if (result.status === "OK") {
-          setAlertCustomText(result.message);
-          setAlertCustomType("success");
-          setAlertCustomOpen(true);
+          handleClickReservaRegistradaConExito()
         }
       }
     }
@@ -246,7 +242,7 @@ const RegisterReserva = ({ espacio }) => {
       </Grid>
       <hr className={classes.divider} />
       {/* FECHA DE RESERVA */}
-      <ExpansionPanel className={classes.expansionPanel} expanded="true">
+      <ExpansionPanel className={classes.expansionPanel} expanded={true}>
         <ExpansionPanelSummary
           aria-controls="turnoPanel"
           id="turnoPanel"
@@ -381,7 +377,7 @@ const RegisterReserva = ({ espacio }) => {
           </Grid>
         </ExpansionPanelDetails>
       </ExpansionPanel>
-      <ExpansionPanel className={classes.expansionPanel} expanded="true">
+      <ExpansionPanel className={classes.expansionPanel} expanded={true}>
         <ExpansionPanelSummary
           aria-controls="turnoPanel"
           id="turnoPanel"

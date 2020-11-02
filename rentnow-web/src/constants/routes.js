@@ -19,6 +19,7 @@ export const REGISTRAR_ESPACIO = `${APP}/complejos/:idComplejo/espacios/registra
 export const MODIFICAR_ESPACIO = `${APP}/complejos/:idComplejo/espacios/:idEspacio/modificar`
 export const CALENDARIO =  `${COMPLEJO}/calendario`
 export const REPORTES_CONCURRENCIA =  `${COMPLEJO}/reportes/concurrencia`
+export const LISTADO_RESERVAS = `${COMPLEJO}/reservas/listado`
 
 //REDIRECCIONES
 
