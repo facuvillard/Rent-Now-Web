@@ -12,21 +12,28 @@ const diasStrings = {
 }
 
 function getFranjaHoraria(hora) {
-  switch(hora){
-    case (hora > 5 && hora < 13) : {
-      return 'Maniana'
+  
+    if(hora >= 5 && hora < 13) {
+      return 'Mañana'
+   
     } 
-    case (hora > 12 && hora < 16) : {
+    if(hora >= 13 && hora < 16){
       return 'Siesta'
+     
     } 
-    case (hora > 15 && hora < 19) : {
-      return 'Tarde'
+    if(hora >= 16 && hora < 19){
+     return 'Tarde'
+      
     } 
-    case (hora > 18 && hora < 24) : {
+    if(hora >= 19 && hora < 24){
       return 'Noche'
-    } 
+      
+    }
+
+    return 'Fuera de franja'
   }
-}
+
+
 
 
 
@@ -36,7 +43,10 @@ export async function registerReservaApi(reserva) {
   const mes = moment(reserva.fechaInicio).month();
   const año = moment(reserva.fechaInicio).year();
   const diaString = diasStrings[moment(reserva.fechaInicio).format('dddd')]
-  const franjaHoraria = getFranjaHoraria(5)
+  const hora = moment(reserva.fechaInicio).hour()
+  console.log(getFranjaHoraria(hora))
+  console.log(hora)
+  const franjaHoraria = getFranjaHoraria(hora)
   const fechaRegistro = new firebase.firestore.Timestamp.fromDate(
     moment().toDate()
   );
@@ -53,7 +63,7 @@ export async function registerReservaApi(reserva) {
     await firebase
       .firestore()
       .collection("reservas")
-      .add({ ...reserva, dia, diaString, semana, mes, año, fechaRegistro });
+      .add({ ...reserva, dia, diaString, semana, mes, año, fechaRegistro, franjaHoraria});
 
 
     return { status: "OK", message: "Se registró la reserva con exito" };
