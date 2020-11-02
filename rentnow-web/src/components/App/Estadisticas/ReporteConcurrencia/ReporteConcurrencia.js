@@ -1,60 +1,11 @@
 import React, {useState, useEffect} from 'react'
 import { ResponsiveHeatMap } from '@nivo/heatmap'
 import { ResponsiveRadar } from '@nivo/radar'
+import { ResponsiveBar } from '@nivo/bar'
 import {getReservasComplejoHistorico} from 'api/reservas'
 import {useParams} from 'react-router-dom'
 import {tiposEspacio} from 'constants/espacios/constants'
-
-const data = [
-    {
-      "taste": "fruity",
-      "chardonay": 46,
-      "carmenere": 88,
-      "syrah": 107
-    },
-    {
-      "taste": "bitter",
-      "chardonay": 77,
-      "carmenere": 73,
-      "syrah": 69
-    },
-    {
-      "taste": "heavy",
-      "chardonay": 71,
-      "carmenere": 59,
-      "syrah": 54
-    },
-    {
-      "taste": "strong",
-      "chardonay": 83,
-      "carmenere": 36,
-      "syrah": 72
-    },
-    {
-      "taste": "sunny",
-      "chardonay": 53,
-      "carmenere": 41,
-      "syrah": 106
-    }
-  ]
-
-//   const data = [
-//     {
-//         "tipoEspacio": "Cancha Futbol",
-//         "Lunes": 29,
-//         "LunesColor": "hsl(0, 70%, 50%)",
-//         "Martes": 63,
-//         "MartesColor": "hsl(176, 70%, 50%)",
-//     },
-//     {
-//         "tipoEspacio": "Quincho",
-//         "Lunes": 3,
-//         "LunesColor": "hsl(0, 70%, 50%)",
-//         "Martes": 8,
-//         "MartesColor": "hsl(176, 70%, 50%)",
-//     },
-//   ]
-
+import { Typography, ButtonGroup, Button, Paper } from '@material-ui/core'
 
 
  const ReporteConcurrencia = () => {
@@ -63,6 +14,7 @@ const data = [
     const [isLoading, setIsLoading] = useState(true)
     const [reservasByDay, setReservasByDay] = useState([])
     const [reservasByFranja, setReservasByFranja] = useState([])
+    const [chartToShow, setChartToShow] = useState('radar')
 
     const {idComplejo} = useParams()
 
@@ -80,23 +32,6 @@ const data = [
         });
     }, [])
 
-
-    //   const data = [
-//     {
-//         "tipoEspacio": "Cancha Futbol",
-//         "Lunes": 29,
-//         "LunesColor": "hsl(0, 70%, 50%)",
-//         "Martes": 63,
-//         "MartesColor": "hsl(176, 70%, 50%)",
-//     },
-//     {
-//         "tipoEspacio": "Quincho",
-//         "Lunes": 3,
-//         "LunesColor": "hsl(0, 70%, 50%)",
-//         "Martes": 8,
-//         "MartesColor": "hsl(176, 70%, 50%)",
-//     },
-//   ]
 
     const formatReservasByDay = (reservasToFormat) => { 
         
@@ -188,10 +123,100 @@ const data = [
     }, [daySelected, reservas])
 
 
+    const byFranjaChart = () => {
+        if(chartToShow === 'barras') {
+            return (
+                <ResponsiveBar
+                data={reservasByFranja}
+                keys={tiposEspacio}
+                indexBy="franjaHoraria"
+                margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+                padding={0.3}
+                innerPadding={0}
+                colors={{ scheme: 'nivo' }}
+                borderColor={{ from: 'color', modifiers: [ [ 'darker', 1.6 ] ] }}
+                axisTop={null}
+                axisRight={null}
+                axisBottom={
+                    {
+                        tickSize: 5,
+                        tickPadding: 5,
+                        tickRotation: 0,
+                    }
+                 } 
+                axisLeft={null}
+                labelSkipWidth={12}
+                labelSkipHeight={12}
+                labelTextColor={{ from: 'color', modifiers: [ [ 'darker', 1.6 ] ] }}
+                legends={[
+                    {
+                        dataFrom: 'keys',
+                        anchor: 'bottom-right',
+                        direction: 'column',
+                        justify: false,
+                        translateX: 120,
+                        translateY: 0,
+                        itemsSpacing: 2,
+                        itemWidth: 100,
+                        itemHeight: 20,
+                        itemDirection: 'left-to-right',
+                        itemOpacity: 0.85,
+                        symbolSize: 20,
+                        effects: [
+                            {
+                                on: 'hover',
+                                style: {
+                                    itemOpacity: 1
+                                }
+                            }
+                        ]
+                    }
+                ]}
+                animate={true}
+                motionStiffness={90}
+                motionDamping={15}
+                borderRadius={10}
+            />
+
+            ) 
+        }
+            if (chartToShow === 'radar') {
+                return (
+
+                    <ResponsiveRadar
+                    data={reservasByFranja}
+                    keys={tiposEspacio}
+                    indexBy="franjaHoraria"
+                    maxValue="auto"
+                    margin={{ top: 50, right: 30, bottom: 50, left: 30 }}
+                    curve="cardinalClosed"
+                    borderWidth={2}
+                    borderColor={{ from: 'color' }}
+                    gridLevels={2}
+                    gridShape="circular"
+                    gridLabelOffset={36}
+                    enableDots={true}
+                    dotSize={10}
+                    dotColor={{ theme: 'background' }}
+                    dotBorderWidth={2}
+                    dotBorderColor={{ from: 'color' }}
+                    enableDotLabel={true}
+                    dotLabel="value"
+                    dotLabelYOffset={-12}
+                    colors={{ scheme: 'nivo' }}
+                    blendMode="normal"
+                    animate={true}
+                    motionConfig="wobbly"
+                    isInteractive={true}
+                    fillOpacity={0.95}
+                    />
+                )
+        }
+    }
 
     return (
-        <div style={{height: '100vh'}}>  
-        <div style= {{height: '50vh'}}>
+        <>  
+        <Paper elevation={6} style= {{height: '40vh'}}>
             <ResponsiveHeatMap
                 padding={2}
                 data={reservasByDay}
@@ -199,7 +224,7 @@ const data = [
                     'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'
                 ]}
                 indexBy="tipoEspacio"
-                margin={{ top: 100, right: 60, bottom: 60, left: 60 }}
+                margin={{ top: 50, right: 40, bottom: 20, left: 70 }}
                 forceSquare={false}
                 axisTop={{ orient: 'top', tickSize: 5, tickPadding: 5, tickRotation: 0, legend: '', legendOffset: 36 }}
                 axisRight={null}
@@ -212,7 +237,7 @@ const data = [
                     legendPosition: 'middle',
                     legendOffset: -40
                 }}
-                colors='YlOrBr'
+                colors='YlOrRd'
                 cellOpacity={0.5}
                 cellBorderWidth={2}
                 cellOpacity={1}
@@ -237,39 +262,24 @@ const data = [
                     setDaySelected(cell.xKey)
                 }}
                 />
-        </div>
+        </Paper>
+
+        <Typography variant='h5'>Dia seleccionado: {daySelected}</Typography>
+        <ButtonGroup disableElevation variant="contained" color="primary">
+            <Button variant={chartToShow === 'radar' ? 'contained' : 'outlined'} onClick={()=>{setChartToShow('radar')}}>Radar</Button>
+            <Button variant={chartToShow === 'barras' ? 'contained' : 'outlined'} onClick={()=>{setChartToShow('barras')}}>Barras</Button>
+        </ButtonGroup>
+
             {daySelected ? 
-            <ResponsiveRadar
-            data={reservasByFranja}
-            keys={tiposEspacio}
-            indexBy="franjaHoraria"
-            maxValue="auto"
-            margin={{ top: 70, right: 80, bottom: 40, left: 80 }}
-            curve="linearClosed"
-            borderWidth={2}
-            borderColor={{ from: 'color' }}
-            gridLevels={5}
-            gridShape="circular"
-            gridLabelOffset={36}
-            enableDots={true}
-            dotSize={10}
-            dotColor={{ theme: 'background' }}
-            dotBorderWidth={2}
-            dotBorderColor={{ from: 'color' }}
-            enableDotLabel={true}
-            dotLabel="value"
-            dotLabelYOffset={-12}
-            colors={{ scheme: 'nivo' }}
-            fillOpacity={0.25}
-            blendMode="multiply"
-            animate={true}
-            motionConfig="wobbly"
-            isInteractive={true}
-            />
+            <> 
+        <Paper  elevation={6} style={{height: '30vh'}}> 
+                {byFranjaChart()}
+        </Paper>
+            </>
             : null}
-        </div>
+        </>
         )
-}
-
-
-export default  ReporteConcurrencia
+    }
+    
+    
+    export default  ReporteConcurrencia
