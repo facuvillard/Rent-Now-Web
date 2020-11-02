@@ -14,6 +14,10 @@ import GroupIcon from "@material-ui/icons/Group";
 import Settings from "@material-ui/icons/Settings";
 import SportsSoccerIcon from "@material-ui/icons/SportsSoccer";
 import TodayIcon from "@material-ui/icons/Today";
+import EqualizerIcon from "@material-ui/icons/Equalizer";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+import BlurLinearIcon from "@material-ui/icons/BlurLinear";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 import { Can } from "Auth/can";
@@ -114,6 +118,7 @@ const SideBarButton = (props) => {
 
 const Sidebar = (props) => {
   const classes = useStyles();
+  const [openReportes, setOpenReportes] = useState(false);
   const [openReservas, setOpenReservas] = useState(false);
   const [openEstadisticas, setOpenEstadisticas] = useState(false);
 
@@ -231,6 +236,31 @@ const Sidebar = (props) => {
               icon={<SportsSoccerIcon className={classes.link} />}
               text="Administrar Espacios"
             />
+          </Can>
+          <Can I="read" a="reporte">
+            <ListItem
+              button
+              onClick={() => {
+                setOpenReportes((old) => !old);
+              }}
+            >
+              <ListItemIcon className={classes.link}>
+                <EqualizerIcon />
+              </ListItemIcon>
+              <ListItemText primary="Reportes" className={classes.link} />
+              {openReportes ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={openReportes} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <SideBarButton
+                  permiso="read"
+                  elemento="reporte"
+                  ruta={`/app/complejos/${props.params.idComplejo}/reportes/concurrencia`}
+                  icon={<BlurLinearIcon className={classes.link} />}
+                  text="Concurrencia"
+                />
+              </List>
+            </Collapse>
           </Can>
         </List>
 
