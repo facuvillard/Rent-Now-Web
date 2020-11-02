@@ -44,7 +44,7 @@ const ReporteConcurrencia = () => {
                 setIsLoading(false);
             }
         });
-    }, [])
+    }, [idComplejo])
 
 
     const formatReservasByDay = (reservasToFormat) => {
@@ -76,71 +76,67 @@ const ReporteConcurrencia = () => {
         setReservasByDay(reservasByDay)
     }
 
-    const formatReservasByFranja = (reservasToFormat) => {
-        const reservasByFranjaArray = [
-            {
-                franjaHoraria: 'Mañana',
-                "Cancha Futbol": 0,
-                "Cancha Basquet": 0,
-                "Cancha Handball": 0,
-                "Cancha Tenis": 0,
-                "Cancha Paddle": 0,
-                "Cancha Hockey": 0,
-                "Quincho": 0,
-                "Asador": 0
-            },
-            {
-                franjaHoraria: 'Siesta',
-                "Cancha Futbol": 0,
-                "Cancha Basquet": 0,
-                "Cancha Handball": 0,
-                "Cancha Tenis": 0,
-                "Cancha Paddle": 0,
-                "Cancha Hockey": 0,
-                "Quincho": 0,
-                "Asador": 0
-            },
-            {
-                franjaHoraria: 'Tarde',
-                "Cancha Futbol": 0,
-                "Cancha Basquet": 0,
-                "Cancha Handball": 0,
-                "Cancha Tenis": 0,
-                "Cancha Paddle": 0,
-                "Cancha Hockey": 0,
-                "Quincho": 0,
-                "Asador": 0
-            },
-            {
-                franjaHoraria: 'Noche',
-                "Cancha Futbol": 0,
-                "Cancha Basquet": 0,
-                "Cancha Handball": 0,
-                "Cancha Tenis": 0,
-                "Cancha Paddle": 0,
-                "Cancha Hockey": 0,
-                "Quincho": 0,
-                "Asador": 0
-            },
-        ]
-        reservasToFormat.forEach(reservaToFormat => {
-            if (reservaToFormat.diaString !== daySelected) {
-                return
-            }
-            const index = reservasByFranjaArray.findIndex(item => item.franjaHoraria === reservaToFormat.franjaHoraria)
-            if (index !== -1) {
-                reservasByFranjaArray[index][reservaToFormat.espacio.tipoEspacio] = reservasByFranjaArray[index][reservaToFormat.espacio.tipoEspacio] ? reservasByFranjaArray[index][reservaToFormat.espacio.tipoEspacio] + 1 : 1
-            }
-        })
-
-        console.log(reservasByFranjaArray)
-        setReservasByFranja(reservasByFranjaArray)
-
-    }
-
 
     useEffect(() => {
-        console.log(daySelected)
+        function formatReservasByFranja(reservasToFormat){
+            const reservasByFranjaArray = [
+                {
+                    franjaHoraria: 'Mañana',
+                    "Cancha Futbol": 0,
+                    "Cancha Basquet": 0,
+                    "Cancha Handball": 0,
+                    "Cancha Tenis": 0,
+                    "Cancha Paddle": 0,
+                    "Cancha Hockey": 0,
+                    "Quincho": 0,
+                    "Asador": 0
+                },
+                {
+                    franjaHoraria: 'Siesta',
+                    "Cancha Futbol": 0,
+                    "Cancha Basquet": 0,
+                    "Cancha Handball": 0,
+                    "Cancha Tenis": 0,
+                    "Cancha Paddle": 0,
+                    "Cancha Hockey": 0,
+                    "Quincho": 0,
+                    "Asador": 0
+                },
+                {
+                    franjaHoraria: 'Tarde',
+                    "Cancha Futbol": 0,
+                    "Cancha Basquet": 0,
+                    "Cancha Handball": 0,
+                    "Cancha Tenis": 0,
+                    "Cancha Paddle": 0,
+                    "Cancha Hockey": 0,
+                    "Quincho": 0,
+                    "Asador": 0
+                },
+                {
+                    franjaHoraria: 'Noche',
+                    "Cancha Futbol": 0,
+                    "Cancha Basquet": 0,
+                    "Cancha Handball": 0,
+                    "Cancha Tenis": 0,
+                    "Cancha Paddle": 0,
+                    "Cancha Hockey": 0,
+                    "Quincho": 0,
+                    "Asador": 0
+                },
+            ]
+            reservasToFormat.forEach(reservaToFormat => {
+                if (reservaToFormat.diaString !== daySelected) {
+                    return
+                }
+                const index = reservasByFranjaArray.findIndex(item => item.franjaHoraria === reservaToFormat.franjaHoraria)
+                if (index !== -1) {
+                    reservasByFranjaArray[index][reservaToFormat.espacio.tipoEspacio] = reservasByFranjaArray[index][reservaToFormat.espacio.tipoEspacio] ? reservasByFranjaArray[index][reservaToFormat.espacio.tipoEspacio] + 1 : 1
+                }
+            })
+            setReservasByFranja(reservasByFranjaArray)
+    
+        }
         formatReservasByFranja(reservas)
     }, [daySelected, reservas])
 
@@ -271,9 +267,8 @@ const ReporteConcurrencia = () => {
                         legendOffset: -40
                     }}
                     colors='YlOrRd'
-                    cellOpacity={0.5}
+                    cellOpacity={0.8}
                     cellBorderWidth={2}
-                    cellOpacity={1}
                     cellBorderColor={{ from: 'color', modifiers: [['darker', 0.7]] }}
                     labelTextColor={{ from: 'color', modifiers: [['darker', 3]] }}
                     defs={[
