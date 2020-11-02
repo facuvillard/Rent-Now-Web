@@ -17,6 +17,7 @@ const definePermissionsfor = user => {
         case ROLES.ADMIN_COMPLEJO: {
             can([PERMISSIONS.CREATE, PERMISSIONS.UPDATE, PERMISSIONS.DELETE, PERMISSIONS.READ], [ELEMENTS.COMPLEJO, ELEMENTS.RESERVA, ELEMENTS.ESPACIO]);
             can([PERMISSIONS.READ], [ELEMENTS.AYUDA])
+            can([PERMISSIONS.READ], [ELEMENTS.REPORTE])
             break;
         }
         case ROLES.ENCARGADO_COMPLEJO: {

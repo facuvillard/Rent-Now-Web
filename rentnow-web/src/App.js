@@ -21,7 +21,9 @@ import Espacios from "components/App/Espacios/Espacios";
 import EditEspacio from "components/App/Espacios/EditEspacio/EditEspacio";
 import ReservasByEspacio from "components/App/Reservas/ReservaByEspacio/ReservasByEspacio";
 import Ayuda from "components/Ayuda/Ayuda";
+import ReporteConcurrencia from "components/App/Estadisticas/ReporteConcurrencia/ReporteConcurrencia";
 import ReservasList from 'components/App/Reservas/ListadoReservas/ReservasList'
+
 
 function App() {
   return (
@@ -151,6 +153,16 @@ function App() {
                 breadcrumbs={Breadcrumbs.APP_COMPLEJO_CALENDARIO}
               />
               <RouteWithSidebar
+                title="Reporte de concurrencia"
+                component={() => <ReporteConcurrencia />}
+                exact
+                path={Routes.REPORTES_CONCURRENCIA}
+                isPrivate={true}
+                permiso="read"
+                elemento="reporte"
+                breadcrumbs={Breadcrumbs.APP_REPORTES_CONCURRENCIA}
+                />
+               <RouteWithSidebar
                 title="Listado de Reservas"
                 component={() => <ReservasList />}
                 exact

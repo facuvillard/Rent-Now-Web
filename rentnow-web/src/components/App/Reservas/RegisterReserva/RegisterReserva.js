@@ -102,6 +102,7 @@ const RegisterReserva = ({ espacio, handleClickReservaRegistradaConExito }) => {
       espacio: {
         id: espacio.id,
         descripcion: espacio.nombre,
+        tipoEspacio: espacio.tipoEspacio
       },
     }));
   }, [espacio, idComplejo]);
