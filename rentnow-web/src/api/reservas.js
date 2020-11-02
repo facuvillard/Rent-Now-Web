@@ -16,14 +16,17 @@ export async function registerReservaApi(reserva) {
   reserva.fechaFin = new firebase.firestore.Timestamp.fromDate(
     reserva.fechaFin
   );
-  reserva.estados.push({estado: "CONFIRMADA", fecha: new firebase.firestore.Timestamp.now(), motivo: ""});
+  reserva.estados.push({
+    estado: "CONFIRMADA",
+    fecha: new firebase.firestore.Timestamp.now(),
+    motivo: "",
+  });
 
   try {
     await firebase
       .firestore()
       .collection("reservas")
       .add({ ...reserva, dia, semana, mes, año, fechaRegistro });
-
 
     return { status: "OK", message: "Se registró la reserva con exito" };
   } catch (err) {
@@ -107,11 +110,7 @@ export async function getReservasSixWeeksAndEspacioRealTime(
 
 export async function updateReservaStateAndPayment(reserva, id) {
   try {
-    await firebase
-      .firestore()
-      .collection("reservas")
-      .doc(id)
-      .update(reserva);
+    await firebase.firestore().collection("reservas").doc(id).update(reserva);
     return {
       status: "OK",
       message: "Los datos de la reserva han sido actualizados con exito",
@@ -124,7 +123,11 @@ export async function updateReservaStateAndPayment(reserva, id) {
   }
 }
 
-export async function getReservasByMonthAndYear(fecha, idComplejo, runWhenChange) {
+export async function getReservasByMonthAndYear(
+  fecha,
+  idComplejo,
+  runWhenChange
+) {
   try {
     const month = moment(fecha).month();
     const year = moment(fecha).year();
@@ -132,44 +135,43 @@ export async function getReservasByMonthAndYear(fecha, idComplejo, runWhenChange
     const result = await firebase
       .firestore()
       .collection("reservas")
-      .where('complejo.id','==',idComplejo)
-      .where('año','==', year)
-      .where('mes','==', month)
+      .where("complejo.id", "==", idComplejo)
+      .where("año", "==", year)
+      .where("mes", "==", month)
       .orderBy("fechaInicio", "asc")
       .onSnapshot((querySnapshot) => {
         let reservas = [];
 
         querySnapshot.forEach((reservaDoc) => {
-          const reserva = reservaDoc.data()
+          const reserva = reservaDoc.data();
           reservas.push({
             id: reservaDoc.id,
             fechaInicioString: reserva.fechaInicio.toDate(),
             fechaFinString: reserva.fechaFin.toDate(),
             estado: reserva.estados[reserva.estados.length - 1].estado,
             nombreCompleto: `${reserva.cliente.apellido}, ${reserva.cliente.nombre}`,
-            ...reserva,}
-          );
+            ...reserva,
+          });
         });
         runWhenChange(reservas);
       });
 
-      const reservas = result.docs.map((reservaDoc) => {
-        const reserva = reservaDoc.data();
-        return {
-          fechaInicioString: reserva.fechaInicio.toDate(),
-          fechaFinString: reserva.fechaFin.toDate(),
-          estado: reserva.estados[reserva.estados.length - 1].estado,
-          nombreCompleto: `${reserva.cliente.apellido}, ${reserva.cliente.nombre}`,
-          ...reserva,
-        };
-      });
-    
+    const reservas = result.docs.map((reservaDoc) => {
+      const reserva = reservaDoc.data();
       return {
-        status: "OK",
-        message: "Se consultaron las reservas con éxito",
-        data: reservas,
+        fechaInicioString: reserva.fechaInicio.toDate(),
+        fechaFinString: reserva.fechaFin.toDate(),
+        estado: reserva.estados[reserva.estados.length - 1].estado,
+        nombreCompleto: `${reserva.cliente.apellido}, ${reserva.cliente.nombre}`,
+        ...reserva,
       };
+    });
 
+    return {
+      status: "OK",
+      message: "Se consultaron las reservas con éxito",
+      data: reservas,
+    };
   } catch (err) {
     return {
       status: "ERROR",
@@ -208,6 +210,30 @@ export async function getReservas(idComplejo) {
       .firestore()
       .collection("reservas")
       .where("complejo.id", "==", idComplejo)
+      .get()
+      .then((snap) => snap.docs.map((reservas) => reservas.data()));
+
+    return {
+      status: "OK",
+      message: "Se consultaron correctamente las reservas",
+      data: result,
+    };
+  } catch (err) {
+    return {
+      status: "ERROR",
+      message: err,
+    };
+  }
+}
+
+export async function getAllReservasByDate(date) {
+  const firebaseDate = new firebase.firestore.Timestamp.fromDate(date);
+  try {
+    const result = await firebase
+      .firestore()
+      .collection("reservas")
+      .where("fechaRegistro", ">=", firebaseDate)
+
       .get()
       .then((snap) => snap.docs.map((reservas) => reservas.data()));
 

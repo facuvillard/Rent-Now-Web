@@ -30,7 +30,7 @@ const BarComponent = (props) => {
           fontSize: 15,
         }}
       >
-        {props.data.indexValue}
+        {props.data.data.nombreComplejo}
       </text>
       <text
         x={props.width - 16}
@@ -50,13 +50,15 @@ const BarComponent = (props) => {
 };
 
 export default function BarChart({ data }) {
+  var array = [].concat(data).reverse().slice(-5);
   return (
     <ResponsiveBar
       layout="horizontal"
-      margin={{ top: 26, right: 10, bottom: 26, left: 10 }}
-      data={data}
-      indexBy="id"
-      keys={["value"]}
+      margin={{ top: 60, right: 60, bottom: 60, left: 60 }}
+      data={array}
+      nombre={array.nombreComplejo}
+      indexBy="idComplejo"
+      keys={["cantidadReservas"]}
       colors={{ scheme: "spectral" }}
       colorBy="indexValue"
       borderColor={{ from: "color", modifiers: [["darker", 2.6]] }}
