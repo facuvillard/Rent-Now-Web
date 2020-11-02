@@ -21,8 +21,10 @@ import Espacios from "components/App/Espacios/Espacios";
 import EditEspacio from "components/App/Espacios/EditEspacio/EditEspacio";
 import ReservasByEspacio from "components/App/Reservas/ReservaByEspacio/ReservasByEspacio";
 import Ayuda from "components/Ayuda/Ayuda";
+import ReservasList from "components/App/Reservas/ListadoReservas/ReservasList";
+import RankingConcurrencia from "components/Admin/Estadisticas/RankingConcurrencia";
 import ReporteConcurrencia from "components/App/Estadisticas/ReporteConcurrencia/ReporteConcurrencia";
-import ReservasList from 'components/App/Reservas/ListadoReservas/ReservasList'
+
 
 
 function App() {
@@ -47,7 +49,25 @@ function App() {
                 elemento="usuario"
                 breadcrumbs={Breadcrumbs.ADMIN_USUARIOS}
               />
+               <RouteWithSidebar
+                title="Ranking uso de aplicación"
+                component={() => <RankingConcurrencia />}
+                path={Routes.RANKING_CONCURRENCIA}
+                isPrivate={true}
+                permiso="admin"
+                elemento="estadisticas"
+                breadcrumbs={Breadcrumbs.ADMIN_USUARIOS}
+              />
 
+              <RouteWithSidebar
+                title="Administrar Complejos"
+                component={() => <AdminComplejos />}
+                path={Routes.ADMIN_COMPLEJOS}
+                isPrivate={true}
+                permiso="admin"
+                elemento="complejo"
+                breadcrumbs={Breadcrumbs.ADMIN_COMPLEJOS}
+              />
               <RouteWithSidebar
                 title="Administrar Complejos"
                 component={() => <AdminComplejos />}

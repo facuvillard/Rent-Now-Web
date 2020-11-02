@@ -38,6 +38,13 @@ export const ADMIN_USUARIOS = [
   },
 ];
 
+export const ADMIN_ESTADISTICAS = [
+  {
+    nombre: "Estadisticas",
+    ruta: Routes.RANKING_CONCURRENCIA,
+  },
+];
+
 export const ADMIN_COMPLEJOS = [
   {
     nombre: "Administrar Complejos",

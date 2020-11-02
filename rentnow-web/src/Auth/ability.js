@@ -12,6 +12,7 @@ const definePermissionsfor = user => {
         case ROLES.ADMIN_APP: {
             can(PERMISSIONS.ADMIN, ELEMENTS.USUARIO);
             can(PERMISSIONS.ADMIN, ELEMENTS.COMPLEJO);
+            can(PERMISSIONS.ADMIN, ELEMENTS.ESTADISTICAS)
             break;
         }
         case ROLES.ADMIN_COMPLEJO: {

@@ -27,4 +27,5 @@ export const LISTADO_RESERVAS = `${COMPLEJO}/reservas/listado`
 //ADMIN
 export const USUARIOS = `${ADMIN}/usuarios`
 export const ADMIN_COMPLEJOS = `${ADMIN}/complejos`
+export const RANKING_CONCURRENCIA = `${ADMIN}/estadisticas/ranking-concurrencia`
 
