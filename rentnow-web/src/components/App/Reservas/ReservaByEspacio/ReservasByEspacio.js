@@ -16,6 +16,7 @@ import { getEspaciosByIdComplejo } from "api/espacios";
 import { useParams } from "react-router-dom";
 import RegisterReserva from "components/App/Reservas/RegisterReserva/RegisterReserva";
 import EspacioCalendar from "./EspacioCalendar/EspacioCalendar";
+import AlertCustom from "components/utils/AlertCustom/AlertCustom"
 
 const useStyles = makeStyles((theme) => ({
   addButton: {
@@ -54,6 +55,8 @@ const ReservasByEspacio = () => {
   const [value, setValue] = useState();
   const [showRegistroReserva, setShowRegistroReserva] = useState(false);
 
+  const [showAlert, setShowAlert] = useState(false);
+
   useEffect(() => {
     setIsLoading(true);
     getEspaciosByIdComplejo(idComplejo).then((response) => {
@@ -75,6 +78,11 @@ const ReservasByEspacio = () => {
 
   const handleClickRegistroReserva = () => {
     setShowRegistroReserva((old) => !showRegistroReserva);
+  };
+
+  const handleClickReservaRegistradaConExito = () => {
+    setShowRegistroReserva((old) => !showRegistroReserva);
+    setShowAlert(true);
   };
 
   if (isLoading) {
@@ -111,15 +119,15 @@ const ReservasByEspacio = () => {
               {!showRegistroReserva ? (
                 <EspacioCalendar espacio={espacio} />
               ) : (
-                <RegisterReserva espacio={espacio} />
-              )}
+                  <RegisterReserva handleClickReservaRegistradaConExito={handleClickReservaRegistradaConExito} espacio={espacio} />
+                )}
             </TabPanel>
           ))}
         </>
       ) : null}
 
       <Fab
-        color={!showRegistroReserva ? "primary":"secondary"}
+        color={!showRegistroReserva ? "primary" : "secondary"}
         aria-label="add"
         title="Registrar una reserva"
         className={classes.addButton}
@@ -132,12 +140,18 @@ const ReservasByEspacio = () => {
             Reserva
           </>
         ) : (
-          <>
-            <ArrowBackIcon />
+            <>
+              <ArrowBackIcon />
             Calendario
           </>
-        )}
+          )}
       </Fab>
+      <AlertCustom
+        type={"success"}
+        text={"Reserva Registrada con éxito"}
+        open={showAlert}
+        setOpen={setShowAlert}
+      />
     </>
   );
 };
