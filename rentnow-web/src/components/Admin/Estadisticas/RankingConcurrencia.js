@@ -9,6 +9,7 @@ export default function RankingConcurrencia(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [ranking, setRanking] = useState([]);
   const [date, setDate] = useState(moment().add(-1, "months").toDate());
+  const [dateToShow, setDateToShow] = useState(1);
 
   useEffect(() => {
     setIsLoading(true);
@@ -25,24 +26,30 @@ export default function RankingConcurrencia(props) {
         xs={12}
         style={{ display: "flex", justifyContent: "flex-end" }}
       >
-        <ButtonGroup color="primary" variant="contained">
+        <ButtonGroup color="secondary">
           <Button
             onClick={() => {
               setDate(moment().add(-12, "months").toDate());
+              setDateToShow(12);
             }}
+            variant={dateToShow === 12 ? "outlined" : "contained"}
           >
             Un año
           </Button>
           <Button
+            variant={dateToShow === 3 ? "outlined" : "contained"}
             onClick={() => {
               setDate(moment().add(-3, "months").toDate());
+              setDateToShow(3);
             }}
           >
             Tres meses
           </Button>
           <Button
+            variant={dateToShow === 1 ? "outlined" : "contained"}
             onClick={() => {
               setDate(moment().add(-1, "months").toDate());
+              setDateToShow(1);
             }}
           >
             Un mes

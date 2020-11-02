@@ -45,6 +45,7 @@ export default function HomeComplejo() {
   const { idComplejo } = useParams();
   const [date, setDate] = useState(moment().add(-1, "months").toDate());
   const [data, setData] = useState();
+  const [dateToShow, setDateToShow] = useState(1);
 
   useEffect(() => {
     getDatosHome(idComplejo, date).then((response) => {
@@ -62,24 +63,30 @@ export default function HomeComplejo() {
           xs={12}
           style={{ display: "flex", justifyContent: "flex-end" }}
         >
-          <ButtonGroup color="primary" variant="contained">
+          <ButtonGroup color="secondary">
             <Button
               onClick={() => {
                 setDate(moment().add(-12, "months").toDate());
+                setDateToShow(12);
               }}
+              variant={dateToShow === 12 ? "outlined" : "contained"}
             >
               Un año
             </Button>
             <Button
+              variant={dateToShow === 3 ? "outlined" : "contained"}
               onClick={() => {
                 setDate(moment().add(-3, "months").toDate());
+                setDateToShow(3);
               }}
             >
               Tres meses
             </Button>
             <Button
+              variant={dateToShow === 1 ? "outlined" : "contained"}
               onClick={() => {
                 setDate(moment().add(-1, "months").toDate());
+                setDateToShow(1);
               }}
             >
               Un mes
@@ -112,7 +119,8 @@ export default function HomeComplejo() {
               </CardHeader>
               <CardBody>
                 <Typography variant="h4">
-                  Reservas totales concretadas: {data.cantidadConcretadas}
+                  Reservas totales concretadas:{" "}
+                  {data ? data.cantidadConcretadas : ""}
                 </Typography>
               </CardBody>
             </Card>
@@ -128,7 +136,7 @@ export default function HomeComplejo() {
               </CardHeader>
               <CardBody>
                 <Typography variant="h4">
-                  Reservas inconclusas: {data.cantidadInconclusas}
+                  Reservas inconclusas: {data ? data.cantidadInconclusas : ""}
                 </Typography>
               </CardBody>
             </Card>
