@@ -5,8 +5,8 @@ export default function ResponsiveBarChart({ data }) {
   return (
     <ResponsiveBar
       data={data}
-      keys={["cantReservasConfirmadas", "cantReservasCanceladas"]}
-      indexBy="nombre"
+      keys={["cantidadReservasInconclusas", "cantidadReservasConcretadas"]}
+      indexBy="nombreEspacio"
       margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
       padding={0.8}
       colors={{ scheme: "nivo" }}

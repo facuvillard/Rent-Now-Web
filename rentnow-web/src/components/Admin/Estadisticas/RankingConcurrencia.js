@@ -49,7 +49,7 @@ export default function RankingConcurrencia(props) {
           </Button>
         </ButtonGroup>
       </Grid>
-      <Grid item justify="center" xs={12}>
+      <Grid item xs={12}>
         <Paper elevation={3}>
           <div
             style={{

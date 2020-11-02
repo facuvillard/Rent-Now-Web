@@ -13,8 +13,7 @@ import {
 } from "@material-ui/core";
 
 //API
-import { getCantReservasByIdComplejoYMes, getReservas } from "api/reservas";
-import { getEspaciosByIdComplejo } from "api/espacios";
+import { getDatosHome } from "api/estadisticas";
 
 //Moment
 import moment from "moment";
@@ -34,62 +33,30 @@ import EventNoteIcon from "@material-ui/icons/EventNote";
 import ResponsiveBarChart from "./ResponsiveBarChart";
 import ResponsivePieChart from "./ResponsivePieChart";
 
+const dataPie = [
+  {
+    id: "Cliente de complejo",
+    value: 50,
+  },
+  { id: "Cliente de aplicación", value: 100 },
+];
+
 export default function HomeComplejo() {
   const { idComplejo } = useParams();
-  const [date, setDate] = useState();
-  const [cantidadReservas, setCantidadReservas] = useState(0);
-  const [data, setData] = useState([]);
-  const [cantUltMes, setCantUltMes] = useState(0);
-
-  const dataPie = [
-    {
-      id: "Cliente de complejo",
-      value: 50,
-    },
-    { id: "Cliente de aplicación", value: 100 },
-  ];
+  const [date, setDate] = useState(moment().add(-1, "months").toDate());
+  const [data, setData] = useState({
+    cantidadConcretadas: 0,
+    cantidadInconclusas: 0,
+    data: [],
+  });
 
   useEffect(() => {
-    getReservas(idComplejo).then((resp) => {
-      if (resp.status === "OK") {
-        const reservas = resp.data;
-        setCantidadReservas(reservas.length);
-        const array = [];
-        getEspaciosByIdComplejo(idComplejo).then((resp) => {
-          if (resp.status === "OK") {
-            const espacios = resp.data;
-            espacios.map((espacio) => {
-              var obj = {
-                nombre: espacio.nombre,
-                cantReservasConfirmadas: 0,
-                cantReservasCanceladas: 0,
-              };
-              for (let i = 0; i < reservas.length; i++) {
-                if (espacio.id === reservas[i].espacio.id) {
-                  obj.cantReservasConfirmadas += 1;
-                  obj.cantReservasCanceladas += 1;
-                }
-              }
-              console.log(obj);
-              array.push(obj);
-            });
-          }
-          setData(array);
-        });
+    getDatosHome(idComplejo, date).then((response) => {
+      if (response.status === "OK") {
+        setData(response.data);
       }
     });
-
-    getCantReservasByIdComplejoYMes(idComplejo, moment().month()).then(
-      (resp) => {
-        if (resp.status === "OK") {
-          setCantUltMes(resp.data);
-        } else {
-          alert(resp.error);
-        }
-      }
-    );
-    setDate(moment().format("dddd DD [de] MMMM [de] YYYY"));
-  }, []);
+  }, [date]);
 
   return (
     <div>
@@ -100,9 +67,27 @@ export default function HomeComplejo() {
           style={{ display: "flex", justifyContent: "flex-end" }}
         >
           <ButtonGroup color="primary" variant="contained">
-            <Button>Un año</Button>
-            <Button>3 meses</Button>
-            <Button>Mes actual</Button>
+            <Button
+              onClick={() => {
+                setDate(moment().add(-12, "months").toDate());
+              }}
+            >
+              Un año
+            </Button>
+            <Button
+              onClick={() => {
+                setDate(moment().add(-3, "months").toDate());
+              }}
+            >
+              Tres meses
+            </Button>
+            <Button
+              onClick={() => {
+                setDate(moment().add(-1, "months").toDate());
+              }}
+            >
+              Un mes
+            </Button>
           </ButtonGroup>
         </Grid>
         <Grid item xs={12} sm={12} md={4}>
@@ -114,7 +99,9 @@ export default function HomeComplejo() {
                 </CardIcon>
               </CardHeader>
               <CardBody>
-                <Typography variant="h4">{date}</Typography>
+                <Typography variant="h4">
+                  {moment().format("dddd DD [de] MMMM [de] YYYY")}
+                </Typography>
               </CardBody>
             </Card>
           </Paper>
@@ -129,13 +116,12 @@ export default function HomeComplejo() {
               </CardHeader>
               <CardBody>
                 <Typography variant="h4">
-                  Reservas totales concretadas: {cantidadReservas}
+                  Reservas totales concretadas: {data.cantidadConcretadas}
                 </Typography>
               </CardBody>
             </Card>
           </Paper>
         </Grid>
-
         <Grid item xs={12} sm={12} md={4}>
           <Paper elevation={3}>
             <Card>
@@ -146,7 +132,7 @@ export default function HomeComplejo() {
               </CardHeader>
               <CardBody>
                 <Typography variant="h4">
-                  Reservas inconclusas: {cantUltMes}
+                  Reservas inconclusas: {data.cantidadInconclusas}
                 </Typography>
               </CardBody>
             </Card>
@@ -166,9 +152,11 @@ export default function HomeComplejo() {
                   style={{
                     width: "100%",
                     height: "25em",
+                    display: "flex",
+                    justifyContent: "center",
                   }}
                 >
-                  <ResponsiveBarChart data={data} />
+                  <ResponsiveBarChart data={data.data} />
                 </div>
               </CardBody>
             </Card>

@@ -249,3 +249,27 @@ export async function getAllReservasByDate(date) {
     };
   }
 }
+
+export async function getAllReservasByDateAndIdComplejo(date, idComplejo) {
+  const firebaseDate = new firebase.firestore.Timestamp.fromDate(date);
+  try {
+    const result = await firebase
+      .firestore()
+      .collection("reservas")
+      .where("fechaRegistro", ">=", firebaseDate)
+      .where("complejo.id", "==", idComplejo)
+      .get()
+      .then((snap) => snap.docs.map((reservas) => reservas.data()));
+
+    return {
+      status: "OK",
+      message: "Se consultaron correctamente las reservas",
+      data: result,
+    };
+  } catch (err) {
+    return {
+      status: "ERROR",
+      message: err,
+    };
+  }
+}
