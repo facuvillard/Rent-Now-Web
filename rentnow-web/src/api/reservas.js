@@ -1,39 +1,6 @@
 import firebase from "firebase";
 import moment from "moment";
-
-const diasStrings = {
-  Monday : 'Lunes',
-  Tuesday: 'Martes',
-  Thirsday: 'Miercoles',
-  Wednesday: 'Jueves',
-  Friday: 'Viernes',
-  Saturday: 'Sabado',
-  Sunday: 'Domingo'
-}
-
-function getFranjaHoraria(hora) {
-  
-    if(hora >= 5 && hora < 13) {
-      return 'Mañana'
-   
-    } 
-    if(hora >= 13 && hora < 16){
-      return 'Siesta'
-     
-    } 
-    if(hora >= 16 && hora < 19){
-     return 'Tarde'
-      
-    } 
-    if(hora >= 19 && hora < 24){
-      return 'Noche'
-      
-    }
-
-    return 'Fuera de franja'
-  }
-
-
+import { capitalize, getFranjaHoraria } from "components/utils/Functions/functions"
 
 
 
@@ -42,10 +9,8 @@ export async function registerReservaApi(reserva) {
   const semana = moment(reserva.fechaInicio).week();
   const mes = moment(reserva.fechaInicio).month();
   const año = moment(reserva.fechaInicio).year();
-  const diaString = diasStrings[moment(reserva.fechaInicio).format('dddd')]
+  const diaString = capitalize(moment(reserva.fechaInicio).format('dddd'))
   const hora = moment(reserva.fechaInicio).hour()
-  console.log(getFranjaHoraria(hora))
-  console.log(hora)
   const franjaHoraria = getFranjaHoraria(hora)
   const fechaRegistro = new firebase.firestore.Timestamp.fromDate(
     moment().toDate()

@@ -25,8 +25,6 @@ import logoSinLetraAmarillo from "../../assets/img/logos/logo-amarillo-sin-letra
 import logoConLetraAmarillo from "../../assets/img/logos/logo-horizontal-blanco.png";
 import * as Routes from "../../constants/routes";
 import ListAltOutlined from "@material-ui/icons/ListAltOutlined";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
 import MenuBook from "@material-ui/icons/MenuBook";
 import BarChartIcon from "@material-ui/icons/BarChart";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
