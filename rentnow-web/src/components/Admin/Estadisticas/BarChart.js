@@ -59,7 +59,7 @@ export default function BarChart({ data }) {
       nombre={array.nombreComplejo}
       indexBy="idComplejo"
       keys={["cantidadReservas"]}
-      colors={{ scheme: "spectral" }}
+      colors={{ scheme: "yellow_orange_red" }}
       colorBy="indexValue"
       borderColor={{ from: "color", modifiers: [["darker", 2.6]] }}
       enableGridX

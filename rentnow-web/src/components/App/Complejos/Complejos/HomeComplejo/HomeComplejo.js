@@ -44,11 +44,7 @@ const dataPie = [
 export default function HomeComplejo() {
   const { idComplejo } = useParams();
   const [date, setDate] = useState(moment().add(-1, "months").toDate());
-  const [data, setData] = useState({
-    cantidadConcretadas: 0,
-    cantidadInconclusas: 0,
-    data: [],
-  });
+  const [data, setData] = useState();
 
   useEffect(() => {
     getDatosHome(idComplejo, date).then((response) => {
@@ -156,7 +152,7 @@ export default function HomeComplejo() {
                     justifyContent: "center",
                   }}
                 >
-                  <ResponsiveBarChart data={data.data} />
+                  <ResponsiveBarChart data={data ? data.data : []} />
                 </div>
               </CardBody>
             </Card>
