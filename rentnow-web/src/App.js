@@ -47,7 +47,7 @@ function App() {
                 breadcrumbs={Breadcrumbs.ADMIN_USUARIOS}
               />
                <RouteWithSidebar
-                title="Ranking Concurrencia"
+                title="Ranking uso de aplicación"
                 component={() => <RankingConcurrencia />}
                 path={Routes.RANKING_CONCURRENCIA}
                 isPrivate={true}

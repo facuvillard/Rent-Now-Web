@@ -177,7 +177,7 @@ const Sidebar = (props) => {
                 elemento="estadisticas"
                 ruta={Routes.RANKING_CONCURRENCIA}
                 icon={<BarChartIcon className={classes.link} />}
-                text="Ranking Concurrencia"
+                text="Ranking uso de aplicación"
               />
             </Collapse>
           </Can>
