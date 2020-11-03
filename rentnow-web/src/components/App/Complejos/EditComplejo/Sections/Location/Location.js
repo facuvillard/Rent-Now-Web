@@ -25,7 +25,7 @@ const Location = (props) => {
     };
     return (
         <>
-            <Grid container justify="center" spacing="2">
+            <Grid container justify="center" spacing={2}>
                 <Grid item xs={10}>
                     <LoadScript googleMapsApiKey={GOOGLE_MAP_KEY}>
                         <GoogleMap mapContainerStyle={style} center={geoPoint} zoom={18}>

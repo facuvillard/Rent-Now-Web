@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Drawer,
@@ -7,17 +7,27 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Collapse,
 } from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/Home";
 import GroupIcon from "@material-ui/icons/Group";
 import Settings from "@material-ui/icons/Settings";
 import SportsSoccerIcon from "@material-ui/icons/SportsSoccer";
+import TodayIcon from "@material-ui/icons/Today";
+import EqualizerIcon from "@material-ui/icons/Equalizer";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+import BlurLinearIcon from "@material-ui/icons/BlurLinear";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 import { Can } from "Auth/can";
 import logoSinLetraAmarillo from "../../assets/img/logos/logo-amarillo-sin-letra.png";
 import logoConLetraAmarillo from "../../assets/img/logos/logo-horizontal-blanco.png";
 import * as Routes from "../../constants/routes";
+import ListAltOutlined from "@material-ui/icons/ListAltOutlined";
+import MenuBook from "@material-ui/icons/MenuBook";
+import BarChartIcon from "@material-ui/icons/BarChart";
+import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -85,6 +95,9 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     height: "100%",
   },
+  icon: {
+    color: theme.palette.grey[50],
+  },
 }));
 
 const SideBarButton = (props) => {
@@ -103,6 +116,9 @@ const SideBarButton = (props) => {
 
 const Sidebar = (props) => {
   const classes = useStyles();
+  const [openReportes, setOpenReportes] = useState(false);
+  const [openReservas, setOpenReservas] = useState(false);
+  const [openEstadisticas, setOpenEstadisticas] = useState(false);
 
   return (
     <Drawer
@@ -129,6 +145,7 @@ const Sidebar = (props) => {
       <Divider />
       <div className={classes.listContainer}>
         <List style={{ flexGrow: "1" }}>
+          {/* ADMIN */}
           <SideBarButton
             permiso="admin"
             elemento="complejo"
@@ -143,6 +160,72 @@ const Sidebar = (props) => {
             icon={<GroupIcon className={classes.link} />}
             text="Usuarios"
           />
+          <Can I="admin" a="estadisticas">
+            <ListItem
+              button
+              onClick={() => {
+                setOpenEstadisticas((old) => !old);
+              }}
+              className={classes.link}
+            >
+              <ListItemIcon>
+                <TrendingUpIcon className={classes.icon} />
+              </ListItemIcon>
+              <ListItemText primary="Estadisticas" />
+              {openEstadisticas ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={openEstadisticas} timeout="auto" unmountOnExit>
+              <SideBarButton
+                permiso="admin"
+                elemento="estadisticas"
+                ruta={Routes.RANKING_CONCURRENCIA}
+                icon={<BarChartIcon className={classes.link} />}
+                text="Ranking uso de aplicación"
+              />
+            </Collapse>
+          </Can>
+
+          {/* APP */}
+          <Can I="read" a="complejo">
+            <SideBarButton
+              permiso="read"
+              elemento="complejo"
+              ruta={`/app/complejos/${props.params.idComplejo}`}
+              icon={<HomeIcon className={classes.link} />}
+              text="Home"
+            />
+          </Can>
+          <Can I="read" a="reserva">
+            <ListItem
+              button
+              onClick={() => {
+                setOpenReservas((old) => !old);
+              }}
+              className={classes.link}
+            >
+              <ListItemIcon>
+                <MenuBook className={classes.icon} />
+              </ListItemIcon>
+              <ListItemText primary="Reservas" />
+              {openReservas ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={openReservas} timeout="auto" unmountOnExit>
+              <SideBarButton
+                permiso="read"
+                elemento="reserva"
+                ruta={`/app/complejos/${props.params.idComplejo}/calendario`}
+                icon={<TodayIcon className={classes.link} />}
+                text="Calendario"
+              />
+              <SideBarButton
+                permiso="read"
+                elemento="reserva"
+                ruta={`/app/complejos/${props.params.idComplejo}/reservas/listado`}
+                icon={<ListAltOutlined className={classes.link} />}
+                text="Listado de Reservas"
+              />
+            </Collapse>
+          </Can>
           <Can I="read" a="espacio">
             <SideBarButton
               permiso="read"
@@ -151,6 +234,31 @@ const Sidebar = (props) => {
               icon={<SportsSoccerIcon className={classes.link} />}
               text="Administrar Espacios"
             />
+          </Can>
+          <Can I="read" a="reporte">
+            <ListItem
+              button
+              onClick={() => {
+                setOpenReportes((old) => !old);
+              }}
+            >
+              <ListItemIcon className={classes.link}>
+                <EqualizerIcon />
+              </ListItemIcon>
+              <ListItemText primary="Reportes" className={classes.link} />
+              {openReportes ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={openReportes} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <SideBarButton
+                  permiso="read"
+                  elemento="reporte"
+                  ruta={`/app/complejos/${props.params.idComplejo}/reportes/concurrencia`}
+                  icon={<BlurLinearIcon className={classes.link} />}
+                  text="Concurrencia"
+                />
+              </List>
+            </Collapse>
           </Can>
         </List>
 

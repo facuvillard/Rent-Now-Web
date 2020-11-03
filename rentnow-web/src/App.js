@@ -18,7 +18,15 @@ import EditComplejos from "components/App/Complejos/EditComplejo/EditComplejos";
 import HomeComplejo from "components/App/Complejos/Complejos/HomeComplejo/HomeComplejo";
 import RegisterEspacios from "components/App/Espacios/RegisterEspacios";
 import Espacios from "components/App/Espacios/Espacios";
-import EditEspacio from "components/App/Espacios/EditEspacio/EditEspacio"
+import EditEspacio from "components/App/Espacios/EditEspacio/EditEspacio";
+import ReservasByEspacio from "components/App/Reservas/ReservaByEspacio/ReservasByEspacio";
+import Ayuda from "components/Ayuda/Ayuda";
+import ReservasList from "components/App/Reservas/ListadoReservas/ReservasList";
+import RankingConcurrencia from "components/Admin/Estadisticas/RankingConcurrencia";
+import ReporteConcurrencia from "components/App/Estadisticas/ReporteConcurrencia/ReporteConcurrencia";
+
+
+
 function App() {
   return (
     <div className="App">
@@ -41,6 +49,15 @@ function App() {
                 elemento="usuario"
                 breadcrumbs={Breadcrumbs.ADMIN_USUARIOS}
               />
+               <RouteWithSidebar
+                title="Ranking uso de aplicación"
+                component={() => <RankingConcurrencia />}
+                path={Routes.RANKING_CONCURRENCIA}
+                isPrivate={true}
+                permiso="admin"
+                elemento="estadisticas"
+                breadcrumbs={Breadcrumbs.ADMIN_USUARIOS}
+              />
 
               <RouteWithSidebar
                 title="Administrar Complejos"
@@ -50,6 +67,26 @@ function App() {
                 permiso="admin"
                 elemento="complejo"
                 breadcrumbs={Breadcrumbs.ADMIN_COMPLEJOS}
+              />
+              <RouteWithSidebar
+                title="Administrar Complejos"
+                component={() => <AdminComplejos />}
+                path={Routes.ADMIN_COMPLEJOS}
+                isPrivate={true}
+                permiso="admin"
+                elemento="complejo"
+                breadcrumbs={Breadcrumbs.ADMIN_COMPLEJOS}
+              />
+
+              <RouteWithoutSidebar
+                title="Ayuda"
+                exact
+                component={() => <Ayuda />}
+                path={Routes.AYUDA}
+                isPrivate={true}
+                permiso="read"
+                elemento="ayuda"
+                breadcrumbs={Breadcrumbs.APP_AYUDAS}
               />
 
               <RouteWithoutSidebar
@@ -75,7 +112,7 @@ function App() {
               />
 
               <RouteWithSidebar
-                title="Complejo"
+                title="Home del complejo"
                 component={() => <HomeComplejo />}
                 exact
                 path={Routes.COMPLEJO}
@@ -124,6 +161,36 @@ function App() {
                 permiso="create"
                 elemento="espacio"
                 breadcrumbs={Breadcrumbs.APP_MODIFICAR_ESPACIO}
+              />
+              <RouteWithSidebar
+                title="Calendario de Reservas"
+                component={() => <ReservasByEspacio />}
+                exact
+                path={Routes.CALENDARIO}
+                isPrivate={true}
+                permiso="read"
+                elemento="reserva"
+                breadcrumbs={Breadcrumbs.APP_COMPLEJO_CALENDARIO}
+              />
+              <RouteWithSidebar
+                title="Reporte de concurrencia"
+                component={() => <ReporteConcurrencia />}
+                exact
+                path={Routes.REPORTES_CONCURRENCIA}
+                isPrivate={true}
+                permiso="read"
+                elemento="reporte"
+                breadcrumbs={Breadcrumbs.APP_REPORTES_CONCURRENCIA}
+                />
+               <RouteWithSidebar
+                title="Listado de Reservas"
+                component={() => <ReservasList />}
+                exact
+                path={Routes.LISTADO_RESERVAS}
+                isPrivate={true}
+                permiso="read"
+                elemento="reserva"
+                breadcrumbs={Breadcrumbs.APP_COMPLEJO_RESERVAS_LISTADO}
               />
               <Route path="*" exact component={() => <Landing />} />
             </Switch>
