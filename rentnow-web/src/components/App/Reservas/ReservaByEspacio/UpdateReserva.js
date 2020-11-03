@@ -1,6 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import { Checkbox, Grid, Typography, Button, TextField, MenuItem, } from '@material-ui/core'
+import { Checkbox, Grid, Typography, Button, TextField, MenuItem, Stepper,Step,StepLabel } from '@material-ui/core'
 import { Formik, Field, Form } from "formik";
 import InputAdornment from '@material-ui/core/InputAdornment';
 import moment from "moment";
@@ -182,6 +182,15 @@ const UpdateReserva = (props) => {
                                         </MenuItem>
                                     ))}
                                 </TextField>
+                            </Grid>
+                            <Grid item>
+                            <Stepper activeStep={props.reserva.estados.length  - 1} orientation="vertical">
+                                    {props.reserva.estados.map((estado, index) => (
+                                            <Step key={index}>
+                                             <StepLabel>{estado.estado} - {moment(estado.fecha.toDate()).format('D/M/YY hh:mm').toString()}</StepLabel>
+                                             </Step>
+                                    ))}
+                            </Stepper>
                             </Grid>
                             {values.estado === constants.estados.cancelada ? (
                                 <Grid item xs={12}>

@@ -241,6 +241,7 @@ const Sidebar = (props) => {
               onClick={() => {
                 setOpenReportes((old) => !old);
               }}
+              className={classes.link}
             >
               <ListItemIcon className={classes.link}>
                 <EqualizerIcon />

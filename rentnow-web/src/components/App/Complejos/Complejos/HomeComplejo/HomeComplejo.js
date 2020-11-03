@@ -69,12 +69,12 @@ export default function HomeComplejo() {
                 setDate(moment().add(-12, "months").toDate());
                 setDateToShow(12);
               }}
-              variant={dateToShow === 12 ? "outlined" : "contained"}
+              variant={dateToShow === 12 ? "contained" : "outlined" }
             >
               Un año
             </Button>
             <Button
-              variant={dateToShow === 3 ? "outlined" : "contained"}
+              variant={dateToShow === 3 ? "contained" : "outlined" }
               onClick={() => {
                 setDate(moment().add(-3, "months").toDate());
                 setDateToShow(3);
@@ -83,7 +83,7 @@ export default function HomeComplejo() {
               Tres meses
             </Button>
             <Button
-              variant={dateToShow === 1 ? "outlined" : "contained"}
+              variant={dateToShow === 1 ? "contained" : "outlined" }
               onClick={() => {
                 setDate(moment().add(-1, "months").toDate());
                 setDateToShow(1);

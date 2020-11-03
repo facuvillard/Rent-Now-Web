@@ -76,7 +76,7 @@ export const RegisterSuccessComplejo = ({ complejo }) => {
         </Typography>
           </Grid>
           <Grid item xs={5}>
-            <Button fullWidth variant='contained' color='primary'>agregar espacios</Button>
+            {/* <Button fullWidth variant='contained' color='primary'>agregar espacios</Button> */}
             {/* On Click redireccionar a la pagina de registrar espacios */}
           </Grid>
         </Grid>

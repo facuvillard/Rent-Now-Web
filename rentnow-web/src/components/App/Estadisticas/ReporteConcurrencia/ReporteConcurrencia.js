@@ -28,7 +28,7 @@ const ReporteConcurrencia = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [reservasByDay, setReservasByDay] = useState([])
     const [reservasByFranja, setReservasByFranja] = useState([])
-    const [chartToShow, setChartToShow] = useState('radar')
+    const [chartToShow, setChartToShow] = useState('barras')
 
     const { idComplejo } = useParams()
 
@@ -145,10 +145,22 @@ const ReporteConcurrencia = () => {
         if (chartToShow === 'barras') {
             return (
                 <ResponsiveBar
+                theme={{
+                    "background": 'transparent',
+                    "fontSize": 15,
+                    "fontFamily": 'sans-serif',
+                    "grid": {
+                    },
+                    "labels": {
+                        "text": {
+                            "fontSize": 18,
+                        }
+                    },
+                }}
                     data={reservasByFranja}
                     keys={tiposEspacio}
                     indexBy="franjaHoraria"
-                    margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+                    margin={{ top: 50, right: 160, bottom: 50, left: 40 }}
                     padding={0.3}
                     innerPadding={0}
                     borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
@@ -161,7 +173,11 @@ const ReporteConcurrencia = () => {
                             tickRotation: 0,
                         }
                     }
-                    axisLeft={null}
+                    axisLeft={{
+                        tickSize: 5,
+                        tickPadding: 5,
+                        tickRotation: 0,
+                    }}
                     labelSkipWidth={12}
                     labelSkipHeight={12}
                     labelTextColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
@@ -201,31 +217,43 @@ const ReporteConcurrencia = () => {
             return (
 
                 <ResponsiveRadar
+                theme={{
+                    "background": 'transparent',
+                    "fontSize": 15,
+                    "fontFamily": 'sans-serif',
+                    "grid": {
+                    },
+                    "labels": {
+                        "text": {
+                            "fontSize": 18,
+                        }
+                    },
+                }}
                     data={reservasByFranja}
                     keys={tiposEspacio}
                     indexBy="franjaHoraria"
                     maxValue="auto"
                     margin={{ top: 50, right: 30, bottom: 50, left: 30 }}
-                    curve="cardinalClosed"
-                    borderWidth={2}
+                    curve="linearClosed"
+                    borderWidth={4}
                     borderColor={{ from: 'color' }}
-                    gridLevels={2}
-                    gridShape="circular"
+                    gridLevels={4}
+                    gridShape="linear"
                     gridLabelOffset={36}
                     enableDots={true}
                     dotSize={10}
-                    dotColor={{ theme: 'background' }}
+                    dotColor={{ from: 'color' }}
                     dotBorderWidth={2}
                     dotBorderColor={{ from: 'color' }}
                     enableDotLabel={true}
                     dotLabel="value"
                     dotLabelYOffset={-12}
                     colors={{ scheme: 'nivo' }}
-                    blendMode="normal"
+                    blendMode="multiply"
                     animate={true}
                     motionConfig="wobbly"
                     isInteractive={true}
-                    fillOpacity={0.95}
+                    fillOpacity={0.75}
                 />
             )
         }

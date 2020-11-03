@@ -24,7 +24,8 @@ import RegisterCliente from "components/App/Reservas/RegisterReserva/RegisterCli
 import { makeStyles } from "@material-ui/core/styles";
 import { Alert, AlertTitle } from '@material-ui/lab';
 import AlertCustom from "components/utils/AlertCustom/AlertCustom"
-
+import { estados } from 'constants/reservas/constants'
+import es from 'date-fns/locale/es';
 
 const useStyles = makeStyles((theme) => ({
   divider: {
@@ -56,11 +57,12 @@ const RegisterReserva = ({ espacio, handleClickReservaRegistradaConExito }) => {
   const classes = useStyles();
   const [esClienteNuevo, setEsClienteNuevo] = useState(false);
   const [fechaInicio, setFechaInicio] = useState(moment().toDate());
-  const [fechaFin, setFechaFin] = useState(moment().add(1, "hour").toDate());
+  const [fechaFin, setFechaFin] = useState(moment().add(30, "minutes").toDate());
   const [duracion, setDuracion] = useState(1);
   const [esFijo, setEsFijo] = useState(false);
   const [estaPagado, setEstaPagado] = useState(false);
   const [timesToExclude, setTimesToExclude] = useState([]);
+  const [timesToExcludeFin, setTimesToExcludeFin] = useState([]);
   const [numeroSemana, setNumeroSemana] = useState(0);
 
   const [alertCustomOpen, setAlertCustomOpen] = useState(false);
@@ -69,7 +71,7 @@ const RegisterReserva = ({ espacio, handleClickReservaRegistradaConExito }) => {
 
   const [reserva, setReserva] = useState({
     fechaInicio: moment().toDate(),
-    fechaFin: moment().add(1, "hour").toDate(),
+    fechaFin: moment().add(30, "minutes").toDate(),
     duracion: 1,
     monto: 0,
     esFijo: false,
@@ -125,14 +127,19 @@ const RegisterReserva = ({ espacio, handleClickReservaRegistradaConExito }) => {
   useEffect(() => {
     const fechaHoy = moment();
     const diferencia = 30 - (fechaHoy.minute() % 30);
-    const fechaInicio = fechaHoy.add(diferencia, "minutes").toDate();
+    let fechaInicio = fechaHoy.add(diferencia, "minutes").toDate();
 
+    timesToExclude.forEach(timeToExclude => {
+      if(moment(fechaInicio).isSame(timeToExclude,'minute')){
+        fechaInicio = (moment(fechaInicio).add(30,'minutes').toDate())
+      }
+    })
     setFechaInicio(fechaInicio);
-    setFechaFin(moment(fechaInicio).add(1, "hour").toDate());
+    setFechaFin(moment(fechaInicio).add(30, "minutes").toDate());
   }, [timesToExclude]);
 
   useEffect(() => {
-    setFechaFin(moment(fechaInicio).add(1, "hour").toDate());
+    setFechaFin(moment(fechaInicio).add(30, "minutes").toDate());
 
     if (moment(fechaInicio).week() === numeroSemana) {
       return;
@@ -149,23 +156,33 @@ const RegisterReserva = ({ espacio, handleClickReservaRegistradaConExito }) => {
     }
 
     getReservasFirstWeek().then((reservas) => {
-      let hoursToBlock = [];
-      reservas.forEach((reserva) => {
-        let duracion = reserva.duracion;
-        let lastFecha = moment(reserva.fechaInicio);
+      let hoursToBlock = [];  
+      let hoursToBlockFin = [] 
 
-        while (duracion > 0) {
-          lastFecha = lastFecha.add(30, "minutes");
-          hoursToBlock.push(lastFecha.toDate());
-          duracion -= 0.5;
+      reservas.forEach((reserva) => {
+        if(reserva.estados[reserva.estados.length -1].estado === estados.cancelada){
+          return
         }
 
-        hoursToBlock.push(reserva.fechaInicio);
+        let duracion = reserva.duracion; 
+        let lastFecha = moment(reserva.fechaInicio);
+        
+        hoursToBlock.push(reserva.fechaInicio);  
+        while (duracion > 0.5) {
+          lastFecha = lastFecha.add(30, "minutes");
+          hoursToBlock.push(lastFecha.toDate());
+          hoursToBlockFin.push(lastFecha.toDate());
+          duracion -= 0.5;
+          
+        }
+        
+        hoursToBlockFin.push(reserva.fechaFin);  
       });
-
+      
       setTimesToExclude(hoursToBlock);
+      setTimesToExcludeFin(hoursToBlockFin);
     });
-  }, [fechaInicio]);
+  }, []);
 
   //Calcular la duracion y monto cada vez que cambia alguna de las fechas
   useEffect(() => {
@@ -177,7 +194,7 @@ const RegisterReserva = ({ espacio, handleClickReservaRegistradaConExito }) => {
 
   const handleFechaInicioChange = (date) => {
     setFechaInicio(date);
-    setFechaFin(moment(date).add(1, "hour").toDate());
+    setFechaFin(moment(date).add(30, "minutes").toDate());
   };
 
   const handleCheckboxChange = (e) => {
@@ -235,9 +252,6 @@ const RegisterReserva = ({ espacio, handleClickReservaRegistradaConExito }) => {
       >
         <Typography variant={"h5"}>
           Nueva reserva en el espacio <b>{espacio.nombre}</b>
-          {/* el{" "}
-          <b>{moment(fechaInicio).format("DD/MM/YYYY").toString()}</b> desde las{" "}
-          <b>{moment(fechaInicio).format("HH:mm").toString()} </b> */}
         </Typography>
       </Grid>
       <hr className={classes.divider} />
@@ -261,8 +275,9 @@ const RegisterReserva = ({ espacio, handleClickReservaRegistradaConExito }) => {
             <Grid item md={3} xs={6}>
               <Datepicker
                 selected={fechaInicio}
-                onChange={(date) => setFechaInicio(date)}
+                onChange={(date) => handleFechaInicioChange(date)}
                 dateFormat="dd/MM/yyyy"
+                locale={es}
                 minDate={moment().toDate()}
                 customInput={
                   <TextField
@@ -327,7 +342,7 @@ const RegisterReserva = ({ espacio, handleClickReservaRegistradaConExito }) => {
                 maxTime={moment(fechaInicio).hour("23").toDate()}
                 dateFormat="HH:mm"
                 timeFormat="HH:mm"
-                excludeTimes={timesToExclude.filter((date) =>
+                excludeTimes={timesToExcludeFin.filter((date) =>
                   moment(fechaInicio).isSame(date, "day")
                 )}
                 customInput={
