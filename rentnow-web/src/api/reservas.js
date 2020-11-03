@@ -55,6 +55,7 @@ export async function getReservasByWeekAndEspacio(fecha, idEspacio) {
       .where("espacio.id", "==", idEspacio)
       .where("semana", "==", week)
       .where("año", "==", year)
+      .orderBy("fechaInicio")
       .get();
 
     const reservas = result.docs.map((reservaDoc) => {

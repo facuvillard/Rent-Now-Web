@@ -21,6 +21,7 @@ import UpdateReserva from "components/App/Reservas/ReservaByEspacio/UpdateReserv
 import Dialog from "components/utils/Dialog/Dialog";
 import AlertCustom from "components/utils/AlertCustom/AlertCustom";
 import { Pagination } from '@material-ui/lab';
+import es from 'date-fns/locale/es';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -132,6 +133,7 @@ const ReservasList = () => {
                                 selected={fecha}
                                 onChange={(date) => setFecha(date)}
                                 dateFormat="MM/yyyy"
+                                locale={es}
                                 showMonthYearPicker
                                 customInput={
                                     <TextField

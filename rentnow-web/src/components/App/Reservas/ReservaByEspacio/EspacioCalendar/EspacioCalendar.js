@@ -187,6 +187,7 @@ const EspacioCalendar = ({ espacio }) => {
         defaultDate={fecha}
         onNavigate={dateChange}
         events={reservas}
+        showMultiDayTimes={true}
         eventPropGetter={function (event, start, end, isSelected) {
           const estadoReserva = event.estados[event.estados.length - 1].estado
           var backgroundColor = colorsByEstado[estadoReserva];
