@@ -5,6 +5,7 @@ import {
   MenuItem,
   Button,
   CircularProgress,
+  InputAdornment,
 } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -18,6 +19,7 @@ import {
   tiposPiso,
   infraestructuras,
 } from "constants/espacios/constants";
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import { ImageUploader } from "components/App/Complejos/RegisterComplejo/Steps/Fotos/ImageUploader";
 
 export default function RegisterEspacios() {
@@ -49,8 +51,8 @@ export default function RegisterEspacios() {
       !espacio.tipoPiso ||
       !espacio.infraestructura ||
       !espacio.estado ||
-      !espacio.horaDesde ||
-      !espacio.horaHasta
+      !espacio.precioTurno ||
+      !espacio.precioMedioTurno
     ) {
       setIsLoading(false);
       setContentAlert("Faltan datos obligatorios!");
@@ -91,8 +93,8 @@ export default function RegisterEspacios() {
             tipoEspacio: "",
             capacidad: "",
             tipoPiso: "",
-            horaDesde: "07:00",
-            horaHasta: "23:00",
+            precioTurno: "07:00",
+            precioMedioTurno: "23:00",
             estado: "",
             infraestructura: "",
             descripcion: "",
@@ -165,10 +167,17 @@ export default function RegisterEspacios() {
                 </Grid>
                 <Grid item xs={6} sm={3}>
                   <TextField
-                    name="horaDesde"
-                    type="time"
-                    label="Hora Desde*"
-                    value={values.horaDesde}
+                    name="precioTurno"
+                    type="number"
+                    label="Precio de turno*"
+                    value={values.precioTurno}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AttachMoneyIcon />
+                        </InputAdornment>
+                      ),
+                    }}
                     onChange={(e) => {
                       handleChange(e);
                     }}
@@ -177,10 +186,17 @@ export default function RegisterEspacios() {
                 </Grid>
                 <Grid item xs={6} sm={3}>
                   <TextField
-                    name="horaHasta"
-                    type="time"
-                    label="Hora Hasta*"
-                    value={values.horaHasta}
+                    name="precioMedioTurno"
+                    type="number"
+                    label="Precio de 1/2 turno"
+                    value={values.precioMedioTurno}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AttachMoneyIcon />
+                        </InputAdornment>
+                      ),
+                    }}
                     onChange={(e) => {
                       handleChange(e);
                     }}
