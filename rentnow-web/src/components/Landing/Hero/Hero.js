@@ -41,8 +41,8 @@ const Hero = () => {
         <Container className={classes.hero} maxWidth="xl">
             <div className={classes.background}></div>
         <Typography variant="h2" display="block" style={{color: "#FAFAFA" }} gutterBottom> <b>BIENVENIDOS A RENTNOW</b> </Typography> 
-        <Typography variant="h4" display="block" style={{color: "#FAFAFA" }} gutterBottom> Administra tu complejo de forma simple y rapida </Typography> 
-        <Button color="primary" size="large" variant="contained" className={classes.button} href="#Features"><b>Conoce más</b></Button>
+        <Typography variant="h4" display="block" style={{color: "#FAFAFA" }} gutterBottom> Administrá tu complejo de forma simple y rápida </Typography> 
+        <Button color="primary" size="large" variant="contained" className={classes.button} href="#Features"><b>Conocé más</b></Button>
         </Container>
     )
 }

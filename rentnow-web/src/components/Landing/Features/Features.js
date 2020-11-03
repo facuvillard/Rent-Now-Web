@@ -79,7 +79,7 @@ const Features = () => {
                     className={classes.image}
                   />
                   <Typography variant="h5" className={classes.title}>
-                       <b>LLEGA A MUCHOS MAS CLIENTES</b>
+                       <b>LLEGÁ A MUCHOS MAS CLIENTES</b>
                    </Typography>
                   <Typography variant="h6" align="center">
                     {'Los usuarios de Rent Now podrán ver ubicación, fotos, tipo de canchas que contiene'}
@@ -95,11 +95,11 @@ const Features = () => {
                     className={classes.image}
                   />
                   <Typography variant="h5"  className={classes.title}>
-                        <b>MANTEN TU CALENDARIO MAS ORGANIZADO</b>
+                        <b>MANTENÉ TU CALENDARIO MÁS ORGANIZADO</b>
                   </Typography>
                   <Typography variant="h6" align="center">
                         {'En Rent Now los turnos se registran automáticamente a través de la aplicación,'}
-                        {' ademas, permite registrar los turnos hechos fuera de la aplicación, como los presenciales y llamadas telefonicas.'}
+                        {' además, permite registrar los turnos realizados fuera de la aplicación, como los presenciales y llamadas telefónicas.'}
                   </Typography>
                 </div>
               </Grid>
@@ -111,7 +111,7 @@ const Features = () => {
                     className={classes.image}
                   />
                   <Typography variant="h5"  className={classes.title}>
-                       <b>CONOCE VALORACIONES Y COMENTARIOS</b>
+                       <b>CONOCÉ VALORACIONES Y COMENTARIOS</b>
                     </Typography>
                   <Typography variant="h6" align="center">
                         {' Tus clientes podrán hacer valoraciones y comentarios sobre que piensan de tu complejo.'}
@@ -127,11 +127,11 @@ const Features = () => {
                     className={classes.image}
                   />
                   <Typography variant="h5"  className={classes.title}>
-                       <b>VISUALIZA ESTADISTICAS</b>
+                       <b>VISUALIZÁ ESTADISTICAS</b>
                    </Typography>
                   <Typography variant="h6" align="center">
                     {'Podrás obtener estadísticas de los horarios más y menos concurridos, de'}
-                    {' los espacios más utilizados, clientes mas frecuentes, y mucho mas.'}
+                    {' los espacios más utilizados, clientes más frecuentes, y mucho más.'}
                   </Typography>
                 </div>
               </Grid>
@@ -144,11 +144,11 @@ const Features = () => {
                     className={classes.image}
                   />
                   <Typography variant="h5" className={classes.title}>
-                       <b>INCLUI PROMOCIONES</b>
+                       <b>INCLUÍ PROMOCIONES</b>
                    </Typography>
                   <Typography variant="h6" align="center">
                     {'¡Observa las estadísticas e incluí promociones para lograr'}
-                    {' mayores beneficios paratu complejo!'} 
+                    {' mayores beneficios para tu complejo!'} 
                   </Typography>
                 </div>
               </Grid>
@@ -161,10 +161,10 @@ const Features = () => {
                     className={classes.image}
                   />
                   <Typography variant="h5" className={classes.title}>
-                       <b>FACIL DE USAR</b>
+                       <b>FÁCIL DE USAR</b>
                    </Typography>
                   <Typography variant="h6" align="center">
-                    {'RentNow esta pensada para sus usuarios. Buscando siempre'} 
+                    {'RentNow está pensada para sus usuarios. Buscando siempre'} 
                     {' reducir el tiempo y el trabajo manual'}
                   </Typography>
                 </div>
