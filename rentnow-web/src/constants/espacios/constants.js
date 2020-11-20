@@ -5,15 +5,17 @@ export const tiposEspacio = [
   "Cancha Tenis",
   "Cancha Paddle",
   "Cancha Hockey",
+  "Cancha Voley",
+  "Sala de Juegos",
   "Quincho",
   "Asador",
 ];
 export const tiposPiso = [
   "Parqué",
-  "Cesped natural",
-  "Cesped sintetico",
+  "Cesped Natural",
+  "Cesped Sintético",
   "Cemento",
-  "Polvo de ladrillo",
+  "Polvo de Ladrillo",
   "Tierra",
 ];
 export const infraestructuras = [
@@ -21,4 +23,4 @@ export const infraestructuras = [
   "Abierta sin luz",
   "Techada",
 ];
-export const estados = ["En reparación", "Disponible"];
+export const estados = ["En Reparación", "Disponible"];
