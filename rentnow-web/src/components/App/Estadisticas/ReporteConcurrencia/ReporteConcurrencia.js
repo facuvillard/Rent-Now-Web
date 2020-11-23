@@ -54,19 +54,19 @@ const ReporteConcurrencia = () => {
 
 
             const index = reservasByDay.findIndex(reserva => reserva.tipoEspacio === reservaToFormat.espacio.tipoEspacio)
-
+            const diastring = reservaToFormat.diaString.normalize('NFD').replace(/([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+/gi,"$1").normalize();
             if (index !== -1) {
 
-                reservasByDay[index][reservaToFormat.diaString] = reservasByDay[index][reservaToFormat.diaString] + 1
+                reservasByDay[index][diastring] = reservasByDay[index][diastring] + 1
             } else {
                 const newTipoEspacio = {
                     "tipoEspacio": reservaToFormat.espacio.tipoEspacio,
                     "Lunes": reservaToFormat.diaString === 'Lunes' ? 1 : 0,
                     "Martes": reservaToFormat.diaString === 'Martes' ? 1 : 0,
-                    "Miercoles": reservaToFormat.diaString === 'Miercoles' ? 1 : 0,
+                    "Miercoles": diastring === 'Miercoles' ? 1 : 0,
                     "Jueves": reservaToFormat.diaString === 'Jueves' ? 1 : 0,
                     "Viernes": reservaToFormat.diaString === 'Viernes' ? 1 : 0,
-                    "Sabado": reservaToFormat.diaString === 'Sabado' ? 1 : 0,
+                    "Sabado": diastring === 'Sabado' ? 1 : 0,
                     "Domingo": reservaToFormat.diaString === 'Domingo' ? 1 : 0,
                 }
                 reservasByDay.push(newTipoEspacio)
@@ -126,7 +126,9 @@ const ReporteConcurrencia = () => {
                 },
             ]
             reservasToFormat.forEach(reservaToFormat => {
-                if (reservaToFormat.diaString !== daySelected) {
+                const diastring = reservaToFormat.diaString.normalize('NFD').replace(/([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+/gi,"$1").normalize();
+                
+                if (diastring !== daySelected) {
                     return
                 }
                 const index = reservasByFranjaArray.findIndex(item => item.franjaHoraria === reservaToFormat.franjaHoraria)
