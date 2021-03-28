@@ -24,6 +24,7 @@ import Ayuda from "components/Ayuda/Ayuda";
 import ReservasList from "components/App/Reservas/ListadoReservas/ReservasList";
 import RankingConcurrencia from "components/Admin/Estadisticas/RankingConcurrencia";
 import ReporteConcurrencia from "components/App/Estadisticas/ReporteConcurrencia/ReporteConcurrencia";
+import  CurrentComplejo  from "components/App/Context/ComplejoContext";
 
 
 
@@ -111,6 +112,8 @@ function App() {
                 breadcrumbs={Breadcrumbs.APP_COMPLEJOS}
               />
 
+              <CurrentComplejo>
+               <Switch>
               <RouteWithSidebar
                 title="Home del complejo"
                 component={() => <HomeComplejo />}
@@ -192,6 +195,8 @@ function App() {
                 elemento="reserva"
                 breadcrumbs={Breadcrumbs.APP_COMPLEJO_RESERVAS_LISTADO}
               />
+              </Switch>
+              </CurrentComplejo>
               <Route path="*" exact component={() => <Landing />} />
             </Switch>
           </Router>

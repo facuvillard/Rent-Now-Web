@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -12,6 +12,8 @@ import ExitToAppTwoToneIcon from "@material-ui/icons/ExitToAppTwoTone";
 import logoHorizontal from "../../assets/img/logos/rentnow-letra.png";
 import { signOut } from "../../api/auth";
 import HelpIcon from '@material-ui/icons/Help';
+import { ComplejoContext} from 'components/App/Context/ComplejoContext'
+
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,6 +63,8 @@ const useStyles = makeStyles((theme) => ({
 
 function Navbar(props) {
   const classes = useStyles();
+  let currentComplejo = useContext(ComplejoContext)
+
   const handleLogout = async () => {
     const response = await signOut();
     if (response.status === "OK") {
@@ -69,6 +73,7 @@ function Navbar(props) {
       console.log("Error al desloguearse");
     }
   };
+
   return (
     <AppBar
       position="fixed"
@@ -98,7 +103,7 @@ function Navbar(props) {
             <img src={logoHorizontal} alt="logo" className={classes.logo} />
           </Typography>
         )}
-
+        <Typography> {currentComplejo ? currentComplejo.nombre : null}</Typography>
         <Link to="/app/ayuda" className={classes.link}>
           <IconButton>
             <HelpIcon />

@@ -16,6 +16,7 @@ import {
 import { Autocomplete } from "@material-ui/lab";
 import { getProvincesApi, getCitiesByProvincesApi } from "api/geoApi";
 import { Field } from "formik";
+import * as geofire from "geofire-common";
 
 const Ubicacion = ({errors, touched}) => {
   const [center, setCenter] = useState({});
@@ -34,6 +35,8 @@ const Ubicacion = ({errors, touched}) => {
         markerPosition.lng
       );
       setFieldValue("ubicacion.latlng", geopoint);
+      const geoHash = geofire.geohashForLocation([markerPosition.lat,markerPosition.lng]);
+      setFieldValue("ubicacion.geohash", geoHash);
     }
   }, [markerPosition]);
 
