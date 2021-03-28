@@ -24,6 +24,7 @@
     "filepond-plugin-image-preview": "^4.6.4",
     "firebase": "^7.14.6",
     "formik": "^2.1.4",
+    "geofire-common": "^5.2.0",
     "jsonwebtoken": "^8.5.1",
     "material-table": "^1.59.0",
     "moment": "^2.27.0",

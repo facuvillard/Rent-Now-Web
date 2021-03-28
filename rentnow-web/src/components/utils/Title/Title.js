@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import {
   makeStyles,
   Typography,
@@ -9,8 +9,8 @@ import {
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import Chip from '@material-ui/core/Chip';
 import { emphasize, withStyles } from '@material-ui/core/styles';
-import { Link } from "react-router-dom";
-
+import { Link, useRouteMatch } from "react-router-dom";
+import {COMPLEJO as rutaConIdComplejo} from "constants/routes"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,21 +49,31 @@ const StyledBreadcrumb = withStyles((theme) => ({
   },
 }))(Chip);
 
-const Title = (props) => {
+const Title = ({breadcrumbs, titulo}) => {
   const classes = useStyles();
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up('sm'));
+  
+  let pathMatch = useRouteMatch(rutaConIdComplejo)
+  
+  const getBreadcrumbPath = (path) => {
+    if(pathMatch && pathMatch.params.idComplejo  && path.search(':idComplejo')) {
+      return path.replace(':idComplejo', pathMatch.params.idComplejo)
+    }
+    return path
+  }
+
   return (
     <section className={classes.root}>
       {matches ? (
-        <Typography variant="h4" color="secondary" >{props.titulo}</Typography>
+        <Typography variant="h4" color="secondary" >{titulo}</Typography>
       ) : (
-          <Typography variant="h6" color="secondary" >{props.titulo}</Typography>
+          <Typography variant="h6" color="secondary" >{titulo}</Typography>
         )}
-      {props.breadcrumbs ? (
+      {breadcrumbs ? (
         <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} maxItems={2} className={classes.breadcrumbs}>
-          {props.breadcrumbs.map((elemento) => (
-            <Link key={elemento.nombre} to={elemento.ruta} className={classes.link}>
+          {breadcrumbs.map((elemento) => (
+            <Link key={elemento.nombre} to={getBreadcrumbPath(elemento.ruta)} className={classes.link}>
               <StyledBreadcrumb label={elemento.nombre} />
             </Link>
           ))}
