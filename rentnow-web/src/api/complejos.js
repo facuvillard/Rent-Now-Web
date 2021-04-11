@@ -62,6 +62,7 @@ export async function createComplejoApi(docRef, complejo) {
     hour: "numeric",
     minute: "numeric",
   };
+  let valoracion = (Math.random() * (5 - 1) + 1).toFixed(1)
   let fecha = new Date().toLocaleDateString("es-US", options);
   try {
     await docRef.set({
@@ -69,6 +70,7 @@ export async function createComplejoApi(docRef, complejo) {
       habilitado: false,
       fechaAlta: fecha,
       fechaHabilitado: null,
+      valoracionPromedio: valoracion
     });
     return { status: "OK", message: "Se registró el complejo con exito" };
   } catch (err) {
