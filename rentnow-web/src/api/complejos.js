@@ -69,6 +69,7 @@ export async function createComplejoApi(docRef, complejo) {
       habilitado: false,
       fechaAlta: fecha,
       fechaHabilitado: null,
+      espaciosMetaData: []
     });
     return { status: "OK", message: "Se registró el complejo con exito" };
   } catch (err) {
