@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Button, Grid, CircularProgress, Typography } from "@material-ui/core";
 import { bajaEspacioApi } from "api/espacios";
+import { useParams } from "react-router-dom";
 
 export default function DeleteEspacio(props) {
+  const { idComplejo } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const eliminarEspacio = () => {
     setIsLoading(true);
-    bajaEspacioApi(props.espacio.id).then((response) => {
+    bajaEspacioApi(props.espacio, idComplejo).then((response) => {
       if (response.status === "OK") {
         props.setAlertType("success");
         props.setAlertContent("Se ha eliminado el espacio con éxito");

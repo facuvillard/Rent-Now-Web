@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 
-export async function createEspacio(docRef, espacio, idComplejo) {
+export async function createEspacio(docRef, espacio) {
 	try {
 		await docRef.set({
 			...espacio,
@@ -9,10 +9,10 @@ export async function createEspacio(docRef, espacio, idComplejo) {
 		await firebase
 			.firestore()
 			.collection('/complejos')
-			.doc('MELIPH8bgp5xws200NdT')
+			.doc(espacio.idComplejo)
 			.update({
 				espaciosMetaData: firebase.firestore.FieldValue.arrayUnion({
-					idEspacio: docRef,
+					idEspacio: docRef.id,
 					tipoEspacio: espacio.tipoEspacio,
 				}),
 			});
@@ -53,9 +53,19 @@ export async function getEspaciosByIdComplejo(idComplejo) {
 	}
 }
 
-export async function bajaEspacioApi(idEspacio, idComplejo) {
+export async function bajaEspacioApi(espacio, idComplejo) {
 	try {
-		await firebase.firestore().collection('espacios').doc(idEspacio).update({ baja: true });
+		await firebase.firestore().collection('espacios').doc(espacio.id).update({ baja: true });
+		await firebase
+			.firestore()
+			.collection('complejos')
+			.doc(idComplejo)
+			.update({
+				espaciosMetaData: firebase.firestore.FieldValue.arrayRemove({
+					idEspacio: espacio.id,
+					tipoEspacio: espacio.tipoEspacio,
+				}),
+			});
 		return {
 			status: 'OK',
 			message: 'El espacio ha sido dado de baja con éxito.',
