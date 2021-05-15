@@ -91,7 +91,9 @@ export const ImageUploader = React.memo(function ({ maxFiles, url, getUrls }) {
 	return (
 		<>
 			<FilePond
+				allowFileTypeValidation
 				className={classes.uploader}
+				acceptedFileTypes={['image/png', 'image/jpeg']}
 				allowMultiple={true}
 				maxFileSize="5MB"
 				labelMaxFileSizeExceeded="La imágen es demasiado grande"
