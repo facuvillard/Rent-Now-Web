@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -13,6 +13,17 @@ import logoHorizontal from "../../assets/img/logos/rentnow-letra.png";
 import { signOut } from "../../api/auth";
 import HelpIcon from '@material-ui/icons/Help';
 import { ComplejoContext} from 'components/App/Context/ComplejoContext'
+import { AuthContext } from "Auth/Auth";
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import Badge from '@material-ui/core/Badge';
+import Popover from '@material-ui/core/Popover';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
+import {setNotificationAsReaded} from 'api/usuarios'
+import moment from "moment";
+
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -62,8 +73,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Navbar(props) {
+  const [notificationsAnchorEl, setNotificationsAnchorEl] = useState(null);
   const classes = useStyles();
   let currentComplejo = useContext(ComplejoContext)
+  let {currentUser, notificaciones} = useContext(AuthContext)
+  
+  const openNots = Boolean(notificationsAnchorEl);
+  
+  useEffect(()=> {
+    console.log(notificaciones);
+  },[notificaciones])
+   
 
   const handleLogout = async () => {
     const response = await signOut();
@@ -73,6 +93,18 @@ function Navbar(props) {
       console.log("Error al desloguearse");
     }
   };
+
+  const handleOpenNots =  (event) => {
+    setNotificationsAnchorEl(event.currentTarget)
+  };
+
+  const handleCloseNots =  (event) => {
+    setNotificationsAnchorEl(null)
+  };
+
+  const handleNotClick = (not) =>{
+    setNotificationAsReaded(currentUser.uid, not.id)
+  }
 
   return (
     <AppBar
@@ -109,10 +141,48 @@ function Navbar(props) {
             <HelpIcon />
           </IconButton>
         </Link>
-
+        {
+          currentComplejo ? (
+            <IconButton onClick={handleOpenNots}>
+              <Badge color="secondary" badgeContent={notificaciones.filter(not => not.leida === false).length}>
+                <NotificationsIcon />
+              </Badge>
+            </IconButton> 
+            ) : null
+        }
+      
+        <Popover 
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+          open={openNots}
+          onClose={handleCloseNots}
+          anchorEl={notificationsAnchorEl}
+        >
+          <List dense={true}>
+          {notificaciones.map((not,i) => 
+                <ListItem button onClick={() => {handleNotClick(not)}} selected={not.leida === false ? false : true}>
+                  <ListItemText
+                    primary={<Typography> {not.mensaje} en <b>{not.complejo.nombre}</b></Typography>}
+                    secondary={`${not.espacio} → ${moment().format("DD/MM h:mm")} - ${moment().format("h:mm")}`}
+                    
+                    />
+                    {not.leida === false ? <PriorityHighIcon color="primary"/> : null }
+                </ListItem>
+                )
+              }
+            </List>
+        </Popover>
+              
+        
         <Link to="/login" className={classes.link}>
           <IconButton onClick={handleLogout}>
-            <ExitToAppTwoToneIcon />
+              <ExitToAppTwoToneIcon />
           </IconButton>
         </Link>
       </Toolbar>

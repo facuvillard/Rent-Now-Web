@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import firebaseApp from "../firebase";
 import firebase from "firebase"
 import { updatePermission } from "./ability";
+import { getNotificacionesByUsuarioRealTime } from "api/usuarios";
 
 export const AuthContext = React.createContext();
 
 const AuthProvider = (props) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [userRoles, setUserRoles] = useState(['default'])
+  const [notificaciones, setNotificaciones] = useState([])
   const [pending, setPending] = useState(true);
 
   useEffect(() => {
@@ -54,12 +56,19 @@ const AuthProvider = (props) => {
       }
   }, [userRoles])
 
+  useEffect(() => {
+    if(!currentUser){
+      return;
+    }
+    getNotificacionesByUsuarioRealTime(currentUser.uid, setNotificaciones)
+  }, [currentUser]);
+
   if (pending) {
     return <>Cargando...</>;
   }
 
   return (
-    <AuthContext.Provider value={{currentUser, userRoles}}>
+    <AuthContext.Provider value={{currentUser, userRoles, notificaciones}}>
       {props.children}
     </AuthContext.Provider>
   );
