@@ -10,6 +10,7 @@ import {
   Paper,
   Button,
   ButtonGroup,
+  makeStyles
 } from "@material-ui/core";
 
 //API
@@ -27,11 +28,23 @@ import CardBody from "components/utils/Card/CardBody";
 
 //ICONS
 import TodayIcon from "@material-ui/icons/Today";
-import EventNoteIcon from "@material-ui/icons/EventNote";
+import EventAvailableIcon from '@material-ui/icons/EventAvailable';
+import EventBusyIcon from '@material-ui/icons/EventBusy';
 
 //NIVO CHART
 import ResponsiveBarChart from "./ResponsiveBarChart";
 import ResponsivePieChart from "./ResponsivePieChart";
+
+const useStyles = makeStyles((theme) => ({
+  card: {
+    paddingTop: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    paddingLeft: theme.spacing(2)
+  },
+  color: {
+    backgroundColor: "#FE2713"
+  }
+}));
 
 const dataPie = [
   {
@@ -42,6 +55,7 @@ const dataPie = [
 ];
 
 export default function HomeComplejo() {
+  const classes = useStyles();
   const { idComplejo } = useParams();
   const [date, setDate] = useState(moment().add(-1, "months").toDate());
   const [data, setData] = useState();
@@ -69,12 +83,12 @@ export default function HomeComplejo() {
                 setDate(moment().add(-12, "months").toDate());
                 setDateToShow(12);
               }}
-              variant={dateToShow === 12 ? "contained" : "outlined" }
+              variant={dateToShow === 12 ? "contained" : "outlined"}
             >
               Un año
             </Button>
             <Button
-              variant={dateToShow === 3 ? "contained" : "outlined" }
+              variant={dateToShow === 3 ? "contained" : "outlined"}
               onClick={() => {
                 setDate(moment().add(-3, "months").toDate());
                 setDateToShow(3);
@@ -83,7 +97,7 @@ export default function HomeComplejo() {
               Tres meses
             </Button>
             <Button
-              variant={dateToShow === 1 ? "contained" : "outlined" }
+              variant={dateToShow === 1 ? "contained" : "outlined"}
               onClick={() => {
                 setDate(moment().add(-1, "months").toDate());
                 setDateToShow(1);
@@ -96,15 +110,20 @@ export default function HomeComplejo() {
         <Grid item xs={12} sm={12} md={4}>
           <Paper elevation={3}>
             <Card>
-              <CardHeader color="rose" icon stats>
-                <CardIcon color="rose">
+              <CardHeader color="warning" icon stats>
+                <CardIcon color="warning">
                   <TodayIcon />
                 </CardIcon>
+                <Grid className={classes.card}>
+                  <Typography align='right' variant="body1" color='textSecondary'>
+                    Día
+                  </Typography>
+                  <Typography align='right' variant="h6" color='textPrimary'>
+                  {moment().format("dddd DD [de] MMMM [de] YYYY")}
+                  </Typography>
+                </Grid>
               </CardHeader>
               <CardBody>
-                <Typography variant="h4">
-                  {moment().format("dddd DD [de] MMMM [de] YYYY")}
-                </Typography>
               </CardBody>
             </Card>
           </Paper>
@@ -114,14 +133,19 @@ export default function HomeComplejo() {
             <Card>
               <CardHeader color="success" stats icon>
                 <CardIcon color="success">
-                  <EventNoteIcon />
+                  <EventAvailableIcon />
                 </CardIcon>
+                <Grid className={classes.card}>
+                  <Typography align='right' variant="body1" color='textSecondary'>
+                    Reservas Totales Concretadas
+                  </Typography>
+                  <Typography align='right' variant="h5" color='textPrimary'>
+                    {data ? data.cantidadConcretadas : ""}
+                  </Typography>
+                </Grid>
               </CardHeader>
               <CardBody>
-                <Typography variant="h4">
-                  Reservas totales concretadas:{" "}
-                  {data ? data.cantidadConcretadas : ""}
-                </Typography>
+
               </CardBody>
             </Card>
           </Paper>
@@ -129,15 +153,21 @@ export default function HomeComplejo() {
         <Grid item xs={12} sm={12} md={4}>
           <Paper elevation={3}>
             <Card>
-              <CardHeader color="danger" icon stats>
+              <CardHeader icon stats>
                 <CardIcon color="danger">
-                  <EventNoteIcon />
+                  <EventBusyIcon />
                 </CardIcon>
+                <Grid className={classes.card}>
+                  <Typography align='right' variant="body1" color='textSecondary'>
+                    Reservas Inconclusas
+                  </Typography>
+                  <Typography align='right' variant="h5" color='textPrimary'>
+                    {data ? data.cantidadInconclusas : "0"}
+                  </Typography>
+                </Grid>
               </CardHeader>
               <CardBody>
-                <Typography variant="h4">
-                  Reservas inconclusas: {data ? data.cantidadInconclusas : ""}
-                </Typography>
+
               </CardBody>
             </Card>
           </Paper>
@@ -146,9 +176,9 @@ export default function HomeComplejo() {
         <Grid item xs={12} sm={12} md={6}>
           <Paper elevation={3}>
             <Card>
-              <CardHeader color="info">
-                <Typography variant="h5">
-                  Cantidad de reservas por espacio
+              <CardHeader color="primary">
+                <Typography variant="h5" align='center'>
+                  Cantidad de Reservas por Espacio
                 </Typography>
               </CardHeader>
               <CardBody>
@@ -169,9 +199,9 @@ export default function HomeComplejo() {
         <Grid item xs={12} sm={12} md={6}>
           <Paper elevation={3}>
             <Card>
-              <CardHeader color="info">
-                <Typography variant="h5">
-                  Reservas por tipo de cliente{" "}
+              <CardHeader color="primary">
+                <Typography variant="h5" align='center'>
+                  Reservas por Tipo de Cliente{" "}
                 </Typography>
               </CardHeader>
               <CardBody>
