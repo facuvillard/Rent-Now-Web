@@ -51,8 +51,7 @@ export default function RegisterEspacios() {
       !espacio.tipoPiso ||
       !espacio.infraestructura ||
       !espacio.estado ||
-      !espacio.precioTurno ||
-      !espacio.precioMedioTurno
+      !espacio.precioTurno
     ) {
       setIsLoading(false);
       setContentAlert("Faltan datos obligatorios!");
@@ -93,8 +92,7 @@ export default function RegisterEspacios() {
             tipoEspacio: "",
             capacidad: "",
             tipoPiso: "",
-            precioTurno: "07:00",
-            precioMedioTurno: "23:00",
+            precioTurno: "",
             estado: "",
             infraestructura: "",
             descripcion: "",
@@ -165,31 +163,12 @@ export default function RegisterEspacios() {
                     ))}
                   </TextField>
                 </Grid>
-                <Grid item xs={6} sm={3}>
+                <Grid item xs={6}>
                   <TextField
                     name="precioTurno"
                     type="number"
                     label="Precio de turno*"
                     value={values.precioTurno}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <AttachMoneyIcon />
-                        </InputAdornment>
-                      ),
-                    }}
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={6} sm={3}>
-                  <TextField
-                    name="precioMedioTurno"
-                    type="number"
-                    label="Precio de 1/2 turno"
-                    value={values.precioMedioTurno}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
