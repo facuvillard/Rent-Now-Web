@@ -14,6 +14,7 @@ import { Rating } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 import es from 'date-fns/locale/es';
+import { Alert, AlertTitle } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
 	heading: {
@@ -31,6 +32,10 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: '#FAFAFA',
 		marginBottom: theme.spacing(3),
 	},
+	container: {
+		marginTop: theme.spacing(2),
+		marginBottom: theme.spacing(2),
+	  },
 }));
 
 const valoraciones = [
@@ -47,7 +52,7 @@ const valoraciones = [
 	{
 		puntaje: 1,
 		fecha: '10/12/2021',
-		comentario: 'Una mierda completa',
+		comentario: '',
 		cliente: {
 			idCliente: '123123asjdajdj',
 			nombre: 'Steven Spielberg',
@@ -102,11 +107,23 @@ export default function ValoracionesList() {
 				detailPanel={[
 					{
 						tooltip: 'Ver comentario',
-						icon: 'visibility',
 						render: (rowData) => (
-							<Typography gutterBottom align="center" variant="h6">
-								{rowData.comentario}
-							</Typography>
+							<div className={classes.container}>
+								{rowData.comentario !== '' ? (
+									<Typography gutterBottom align="center">
+										<b>Descripción: </b>{rowData.comentario}
+									</Typography>
+								) : (
+									<Grid
+										container
+										justify="center"
+									>
+										<Alert severity="info">
+											<AlertTitle>El cliente no ha proporcionado una descripción de su puntaje</AlertTitle>
+										</Alert>
+									</Grid>
+								)}
+							</div>
 						),
 					},
 				]}
