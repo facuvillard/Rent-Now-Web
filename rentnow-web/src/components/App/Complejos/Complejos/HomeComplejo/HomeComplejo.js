@@ -46,25 +46,29 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const dataPie = [
-  {
-    id: "Cliente de complejo",
-    value: 50,
-  },
-  { id: "Cliente de aplicación", value: 100 },
-];
 
 export default function HomeComplejo() {
   const classes = useStyles();
   const { idComplejo } = useParams();
   const [date, setDate] = useState(moment().add(-1, "months").toDate());
   const [data, setData] = useState();
+  const [dataPie, setDataPie] = useState([]);
   const [dateToShow, setDateToShow] = useState(1);
 
   useEffect(() => {
     getDatosHome(idComplejo, date).then((response) => {
       if (response.status === "OK") {
         setData(response.data);
+        setDataPie([
+          {
+            id: "Cliente de complejo",
+            value: response.data.cantidadReservasWeb,
+          },
+          { 
+            id: "Cliente de aplicación",
+            value: response.data.cantidadReservasApp, 
+          },
+        ])
       }
     });
   }, [date]);
@@ -201,7 +205,7 @@ export default function HomeComplejo() {
             <Card>
               <CardHeader color="primary">
                 <Typography variant="h5" align='center'>
-                  Reservas por Tipo de Cliente{" "}
+                  Reservas por Tipo de Cliente
                 </Typography>
               </CardHeader>
               <CardBody>

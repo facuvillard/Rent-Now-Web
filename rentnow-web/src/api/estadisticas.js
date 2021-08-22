@@ -54,6 +54,16 @@ export async function getDatosHome(idComplejo, date) {
     let data = [];
     let cantidadConcretadas = 0;
     let cantidadInconclusas = 0;
+    let cantidadReservasApp = 0;
+    let cantidadReservasWeb = 0;
+
+    const reservaAppOWeb = (reserva) => {
+      if(reserva.reservaApp) {
+        cantidadReservasApp++;
+      } else {
+        cantidadReservasWeb++;
+      }
+    }
 
     espaciosResult.data.map((espacio) => {
       let item = {
@@ -62,11 +72,13 @@ export async function getDatosHome(idComplejo, date) {
         cantidadReservasInconclusas: 0,
       };
       reservasResult.data.map((reserva) => {
+  
         if (espacio.id === reserva.espacio.id) {
           let index = reserva.estados.length - 1;
           if (reserva.estados[index].estado === "FINALIZADA") {
             cantidadConcretadas += 1;
             item.cantidadReservasConcretadas += 1;
+            reservaAppOWeb(reserva)
           } else {
             if (
               reserva.estados[index].estado === "SIN CONCURRENCIA" ||
@@ -74,6 +86,7 @@ export async function getDatosHome(idComplejo, date) {
             ) {
               item.cantidadReservasInconclusas += 1;
               cantidadInconclusas += 1;
+              reservaAppOWeb(reserva)
             }
           }
         }
@@ -87,6 +100,8 @@ export async function getDatosHome(idComplejo, date) {
       data: {
         cantidadConcretadas,
         cantidadInconclusas,
+        cantidadReservasApp,
+        cantidadReservasWeb,
         data,
       },
     };
