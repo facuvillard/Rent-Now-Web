@@ -48,12 +48,13 @@ const UpdateReserva = (props) => {
                     horaFin: moment(props.reserva.end).format('Do MMMM YYYY, HH:mm ') || props.reserva.fechaFinString,
                     esFijo: props.reserva.esFijo,
                     descripcionCliente: props.reserva.title || props.reserva.nombreCompleto,
-                    telefonoCliente: props.reserva.telefonoCliente || (props.reserva.cliente ? props.reserva.cliente.numTelefono : "" ),
+                    telefonoCliente: props.reserva.telefonoCliente || (props.reserva.cliente ? props.reserva.cliente.celular : "" ),
                     monto: props.reserva.monto,
                     estaPagado: props.reserva.estaPagado,
                     estado: estadoActual,
                     estados: props.reserva.estados,
                     motivo: motivoActual,
+                    emailCliente: props.reserva.cliente.email
                 }}
                 onSubmit={async (values) => {
                     if (estadoActual !== values.estado || motivoActual !== values.motivo) {
