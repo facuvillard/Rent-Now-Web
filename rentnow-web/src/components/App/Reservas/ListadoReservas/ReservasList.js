@@ -26,6 +26,11 @@ import {
 	emailReservaCancelada,
 	emailReservaConfirmada,
 } from 'components/utils/MailsTemplate/emailTemplates';
+import { useLocation } from 'react-router-dom';
+
+function useQuery() {
+	return new URLSearchParams(useLocation().search);
+}
 
 const useStyles = makeStyles((theme) => ({
 	heading: {
@@ -58,8 +63,14 @@ const ReservasList = () => {
 	const [showAlert, setShowAlert] = useState(false);
 	const [alertProps, setAlertProps] = useState({});
 
+	let query = useQuery().get('estado');
+
 	useEffect(() => {
-		getReservasByMonthAndYear(fecha, idComplejo, setReservas);
+		if (query) {
+			console.log(query);
+		} else {
+			getReservasByMonthAndYear(fecha, idComplejo, setReservas);
+		}
 	}, [fecha, idComplejo, setReservas]);
 
 	const updateDialogHandler = (reserva) => {
@@ -84,36 +95,36 @@ const ReservasList = () => {
 		};
 		updateReservaStateAndPayment(reservaToUpdate, id).then((response) => {
 			let estado = reservaToUpdate.estados[reservaToUpdate.estados.length - 1].estado;
-            if (response.status === "OK") {
-                if(estado === "CANCELADA"){
-                    sendEmailApi({
-                        destinatario: values.emailCliente,
-                        asunto: "CANCELACION DE RESERVA",
-                        contenido: emailReservaCancelada(values),
-                        adjuntos: null, 
-                    })
-                } else if (estado === "CONFIRMADA") {
-                    sendEmailApi({
-                        destinatario: values.emailCliente,
-                        asunto: "CONFIRMACION DE RESERVA",
-                        contenido: emailReservaConfirmada(values),
-                        adjuntos: null, 
-                    })
-                }
+			if (response.status === 'OK') {
+				if (estado === 'CANCELADA') {
+					sendEmailApi({
+						destinatario: values.emailCliente,
+						asunto: 'CANCELACION DE RESERVA',
+						contenido: emailReservaCancelada(values),
+						adjuntos: null,
+					});
+				} else if (estado === 'CONFIRMADA') {
+					sendEmailApi({
+						destinatario: values.emailCliente,
+						asunto: 'CONFIRMACION DE RESERVA',
+						contenido: emailReservaConfirmada(values),
+						adjuntos: null,
+					});
+				}
 
-                setAlertProps({
-                    type: "success",
-                    text: response.message,
-                });
-                setShowAlert(true);
-            } else {
-                setAlertProps({
-                    type: "error",
-                    text: response.message,
-                });
-                setShowAlert(true);
-            }
-        });
+				setAlertProps({
+					type: 'success',
+					text: response.message,
+				});
+				setShowAlert(true);
+			} else {
+				setAlertProps({
+					type: 'error',
+					text: response.message,
+				});
+				setShowAlert(true);
+			}
+		});
 	};
 
 	const customRender = (value, renderType, renderFunc, field, ...args) => {
@@ -170,6 +181,9 @@ const ReservasList = () => {
 								}
 							/>
 						</Grid>
+						<Grid item md={3} xs={6}>
+							
+						</Grid>
 					</Grid>
 				</ExpansionPanelDetails>
 			</ExpansionPanel>
@@ -185,8 +199,8 @@ const ReservasList = () => {
 						field: 'estado',
 						render: (value, renderType) => customRender(value, renderType, renderCellData, 'estado'),
 					},
-                    { title: 'APELLIDO', field: "cliente.apellido", },
-					{ title: 'NOMBRE', field: "cliente.nombre", },
+					{ title: 'APELLIDO', field: 'cliente.apellido' },
+					{ title: 'NOMBRE', field: 'cliente.nombre' },
 					{ title: 'TELEFONO', field: 'cliente.celular' },
 				]}
 				actions={[

@@ -102,6 +102,7 @@ function Navbar(props) {
 
 	const handleNotClick = (not) => {
 		setNotificationAsReaded(currentUser.uid, not.id);
+		props.history.push(`/app/complejos/${not.complejo.id}/reservas/listado?estado=CREADA`)
 	};
 
 	return (
