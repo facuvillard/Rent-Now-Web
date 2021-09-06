@@ -61,9 +61,10 @@ idUsuario, runWhenChange
       .collection("notificaciones")
       .onSnapshot((querySnapshot) => {
         let notificaciones = [];
-
         querySnapshot.forEach((notificacionDoc) => {
-          notificaciones.push({ ...notificacionDoc.data(), id: notificacionDoc.id });
+          const notificacion = notificacionDoc.data();
+          console.log(notificacion)
+          notificaciones.push({ ...notificacion, id: notificacionDoc.id/* , fechaInicio: notificacion.fechaInicio.toDate(), fechaFin: notificacion.fechaFin.toDate()  */});
         });
         runWhenChange(notificaciones);
       });

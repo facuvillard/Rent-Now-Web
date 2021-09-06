@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
+import { Typography, Grid, Divider, Chip } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import clsx from "clsx";
@@ -12,7 +12,7 @@ import ExitToAppTwoToneIcon from "@material-ui/icons/ExitToAppTwoTone";
 import logoHorizontal from "../../assets/img/logos/rentnow-letra.png";
 import { signOut } from "../../api/auth";
 import HelpIcon from '@material-ui/icons/Help';
-import { ComplejoContext} from 'components/App/Context/ComplejoContext'
+import { ComplejoContext } from 'components/App/Context/ComplejoContext'
 import { AuthContext } from "Auth/Auth";
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Badge from '@material-ui/core/Badge';
@@ -21,8 +21,9 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
-import {setNotificationAsReaded} from 'api/usuarios'
+import { setNotificationAsReaded } from 'api/usuarios'
 import moment from "moment";
+import HomeIcon from '@material-ui/icons/Home';
 
 
 const drawerWidth = 240;
@@ -70,20 +71,26 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 170,
     marginTop: 10,
   },
+  container: {
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+  },
 }));
 
 function Navbar(props) {
   const [notificationsAnchorEl, setNotificationsAnchorEl] = useState(null);
   const classes = useStyles();
   let currentComplejo = useContext(ComplejoContext)
-  let {currentUser, notificaciones} = useContext(AuthContext)
-  
+  let { currentUser, notificaciones } = useContext(AuthContext)
+
   const openNots = Boolean(notificationsAnchorEl);
-  
-  useEffect(()=> {
+
+  useEffect(() => {
     console.log(notificaciones);
-  },[notificaciones])
-   
+  }, [notificaciones])
+
 
   const handleLogout = async () => {
     const response = await signOut();
@@ -94,15 +101,15 @@ function Navbar(props) {
     }
   };
 
-  const handleOpenNots =  (event) => {
+  const handleOpenNots = (event) => {
     setNotificationsAnchorEl(event.currentTarget)
   };
 
-  const handleCloseNots =  (event) => {
+  const handleCloseNots = (event) => {
     setNotificationsAnchorEl(null)
   };
 
-  const handleNotClick = (not) =>{
+  const handleNotClick = (not) => {
     setNotificationAsReaded(currentUser.uid, not.id)
   }
 
@@ -135,7 +142,21 @@ function Navbar(props) {
             <img src={logoHorizontal} alt="logo" className={classes.logo} />
           </Typography>
         )}
-        <Typography> {currentComplejo ? currentComplejo.nombre : null}</Typography>
+        {currentComplejo ? (
+          <Grid
+            container
+            direction="column"
+            justify="center"
+            alignItems="center"
+          >
+            <Chip
+              variant="outlined"
+              icon={<HomeIcon />}
+              label={currentComplejo.nombre.toUpperCase()}
+              color="secondary"
+            />
+          </Grid>
+        ) : (null)}
         <Link to="/app/ayuda" className={classes.link}>
           <IconButton>
             <HelpIcon />
@@ -147,11 +168,11 @@ function Navbar(props) {
               <Badge color="secondary" badgeContent={notificaciones.filter(not => not.leida === false).length}>
                 <NotificationsIcon />
               </Badge>
-            </IconButton> 
-            ) : null
+            </IconButton>
+          ) : null
         }
-      
-        <Popover 
+
+        <Popover
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'left',
@@ -163,30 +184,40 @@ function Navbar(props) {
           open={openNots}
           onClose={handleCloseNots}
           anchorEl={notificationsAnchorEl}
+          marginThreshold={2}
         >
+          <Grid
+            container
+            direction="column"
+            justify="center"
+            alignItems="center"
+            className={classes.container}
+          >
+            <Typography variant='h6'>NOTIFICACIONES</Typography>
+          </Grid>
+          <Divider className={classes.divider} variant='fullWidth' />
           <List dense={true}>
-          {notificaciones.map((not,i) => 
-                <ListItem button onClick={() => {handleNotClick(not)}} selected={not.leida === false ? false : true}>
-                  <ListItemText
-                    primary={<Typography> {not.mensaje} en <b>{not.complejo.nombre}</b></Typography>}
-                    secondary={`${not.espacio} → ${moment().format("DD/MM h:mm")} - ${moment().format("h:mm")}`}
-                    
-                    />
-                    {not.leida === false ? <PriorityHighIcon color="primary"/> : null }
-                </ListItem>
-                )
-              }
-            </List>
+            {notificaciones.map((not, i) =>
+              <ListItem button onClick={() => { handleNotClick(not) }} selected={not.leida === false ? true : false}>
+                <ListItemText
+                  primary={<Typography> {not.mensaje} en <b>{not.complejo.nombre}</b></Typography>}
+                  secondary={`${not.espacio} → ${moment().format("DD/MM h:mm")} - ${moment().format("h:mm")}`}
+                />
+                {not.leida === false ? <PriorityHighIcon color="primary" /> : null}
+              </ListItem>
+            )
+            }
+          </List>
         </Popover>
-              
-        
+
+
         <Link to="/login" className={classes.link}>
           <IconButton onClick={handleLogout}>
-              <ExitToAppTwoToneIcon />
+            <ExitToAppTwoToneIcon />
           </IconButton>
         </Link>
       </Toolbar>
-    </AppBar>
+    </AppBar >
   );
 }
 
