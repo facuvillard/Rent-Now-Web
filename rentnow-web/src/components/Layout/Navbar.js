@@ -1,19 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import clsx from 'clsx';
-import { Link, withRouter } from 'react-router-dom';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ExitToAppTwoToneIcon from '@material-ui/icons/ExitToAppTwoTone';
-import logoHorizontal from '../../assets/img/logos/rentnow-letra.png';
-import { signOut } from '../../api/auth';
+import React, { useContext, useEffect, useState } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import { Typography, Grid, Divider, Chip } from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import clsx from "clsx";
+import { Link, withRouter } from "react-router-dom";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ExitToAppTwoToneIcon from "@material-ui/icons/ExitToAppTwoTone";
+import logoHorizontal from "../../assets/img/logos/rentnow-letra.png";
+import { signOut } from "../../api/auth";
 import HelpIcon from '@material-ui/icons/Help';
-import { ComplejoContext } from 'components/App/Context/ComplejoContext';
-import { AuthContext } from 'Auth/Auth';
+import { ComplejoContext } from 'components/App/Context/ComplejoContext'
+import { AuthContext } from "Auth/Auth";
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Badge from '@material-ui/core/Badge';
 import Popover from '@material-ui/core/Popover';
@@ -21,8 +21,9 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
-import { setNotificationAsReaded } from 'api/usuarios';
-import moment from 'moment';
+import { setNotificationAsReaded } from 'api/usuarios'
+import moment from "moment";
+import HomeIcon from '@material-ui/icons/Home';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -30,172 +31,188 @@ const useStyles = makeStyles((theme) => ({
 		flexGrow: 1,
 	},
 
-	navBar: {
-		zIndex: theme.zIndex.drawer,
-		transition: theme.transitions.create(['width', 'margin'], {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.leavingScreen,
-		}),
-	},
-	menuButtonSBClosed: {
-		marginLeft: theme.spacing(4),
-		[theme.breakpoints.down('xs')]: {
-			marginLeft: theme.spacing(0.2),
-		},
-	},
-	menuButtonSBOpen: {
-		marginLeft: theme.spacing(28),
-	},
-	hidden: { display: 'none' },
-	title: {
-		flexGrow: 1,
-	},
-	icon: {
-		flexGrow: 0,
-	},
-	navBarShift: {
-		marginLeft: drawerWidth,
-		width: `calc(100% - ${drawerWidth}px)`,
-		transition: theme.transitions.create(['width', 'margin'], {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.enteringScreen,
-		}),
-	},
-	link: {
-		color: 'white',
-		textDecoration: 'none',
-	},
-	logo: {
-		maxWidth: 170,
-		marginTop: 10,
-	},
+  navBar: {
+    zIndex: theme.zIndex.drawer,
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  menuButtonSBClosed: {
+    marginLeft: theme.spacing(4),
+    [theme.breakpoints.down("xs")]: {
+      marginLeft: theme.spacing(0.2),
+    },
+  },
+  menuButtonSBOpen: {
+    marginLeft: theme.spacing(28),
+  },
+  hidden: { display: "none" },
+  title: {
+    flexGrow: 1,
+  },
+  icon: {
+    flexGrow: 0,
+  },
+  navBarShift: {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  link: {
+    color: "white",
+    textDecoration: "none",
+  },
+  logo: {
+    maxWidth: 170,
+    marginTop: 10,
+  },
+  container: {
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+  },
 }));
 
 function Navbar(props) {
-	const [notificationsAnchorEl, setNotificationsAnchorEl] = useState(null);
-	const classes = useStyles();
-	let currentComplejo = useContext(ComplejoContext);
-	let { currentUser, notificaciones } = useContext(AuthContext);
+  const [notificationsAnchorEl, setNotificationsAnchorEl] = useState(null);
+  const classes = useStyles();
+  let currentComplejo = useContext(ComplejoContext)
+  let { currentUser, notificaciones } = useContext(AuthContext)
 
-	const openNots = Boolean(notificationsAnchorEl);
+  const openNots = Boolean(notificationsAnchorEl);
 
-	useEffect(() => {
-		console.log(notificaciones);
-	}, [notificaciones]);
+  useEffect(() => {
+    console.log(notificaciones);
+  }, [notificaciones])
 
-	const handleLogout = async () => {
-		const response = await signOut();
-		if (response.status === 'OK') {
-			props.history.push('/login');
-		} else {
-			console.log('Error al desloguearse');
-		}
-	};
-
-	const handleOpenNots = (event) => {
-		setNotificationsAnchorEl(event.currentTarget);
-	};
-
-	const handleCloseNots = (event) => {
-		setNotificationsAnchorEl(null);
-	};
 
 	const handleNotClick = (not) => {
 		setNotificationAsReaded(currentUser.uid, not.id);
 	};
 
-	return (
-		<AppBar
-			position="fixed"
-			color="primary"
-			className={clsx(classes.navBar, {
-				[classes.navBarShift]: false,
-			})}
-		>
-			<Toolbar>
-				{!props.withoutSidebar ? (
-					<>
-						<IconButton
-							edge="start"
-							onClick={props.sideBarOpenHandler}
-							className={clsx(classes.menuButtonSBClosed, {
-								[classes.menuButtonSBOpen]: props.isSideBarOpen,
-							})}
-							color="inherit"
-							aria-label="menu"
-						>
-							{props.isSideBarOpen ? <ChevronLeftIcon /> : <MenuIcon />}
-						</IconButton>
-						<Typography align="center" className={classes.title} />
-					</>
-				) : (
-					<Typography align="left" className={classes.title}>
-						<img src={logoHorizontal} alt="logo" className={classes.logo} />
-					</Typography>
-				)}
-				<Typography> {currentComplejo ? currentComplejo.nombre : null}</Typography>
-				<Link to="/app/ayuda" className={classes.link}>
-					<IconButton>
-						<HelpIcon />
-					</IconButton>
-				</Link>
+  const handleOpenNots = (event) => {
+    setNotificationsAnchorEl(event.currentTarget)
+  };
 
-				<IconButton onClick={handleOpenNots}>
-					<Badge
-						color="secondary"
-						badgeContent={notificaciones.filter((not) => not.leida === false).length}
-					>
-						<NotificationsIcon />
-					</Badge>
-				</IconButton>
+  const handleCloseNots = (event) => {
+    setNotificationsAnchorEl(null)
+  };
 
-				<Popover
-					anchorOrigin={{
-						vertical: 'bottom',
-						horizontal: 'left',
-					}}
-					transformOrigin={{
-						vertical: 'top',
-						horizontal: 'center',
-					}}
-					open={openNots}
-					onClose={handleCloseNots}
-					anchorEl={notificationsAnchorEl}
-				>
-					<List dense={true}>
-						{notificaciones.map((not, i) => (
-							<ListItem
-								button
-								onClick={() => {
-									handleNotClick(not);
-								}}
-								selected={not.leida === false ? false : true}
-							>
-								<ListItemText
-									primary={
-										<Typography>
-											{' '}
-											{not.mensaje} en <b>{not.complejo.nombre}</b>
-										</Typography>
-									}
-									secondary={`${not.espacio} → ${moment().format('DD/MM h:mm')} - ${moment().format(
-										'h:mm'
-									)}`}
-								/>
-								{not.leida === false ? <PriorityHighIcon color="primary" /> : null}
-							</ListItem>
-						))}
-					</List>
-				</Popover>
+  const handleNotClick = (not) => {
+    setNotificationAsReaded(currentUser.uid, not.id)
+  }
 
-				<Link to="/login" className={classes.link}>
-					<IconButton onClick={handleLogout}>
-						<ExitToAppTwoToneIcon />
-					</IconButton>
-				</Link>
-			</Toolbar>
-		</AppBar>
-	);
+  return (
+    <AppBar
+      position="fixed"
+      color="primary"
+      className={clsx(classes.navBar, {
+        [classes.navBarShift]: false,
+      })}
+    >
+      <Toolbar>
+        {!props.withoutSidebar ? (
+          <>
+            <IconButton
+              edge="start"
+              onClick={props.sideBarOpenHandler}
+              className={clsx(classes.menuButtonSBClosed, {
+                [classes.menuButtonSBOpen]: props.isSideBarOpen,
+              })}
+              color="inherit"
+              aria-label="menu"
+            >
+              {props.isSideBarOpen ? <ChevronLeftIcon /> : <MenuIcon />}
+            </IconButton>
+            <Typography align="center" className={classes.title} />
+          </>
+        ) : (
+          <Typography align="left" className={classes.title}>
+            <img src={logoHorizontal} alt="logo" className={classes.logo} />
+          </Typography>
+        )}
+        {currentComplejo ? (
+          <Grid
+            container
+            direction="column"
+            justify="center"
+            alignItems="center"
+          >
+            <Chip
+              variant="outlined"
+              icon={<HomeIcon />}
+              label={currentComplejo.nombre.toUpperCase()}
+              color="secondary"
+            />
+          </Grid>
+        ) : (null)}
+        <Link to="/app/ayuda" className={classes.link}>
+          <IconButton>
+            <HelpIcon />
+          </IconButton>
+        </Link>
+        {
+          currentComplejo ? (
+            <IconButton onClick={handleOpenNots}>
+              <Badge color="secondary" badgeContent={notificaciones.filter(not => not.leida === false).length}>
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+          ) : null
+        }
+
+        <Popover
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+          open={openNots}
+          onClose={handleCloseNots}
+          anchorEl={notificationsAnchorEl}
+          marginThreshold={2}
+        >
+          <Grid
+            container
+            direction="column"
+            justify="center"
+            alignItems="center"
+            className={classes.container}
+          >
+            <Typography variant='h6'>NOTIFICACIONES</Typography>
+          </Grid>
+          <Divider className={classes.divider} variant='fullWidth' />
+          <List dense={true}>
+            {notificaciones.map((not, i) =>
+              <ListItem button onClick={() => { handleNotClick(not) }} selected={not.leida === false ? true : false}>
+                <ListItemText
+                  primary={<Typography> {not.mensaje} en <b>{not.complejo.nombre}</b></Typography>}
+                  secondary={`${not.espacio} → ${moment().format("DD/MM h:mm")} - ${moment().format("h:mm")}`}
+                />
+                {not.leida === false ? <PriorityHighIcon color="primary" /> : null}
+              </ListItem>
+            )
+            }
+          </List>
+        </Popover>
+
+
+        <Link to="/login" className={classes.link}>
+          <IconButton onClick={handleLogout}>
+            <ExitToAppTwoToneIcon />
+          </IconButton>
+        </Link>
+      </Toolbar>
+    </AppBar >
+  );
 }
 
 export default withRouter(Navbar);
