@@ -25,12 +25,11 @@ import { setNotificationAsReaded } from 'api/usuarios'
 import moment from "moment";
 import HomeIcon from '@material-ui/icons/Home';
 
-
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
+	root: {
+		flexGrow: 1,
+	},
 
   navBar: {
     zIndex: theme.zIndex.drawer,
@@ -92,14 +91,9 @@ function Navbar(props) {
   }, [notificaciones])
 
 
-  const handleLogout = async () => {
-    const response = await signOut();
-    if (response.status === "OK") {
-      props.history.push("/login");
-    } else {
-      console.log("Error al desloguearse");
-    }
-  };
+	const handleNotClick = (not) => {
+		setNotificationAsReaded(currentUser.uid, not.id);
+	};
 
   const handleOpenNots = (event) => {
     setNotificationsAnchorEl(event.currentTarget)

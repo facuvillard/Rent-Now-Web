@@ -10,6 +10,6 @@ export async function sendEmailApi(emailData) {
     }
     const sendEmailFromFirebase = firebase.functions().httpsCallable('sendContactEmail')
     const result = await sendEmailFromFirebase(formatedEmaildata)
-
+    
     return result.data;
 }

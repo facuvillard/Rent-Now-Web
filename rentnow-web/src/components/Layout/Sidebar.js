@@ -28,6 +28,7 @@ import ListAltOutlined from "@material-ui/icons/ListAltOutlined";
 import MenuBook from "@material-ui/icons/MenuBook";
 import BarChartIcon from "@material-ui/icons/BarChart";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
+import StarIcon from '@material-ui/icons/Star';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -260,6 +261,16 @@ const Sidebar = (props) => {
                 />
               </List>
             </Collapse>
+          </Can>
+
+          <Can I="read" a="valoracion">
+            <SideBarButton
+              permiso="read"
+              elemento="valoracion"
+              ruta={`/app/complejos/${props.params.idComplejo}/valoraciones/listado`}
+              icon={<StarIcon className={classes.link} />}
+              text="Valoraciones"
+            />
           </Can>
         </List>
 
