@@ -29,6 +29,7 @@ import MenuBook from "@material-ui/icons/MenuBook";
 import BarChartIcon from "@material-ui/icons/BarChart";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import StarIcon from '@material-ui/icons/Star';
+import { HourglassFullOutlined } from "@material-ui/icons"
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -224,6 +225,13 @@ const Sidebar = (props) => {
                 ruta={`/app/complejos/${props.params.idComplejo}/reservas/listado`}
                 icon={<ListAltOutlined className={classes.link} />}
                 text="Listado de Reservas"
+              />
+              <SideBarButton
+                permiso="read"
+                elemento="reserva"
+                ruta={`/app/complejos/${props.params.idComplejo}/reservas/pendientes`}
+                icon={<HourglassFullOutlined className={classes.link} />}
+                text="Reservas pendientes"
               />
             </Collapse>
           </Can>

@@ -26,11 +26,6 @@ import {
 	emailReservaCancelada,
 	emailReservaConfirmada,
 } from 'components/utils/MailsTemplate/emailTemplates';
-import { useLocation } from 'react-router-dom';
-
-function useQuery() {
-	return new URLSearchParams(useLocation().search);
-}
 
 const useStyles = makeStyles((theme) => ({
 	heading: {
@@ -63,14 +58,8 @@ const ReservasList = () => {
 	const [showAlert, setShowAlert] = useState(false);
 	const [alertProps, setAlertProps] = useState({});
 
-	let query = useQuery().get('estado');
-
 	useEffect(() => {
-		if (query) {
-			console.log(query);
-		} else {
-			getReservasByMonthAndYear(fecha, idComplejo, setReservas);
-		}
+		getReservasByMonthAndYear(fecha, idComplejo, setReservas);
 	}, [fecha, idComplejo, setReservas]);
 
 	const updateDialogHandler = (reserva) => {
@@ -182,7 +171,7 @@ const ReservasList = () => {
 							/>
 						</Grid>
 						<Grid item md={3} xs={6}>
-							
+
 						</Grid>
 					</Grid>
 				</ExpansionPanelDetails>

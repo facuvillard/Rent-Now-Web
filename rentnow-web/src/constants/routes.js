@@ -20,6 +20,7 @@ export const MODIFICAR_ESPACIO = `${APP}/complejos/:idComplejo/espacios/:idEspac
 export const CALENDARIO =  `${COMPLEJO}/calendario`
 export const REPORTES_CONCURRENCIA =  `${COMPLEJO}/reportes/concurrencia`
 export const LISTADO_RESERVAS = `${COMPLEJO}/reservas/listado`
+export const LISTADO_RESERVAS_PENDIENTES = `${COMPLEJO}/reservas/pendientes`
 export const LISTADO_VALORACIONES = `${COMPLEJO}/valoraciones/listado`
 
 //REDIRECCIONES

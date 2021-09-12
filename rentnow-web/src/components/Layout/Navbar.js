@@ -104,8 +104,9 @@ function Navbar(props) {
     setNotificationsAnchorEl(null)
   };
 
-  const handleNotClick = (not) => {
-    setNotificationAsReaded(currentUser.uid, not.id)
+  const handleLogout = async () => {
+    await signOut();
+    props.history.push("/login")
   }
 
   return (
@@ -205,8 +206,7 @@ function Navbar(props) {
           </List>
         </Popover>
 
-
-        <Link to="/login" className={classes.link}>
+        <Link className={classes.link}>
           <IconButton onClick={handleLogout}>
             <ExitToAppTwoToneIcon />
           </IconButton>
