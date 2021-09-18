@@ -1,19 +1,30 @@
+import React, { useEffect, useState } from "react";
 import MaterialTable from "material-table";
-import React from "react";
+import { getAllReservasPendientesByIdComplejo } from "../../../../api/reservas";
+import { useParams } from 'react-router-dom';
+
 
 const ReservasPendientesList = props => {
+	const [reservas, setReservas] = useState([])
+	const { idComplejo } = useParams();
+
+	useEffect(() => {
+		getAllReservasPendientesByIdComplejo(idComplejo, setReservas).then((response) => {
+			setReservas(response.data)
+		})
+	}, [])
 	return (
 		<MaterialTable
 			title="Reservas pendientes de aprobación"
-			data={[]}
+			data={reservas}
 			columns={[
-				{ title: 'ESPACIO', field: 'espacio.descripcion' },
-				{ title: 'FECHA INICIO', field: 'fechaInicioString', type: 'datetime' },
-				{ title: 'FECHA FIN', field: 'fechaFinString', type: 'datetime' },
-				{ title: 'ESTADO', field: 'estado' },
-				{ title: 'APELLIDO', field: 'cliente.apellido' },
-				{ title: 'NOMBRE', field: 'cliente.nombre' },
-				{ title: 'TELEFONO', field: 'cliente.celular' },
+				{title: 'ESPACIO', field: 'espacio.descripcion'},
+				{title: 'FECHA REGISTRO', field: 'fechaRegistroString', type: 'datetime'},
+				{title: 'FECHA INICIO', field: 'fechaInicioString', type: 'datetime'},
+				{title: 'FECHA FIN', field: 'fechaFinString', type: 'datetime'},
+				{title: 'APELLIDO', field: 'cliente.apellido'},
+				{title: 'NOMBRE', field: 'cliente.nombre'},
+				{title: 'TELEFONO', field: 'cliente.celular'},
 			]}
 			options={{
 				actionsColumnIndex: -1,
