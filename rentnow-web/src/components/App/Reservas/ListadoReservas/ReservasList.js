@@ -81,18 +81,18 @@ const ReservasList = () => {
 		let reservaToUpdate = {
 			estados: values.estados,
 			estaPagado: values.estaPagado,
+			estadoActual: values.estados[values.estados.length - 1].estado
 		};
 		updateReservaStateAndPayment(reservaToUpdate, id).then((response) => {
-			let estado = reservaToUpdate.estados[reservaToUpdate.estados.length - 1].estado;
             if (response.status === "OK") {
-                if(estado === "CANCELADA"){
+                if(reservaToUpdate.estadoActual === "CANCELADA"){
                     sendEmailApi({
                         destinatario: values.emailCliente,
                         asunto: "CANCELACION DE RESERVA",
                         contenido: emailReservaCancelada(values),
                         adjuntos: null, 
                     })
-                } else if (estado === "CONFIRMADA") {
+                } else if (reservaToUpdate.estadoActual === "CONFIRMADA") {
                     sendEmailApi({
                         destinatario: values.emailCliente,
                         asunto: "CONFIRMACION DE RESERVA",

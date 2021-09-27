@@ -103,8 +103,9 @@ function Navbar(props) {
     setNotificationsAnchorEl(null)
   };
 
-  const handleNotClick = (not) => {
-    setNotificationAsReaded(currentUser.uid, not.id)
+  const handleLogout = async() => {
+    await signOut();
+    props.history.push("/login")
   }
 
   return (
