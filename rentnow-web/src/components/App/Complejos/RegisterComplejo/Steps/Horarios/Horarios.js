@@ -25,10 +25,10 @@ const Horarios = () => {
     { dayId: 1, dayDescription: "Domingo" },
     { dayId: 2, dayDescription: "Lunes" },
     { dayId: 3, dayDescription: "Martes" },
-    { dayId: 4, dayDescription: "Miercoles" },
+    { dayId: 4, dayDescription: "Miércoles" },
     { dayId: 5, dayDescription: "Jueves" },
     { dayId: 6, dayDescription: "Viernes" },
-    { dayId: 7, dayDescription: "Sabado" },
+    { dayId: 7, dayDescription: "Sábado" },
     { dayId: 8, dayDescription: "Feriados" },
   ];
 
@@ -82,7 +82,7 @@ const Horarios = () => {
       {
         id: 4,
         title: "Cerrado",
-        resourceTitle: "Miercoles",
+        resourceTitle: "Miércoles",
         abre: false,
         start: new Date("Sat Sep 12 2020 00:00:00 "),
         end: new Date("Sat Sep 12 2020 00:00:00 "),
@@ -112,7 +112,7 @@ const Horarios = () => {
       {
         id: 7,
         title: "Cerrado",
-        resourceTitle: "Sabado",
+        resourceTitle: "Sábado",
         abre: false,
         start: new Date("Sat Sep 12 2020 00:00:00"),
         end: new Date("Sat Sep 12 2020 00:00:00 "),
