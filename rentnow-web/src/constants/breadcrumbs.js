@@ -74,6 +74,11 @@ export const APP_COMPLEJO_RESERVAS_LISTADO = [
 	{ nombre: 'Listado de Reservas', ruta: Routes.LISTADO_RESERVAS },
 ];
 
+export const APP_COMPLEJO_RESERVAS_PENDIENTES_LISTADO = [
+	...APP_COMPLEJO,
+	{ nombre: 'Listado de reservas pendientes', ruta: Routes.LISTADO_RESERVAS_PENDIENTES },
+];
+
 export const APP_AYUDAS = [
 	{
 		nombre: 'Ayuda',

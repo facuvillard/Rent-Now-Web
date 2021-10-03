@@ -7,7 +7,7 @@ const ability = new Ability([]);
 
 const definePermissionsfor = user => {
     const { can, rules } = new AbilityBuilder(ability);
-    
+
     switch (user) {
         case ROLES.ADMIN_APP: {
             can(PERMISSIONS.ADMIN, ELEMENTS.USUARIO);
@@ -24,6 +24,7 @@ const definePermissionsfor = user => {
         }
         case ROLES.ENCARGADO_COMPLEJO: {
             can(PERMISSIONS.READ, ELEMENTS.COMPLEJO)
+            can(PERMISSIONS.READ, ELEMENTS.RESERVA)
             break
         }
         default: {

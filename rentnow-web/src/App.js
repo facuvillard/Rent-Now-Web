@@ -22,6 +22,7 @@ import EditEspacio from 'components/App/Espacios/EditEspacio/EditEspacio';
 import ReservasByEspacio from 'components/App/Reservas/ReservaByEspacio/ReservasByEspacio';
 import Ayuda from 'components/Ayuda/Ayuda';
 import ReservasList from 'components/App/Reservas/ListadoReservas/ReservasList';
+import ReservasPendientesList from "./components/App/Reservas/ListadoReservas/ReservasPendientesList";
 import RankingConcurrencia from 'components/Admin/Estadisticas/RankingConcurrencia';
 import ReporteConcurrencia from 'components/App/Estadisticas/ReporteConcurrencia/ReporteConcurrencia';
 import CurrentComplejo from 'components/App/Context/ComplejoContext';
@@ -191,6 +192,16 @@ function App() {
 										breadcrumbs={Breadcrumbs.APP_COMPLEJO_RESERVAS_LISTADO}
 									/>
 									<RouteWithSidebar
+										title="Listado de reservas pendientes"
+										component={() => <ReservasPendientesList />}
+										exact
+										path={Routes.LISTADO_RESERVAS_PENDIENTES}
+										isPrivate={true}
+										permiso="read"
+										elemento="reserva"
+										breadcrumbs={Breadcrumbs.APP_COMPLEJO_RESERVAS_PENDIENTES_LISTADO}
+									/>
+									<RouteWithSidebar
 										title="Listado de valoraciones"
 										component={() => <ValoracionesList />}
 										exact
@@ -198,7 +209,7 @@ function App() {
 										isPrivate={true}
 										permiso="read"
 										elemento="valoracion"
-										breadcrumbs={Breadcrumbs.APP_COMPLEJO_VALORACIONES_LISTADO}
+										breadcrumbs={Breadcrumbs.APP_COMPLEJO_RESERVAS_PENDIENTES_LISTADO}
 									/>
 								</Switch>
 							</CurrentComplejo>
