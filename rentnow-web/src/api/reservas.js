@@ -317,15 +317,16 @@ export async function getAllReservasPendientesByIdComplejo(idComplejo, runWhenCh
 			.where("estadoActual", "==", "CREADA")
 			.orderBy("fechaRegistro", "asc")
 			.get()
-			.then((snap) => snap.docs.map((reservas) => reservas.data()));
+			.then((snap) => snap.docs.map((reservas) => reservas));
 
 		const reservas = []
 		result.map((reserva) => {
 			reservas.push({
-				fechaInicioString: reserva.fechaInicio.toDate(),
-				fechaFinString: reserva.fechaFin.toDate(),
-				fechaRegistroString: reserva.fechaRegistro.toDate(),
-				...reserva
+				fechaInicioString: reserva.data().fechaInicio.toDate(),
+				fechaFinString: reserva.data().fechaFin.toDate(),
+				fechaRegistroString: reserva.data().fechaRegistro.toDate(),
+				id: reserva.id,
+				...reserva.data()
 			})
 		})
 

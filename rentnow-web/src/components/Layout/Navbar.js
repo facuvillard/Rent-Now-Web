@@ -93,7 +93,7 @@ function Navbar(props) {
 
 	const handleNotClick = (not) => {
 		setNotificationAsReaded(currentUser.uid, not.id);
-		props.history.push(`/app/complejos/${not.complejo.id}/reservas/pendientes`)
+		window.location.href = `/app/complejos/${not.complejo.id}/reservas/pendientes`
 	};
 
 	const handleOpenNots = (event) => {
