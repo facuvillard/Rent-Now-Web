@@ -18,7 +18,7 @@ import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 import { setNotificationAsReaded } from 'api/usuarios'
 import { AuthContext } from "Auth/Auth";
 import clsx from "clsx";
-import { ComplejoContext } from 'components/App/Context/ComplejoContext'
+import CurrentComplejo, { ComplejoContext } from 'components/App/Context/ComplejoContext'
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
 import { Link, withRouter } from "react-router-dom";
@@ -83,24 +83,28 @@ function Navbar(props) {
 	const classes = useStyles();
 	let currentComplejo = useContext(ComplejoContext)
 	let {currentUser, notificaciones} = useContext(AuthContext)
+	const [nombreComplejo, setNombreComplejo] = useState(currentComplejo)
 
 	const openNots = Boolean(notificationsAnchorEl);
 
 	useEffect(() => {
-		console.log(notificaciones);
-	}, [notificaciones])
+		if(currentComplejo){
+			setNombreComplejo(currentComplejo.nombre.toUpperCase())
+		}
+	}, [currentComplejo])
 
 
 	const handleNotClick = (not) => {
-		setNotificationAsReaded(currentUser.uid, not.id);
-		window.location.href = `/app/complejos/${not.complejo.id}/reservas/pendientes`
+		setNotificationAsReaded(currentUser.uid, not.id).then(()=>{
+			window.location.href = `/app/complejos/${not.complejo.id}/reservas/pendientes`
+		});
 	};
 
 	const handleOpenNots = (event) => {
 		setNotificationsAnchorEl(event.currentTarget)
 	};
 
-	const handleCloseNots = (event) => {
+	const handleCloseNots = () => {
 		setNotificationsAnchorEl(null)
 	};
 
@@ -138,7 +142,7 @@ function Navbar(props) {
 						<img src={logoHorizontal} alt="logo" className={classes.logo}/>
 					</Typography>
 				)}
-				{currentComplejo ? (
+				{nombreComplejo && (
 					<Grid
 						container
 						direction="column"
@@ -148,11 +152,11 @@ function Navbar(props) {
 						<Chip
 							variant="outlined"
 							icon={<HomeIcon/>}
-							label={currentComplejo.nombre.toUpperCase()}
+							label={nombreComplejo}
 							color="secondary"
 						/>
 					</Grid>
-				) : (null)}
+				)}
 				<Link to="/app/ayuda" className={classes.link}>
 					<IconButton>
 						<HelpIcon/>
@@ -197,7 +201,7 @@ function Navbar(props) {
 							}} selected={not.leida === false ? true : false}>
 								<ListItemText
 									primary={<Typography> {not.mensaje} en <b>{not.complejo.nombre}</b></Typography>}
-									secondary={`${not.espacio} → ${moment().format("DD/MM h:mm")} - ${moment().format("h:mm")}`}
+									secondary={`${not.espacio} → ${moment(not.fechaInicio.toDate()).format("DD/MM h:mm")} - ${moment(not.fechaFin.toDate()).format("h:mm")}`}
 								/>
 								{not.leida === false ? <PriorityHighIcon color="primary"/> : null}
 							</ListItem>
