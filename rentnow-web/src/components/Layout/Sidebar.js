@@ -100,6 +100,9 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     color: theme.palette.grey[50],
   },
+  subitems: {
+    backgroundColor: theme.palette.secondary.light,
+  }
 }));
 
 const SideBarButton = (props) => {
@@ -176,7 +179,7 @@ const Sidebar = (props) => {
               <ListItemText primary="Estadisticas" />
               {openEstadisticas ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
-            <Collapse in={openEstadisticas} timeout="auto" unmountOnExit>
+            <Collapse in={openEstadisticas} timeout="auto" unmountOnExit className={classes.subitems}>
               <SideBarButton
                 permiso="admin"
                 elemento="estadisticas"
@@ -211,7 +214,7 @@ const Sidebar = (props) => {
               <ListItemText primary="Reservas" />
               {openReservas ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
-            <Collapse in={openReservas} timeout="auto" unmountOnExit>
+            <Collapse in={openReservas} timeout="auto" unmountOnExit className={classes.subitems}>
               <SideBarButton
                 permiso="read"
                 elemento="reserva"
@@ -259,7 +262,7 @@ const Sidebar = (props) => {
               {openReportes ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
             <Collapse in={openReportes} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding>
+              <List component="div" disablePadding className={classes.subitems}>
                 <SideBarButton
                   permiso="read"
                   elemento="reporte"
