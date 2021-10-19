@@ -59,6 +59,7 @@ idUsuario, runWhenChange
       .collection("usuarios")
       .doc(idUsuario)
       .collection("notificaciones")
+      .orderBy('fechaRegistro', 'desc')
       .onSnapshot((querySnapshot) => {
         let notificaciones = [];
         querySnapshot.forEach((notificacionDoc) => {
