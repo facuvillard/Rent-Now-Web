@@ -132,6 +132,18 @@ const ReservasList = () => {
 		}
 	};
 
+	const customRenderReservaApp = (value, renderType, renderFunc, field, ...args) => {
+		if (renderType === 'row' && value.reservaApp) {
+			return (
+				<Chip
+					label='APP'
+					color='primary'
+					size='small'
+				/>
+			);
+		}
+	};
+
 	//normal render function
 	const renderCellData = (status) => {
 		//do stuff
@@ -191,6 +203,7 @@ const ReservasList = () => {
 					{ title: 'APELLIDO', field: 'cliente.apellido' },
 					{ title: 'NOMBRE', field: 'cliente.nombre' },
 					{ title: 'TELEFONO', field: 'cliente.celular' },
+					{ title: '', field:'reservaApp', render: (value, renderType) => customRenderReservaApp(value, renderType, renderCellData, 'reservaApp'),}
 				]}
 				actions={[
 					{
