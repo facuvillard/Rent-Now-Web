@@ -1,6 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import { Checkbox, Grid, Typography, Button, TextField, MenuItem, Stepper,Step,StepLabel } from '@material-ui/core'
+import { Checkbox, Grid, Typography, Button, TextField, MenuItem, Stepper,Step,StepLabel, Chip } from '@material-ui/core'
 import { Formik, Field, Form } from "formik";
 import InputAdornment from '@material-ui/core/InputAdornment';
 import moment from "moment";
@@ -18,8 +18,8 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(3),
     },
     checkboxes:{
-        marginTop:'20px',
-        marginLeft:'30px'
+        marginTop: theme.spacing(3),
+        marginLeft: theme.spacing(3)
     },
 }));
 
@@ -54,7 +54,8 @@ const UpdateReserva = (props) => {
                     estado: estadoActual,
                     estados: props.reserva.estados,
                     motivo: motivoActual,
-                    emailCliente: props.reserva.cliente.email
+                    emailCliente: props.reserva.reservaApp ? props.reserva.cliente.email : '',
+                    reservaApp: props.reserva.reservaApp
                 }}
                 onSubmit={async (values) => {
                     if (estadoActual !== values.estado || motivoActual !== values.motivo) {
@@ -84,13 +85,16 @@ const UpdateReserva = (props) => {
                                     }}
                                 />
                             </Grid>
+                            <Grid item xs={1}>
+                                {values.reservaApp && <Chip className={classes.checkboxes} label='APP' color='primary' size='small' />}
+                            </Grid>
                             <Grid item xs={3}>
                                 <Typography className={classes.checkboxes}>
                                     <Field type="checkbox" name="estaPagado" as={Checkbox} />
                                     <b>PAGADO</b>
                                 </Typography>
                             </Grid>
-                            <Grid item xs={3}>
+                            <Grid item xs={2}>
                                 <Typography className={classes.checkboxes}>
                                     <Field type="checkbox" name="esFijo" as={Checkbox} disabled />
                                     <b>FIJO</b>
