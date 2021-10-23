@@ -31,7 +31,7 @@ const ReservasPendientesList = () => {
 		estados.push({
 			estado: "CANCELADA",
 			fecha: fechaActualizacion,
-			motivo: "El administrador del complejo ha rechadazo la reserva"
+			motivo: "El administrador del complejo ha rechazado la reserva."
 		})
 		let reservaToUpdate = {
 			estadoActual: "CANCELADA",
@@ -61,7 +61,7 @@ const ReservasPendientesList = () => {
 		estados.push({
 			estado: "CONFIRMADA",
 			fecha: fechaActualizacion,
-			motivo: "El administrador del complejo ha confirmado la reserva"
+			motivo: "El administrador del complejo ha confirmado la reserva."
 		});
 		let reservaToUpdate = {
 			estadoActual: "CONFIRMADA",
