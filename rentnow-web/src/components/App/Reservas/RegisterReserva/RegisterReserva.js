@@ -360,7 +360,7 @@ const RegisterReserva = ({ espacio, handleClickReservaRegistradaConExito }) => {
                 }
               />
             </Grid>
-            <Grid item md={1}>
+            <Grid item md={2}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -370,18 +370,6 @@ const RegisterReserva = ({ espacio, handleClickReservaRegistradaConExito }) => {
                   />
                 }
                 label="Pagado"
-              />
-            </Grid>
-            <Grid item md={1}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={esFijo}
-                    name="esFijo"
-                    onChange={handleCheckboxChange}
-                  />
-                }
-                label="¿Es fijo?"
               />
             </Grid>
             <Grid item md={4} xs={12}>

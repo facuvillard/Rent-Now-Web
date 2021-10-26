@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import { Checkbox, Grid, Typography, Button, TextField, MenuItem, Stepper,Step,StepLabel, Chip } from '@material-ui/core'
+import { Checkbox, Grid, Typography, Button, TextField, MenuItem, Stepper, Step, StepLabel, Chip } from '@material-ui/core'
 import { Formik, Field, Form } from "formik";
 import InputAdornment from '@material-ui/core/InputAdornment';
 import moment from "moment";
@@ -17,14 +17,16 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(3),
         marginTop: theme.spacing(3),
     },
-    checkboxes:{
+    checkboxes: {
         marginTop: theme.spacing(3),
         marginLeft: theme.spacing(3)
     },
 }));
 
 const UpdateReserva = (props) => {
+    console.log(props)
     const classes = useStyles();
+    const [disabled, setDisabled] = useState(true)
     const estadoActual = props.reserva.estados ? props.reserva.estados[props.reserva.estados.length - 1].estado : "";
     const motivoActual = props.reserva.estados ? props.reserva.estados[props.reserva.estados.length - 1].motivo : "";
     let posiblesEstados = [];
@@ -37,6 +39,12 @@ const UpdateReserva = (props) => {
         moment().toDate()
     );
     moment.locale('es');
+
+    const handleSetDisabled = () => {
+        if(disabled){
+            setDisabled(false)
+        }
+    }
     return (
         <>
             <Formik
@@ -54,7 +62,7 @@ const UpdateReserva = (props) => {
                     estado: estadoActual,
                     estados: props.reserva.estados,
                     motivo: motivoActual,
-                    emailCliente: props.reserva.reservaApp ? props.reserva.cliente.email : '',
+                    emailCliente: props.reserva?.emailCliente,
                     reservaApp: props.reserva.reservaApp
                 }}
                 onSubmit={async (values) => {
@@ -85,19 +93,13 @@ const UpdateReserva = (props) => {
                                     }}
                                 />
                             </Grid>
-                            <Grid item xs={1}>
+                            <Grid item xs={3}>
                                 {values.reservaApp && <Chip className={classes.checkboxes} label='APP' color='primary' size='small' />}
                             </Grid>
                             <Grid item xs={3}>
                                 <Typography className={classes.checkboxes}>
-                                    <Field type="checkbox" name="estaPagado" as={Checkbox} />
+                                    <Field type="checkbox" name="estaPagado" as={Checkbox} onClick={()=>handleSetDisabled()}/>
                                     <b>PAGADO</b>
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Typography className={classes.checkboxes}>
-                                    <Field type="checkbox" name="esFijo" as={Checkbox} disabled />
-                                    <b>FIJO</b>
                                 </Typography>
                             </Grid>
                             <Grid item xs={6}>
@@ -126,7 +128,7 @@ const UpdateReserva = (props) => {
                                     }}
                                 />
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={3}>
                                 <Field
                                     name="descripcionCliente"
                                     label="Nombre Cliente"
@@ -139,13 +141,26 @@ const UpdateReserva = (props) => {
                                     }}
                                 />
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={3}>
                                 <Field
                                     name="telefonoCliente"
                                     label="Telefono Cliente"
                                     fullWidth
                                     as={TextField}
                                     value={values.telefonoCliente}
+                                    margin='normal'
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Field
+                                    name="emailCliente"
+                                    label="Email Cliente"
+                                    fullWidth
+                                    as={TextField}
+                                    value={values.emailCliente}
                                     margin='normal'
                                     InputProps={{
                                         readOnly: true,
@@ -175,6 +190,7 @@ const UpdateReserva = (props) => {
                                     value={values.estado}
                                     margin='normal'
                                     onChange={(e) => {
+                                        handleSetDisabled();
                                         handleChange(e);
                                     }}
                                 >
@@ -189,13 +205,13 @@ const UpdateReserva = (props) => {
                                 </TextField>
                             </Grid>
                             <Grid item>
-                            <Stepper activeStep={props.reserva.estados.length  - 1} orientation="vertical">
+                                <Stepper activeStep={props.reserva.estados.length - 1} orientation="vertical">
                                     {props.reserva.estados.map((estado, index) => (
-                                            <Step key={index}>
-                                             <StepLabel>{estado.estado} - {moment(estado.fecha.toDate()).format('D/M/YY hh:mm').toString()}</StepLabel>
-                                             </Step>
+                                        <Step key={index}>
+                                            <StepLabel>{estado.estado} - {moment(estado.fecha.toDate()).format('D/M/YY hh:mm').toString()}</StepLabel>
+                                        </Step>
                                     ))}
-                            </Stepper>
+                                </Stepper>
                             </Grid>
                             {values.estado === constants.estados.cancelada ? (
                                 <Grid item xs={12}>
@@ -215,8 +231,8 @@ const UpdateReserva = (props) => {
                                     <AlertTitle>
                                         Solo podras modificar el Pago y el Estado de la Reserva
                                     </AlertTitle>
-                                Si deseas modificar algun otro dato, deberas Cancelar la Reserva actual y volver a Registrar una nueva.
-                            </Alert>
+                                    Si deseas modificar algun otro dato, deberas Cancelar la Reserva actual y volver a Registrar una nueva.
+                                </Alert>
                             </Grid>
                             <Grid
                                 container
@@ -235,17 +251,18 @@ const UpdateReserva = (props) => {
 
                                     >
                                         Volver
-                                </Button>
+                                    </Button>
                                 </Grid>
                                 <Grid item xs={2} >
                                     <Button
                                         color="primary"
                                         variant="contained"
                                         type="submit"
+                                        disabled={disabled}
 
                                     >
                                         Guardar
-                                </Button>
+                                    </Button>
                                 </Grid>
                             </Grid>
                         </Grid>

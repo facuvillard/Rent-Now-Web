@@ -43,7 +43,9 @@ const EspacioCalendar = ({ espacio }) => {
         espacio: reserva.espacio,
         complejo: reserva.complejo,
         estados: reserva.estados,
-        telefonoCliente: reserva.cliente.numTelefono
+        telefonoCliente: reserva.cliente.numTelefono || (reserva.cliente ? reserva.cliente.celular : ""),
+        reservaApp: reserva.reservaApp,
+        emailCliente: reserva.cliente?.email
       }));
     }
     setReservas(formattedReservas);
