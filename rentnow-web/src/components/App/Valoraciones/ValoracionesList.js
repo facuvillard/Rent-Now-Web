@@ -1,19 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import Datepicker from 'react-datepicker';
+import React from 'react';
 import MaterialTable from 'material-table';
 import {
-	TextField,
-	InputAdornment,
-	ExpansionPanelDetails,
-	ExpansionPanel,
-	ExpansionPanelSummary,
 	Typography,
 	Grid,
 } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
-import DateRangeIcon from '@material-ui/icons/DateRange';
-import es from 'date-fns/locale/es';
 import { Alert, AlertTitle } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
@@ -80,18 +72,6 @@ export default function ValoracionesList() {
 
 	return (
 		<>
-			<ExpansionPanel className={classes.expansionPanel} expanded={true}>
-				<ExpansionPanelSummary aria-controls="filtros" id="filtros">
-					<Typography className={classes.heading}>
-						<b>FILTROS</b>
-					</Typography>
-				</ExpansionPanelSummary>
-				<ExpansionPanelDetails>
-					<Grid container direction="row" justify="center" alignItems="center" spacing={5}>
-						<Grid item md={3} xs={6}></Grid>
-					</Grid>
-				</ExpansionPanelDetails>
-			</ExpansionPanel>
 			<MaterialTable
 				title="VALORACIONES"
 				data={valoraciones}
