@@ -15,7 +15,6 @@ const AuthProvider = (props) => {
   useEffect(() => {
     firebaseApp.auth().onAuthStateChanged((user) => {
       if(user){
-
         setCurrentUser(user);
         setPending(false);
         return;
@@ -27,7 +26,6 @@ const AuthProvider = (props) => {
   }, []);
 
   useEffect(() => {
-    
     if (!currentUser) {
       return;
     }
@@ -50,7 +48,6 @@ const AuthProvider = (props) => {
   }, [currentUser]);
 
   useEffect(()=>{
-    
     if (userRoles) {
         updatePermission(userRoles);
       }
