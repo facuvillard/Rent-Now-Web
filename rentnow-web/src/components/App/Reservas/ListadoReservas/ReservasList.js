@@ -202,7 +202,7 @@ const ReservasList = () => {
 					},
 					{ title: 'APELLIDO', field: 'cliente.apellido' },
 					{ title: 'NOMBRE', field: 'cliente.nombre' },
-					{ title: 'TELEFONO', field: 'cliente.celular' },
+					{ title: 'TELEFONO', render: (rowData) => rowData.cliente.celular || rowData.cliente.numTelefono },
 					{ title: '', field:'reservaApp', render: (value, renderType) => customRenderReservaApp(value, renderType, renderCellData, 'reservaApp'),}
 				]}
 				actions={[

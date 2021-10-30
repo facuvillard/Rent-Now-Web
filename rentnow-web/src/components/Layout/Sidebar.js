@@ -110,7 +110,7 @@ const SideBarButton = (props) => {
   return (
     <Can I={props.permiso} a={props.elemento}>
       <Link to={props.ruta} className={classes.link}>
-        <ListItem button>
+        <ListItem button onClick={()=>{props.sideBarOpenHandler()}}>
           <ListItemIcon>{props.icon}</ListItemIcon>
           <ListItemText primary={props.text} />
         </ListItem>
@@ -157,6 +157,7 @@ const Sidebar = (props) => {
             ruta={Routes.ADMIN_COMPLEJOS}
             icon={<HomeIcon className={classes.link} />}
             text="Complejos"
+            sideBarOpenHandler={props.sideBarOpenHandler}
           />
           <SideBarButton
             permiso="admin"
@@ -164,6 +165,7 @@ const Sidebar = (props) => {
             ruta={Routes.USUARIOS}
             icon={<GroupIcon className={classes.link} />}
             text="Usuarios"
+            sideBarOpenHandler={props.sideBarOpenHandler}
           />
           <Can I="admin" a="estadisticas">
             <ListItem
@@ -186,6 +188,7 @@ const Sidebar = (props) => {
                 ruta={Routes.RANKING_CONCURRENCIA}
                 icon={<BarChartIcon className={classes.link} />}
                 text="Ranking uso de aplicación"
+                sideBarOpenHandler={props.sideBarOpenHandler}
               />
             </Collapse>
           </Can>
@@ -198,6 +201,7 @@ const Sidebar = (props) => {
               ruta={`/app/complejos/${props.params.idComplejo}`}
               icon={<HomeIcon className={classes.link} />}
               text="Home"
+              sideBarOpenHandler={props.sideBarOpenHandler}
             />
           </Can>
           <Can I="read" a="reserva">
@@ -221,6 +225,7 @@ const Sidebar = (props) => {
                 ruta={`/app/complejos/${props.params.idComplejo}/calendario`}
                 icon={<TodayIcon className={classes.link} />}
                 text="Calendario"
+                sideBarOpenHandler={props.sideBarOpenHandler}
               />
               <SideBarButton
                 permiso="read"
@@ -228,6 +233,7 @@ const Sidebar = (props) => {
                 ruta={`/app/complejos/${props.params.idComplejo}/reservas/listado`}
                 icon={<ListAltOutlined className={classes.link} />}
                 text="Listado de Reservas"
+                sideBarOpenHandler={props.sideBarOpenHandler}
               />
               <SideBarButton
                 permiso="read"
@@ -235,6 +241,7 @@ const Sidebar = (props) => {
                 ruta={`/app/complejos/${props.params.idComplejo}/reservas/pendientes`}
                 icon={<HourglassFullOutlined className={classes.link} />}
                 text="Reservas pendientes"
+                sideBarOpenHandler={props.sideBarOpenHandler}
               />
             </Collapse>
           </Can>
@@ -245,6 +252,7 @@ const Sidebar = (props) => {
               ruta={`/app/complejos/${props.params.idComplejo}/espacios`}
               icon={<SportsSoccerIcon className={classes.link} />}
               text="Administrar Espacios"
+              sideBarOpenHandler={props.sideBarOpenHandler}
             />
           </Can>
           <Can I="read" a="reporte">
@@ -269,6 +277,7 @@ const Sidebar = (props) => {
                   ruta={`/app/complejos/${props.params.idComplejo}/reportes/concurrencia`}
                   icon={<BlurLinearIcon className={classes.link} />}
                   text="Concurrencia"
+                  sideBarOpenHandler={props.sideBarOpenHandler}
                 />
               </List>
             </Collapse>
@@ -281,6 +290,7 @@ const Sidebar = (props) => {
               ruta={`/app/complejos/${props.params.idComplejo}/valoraciones/listado`}
               icon={<StarIcon className={classes.link} />}
               text="Valoraciones"
+              sideBarOpenHandler={props.sideBarOpenHandler}
             />
           </Can>
         </List>
@@ -293,6 +303,7 @@ const Sidebar = (props) => {
               ruta={`/app/complejos/${props.params.idComplejo}/modificar`}
               icon={<Settings className={classes.link} />}
               text="Configuracion"
+              sideBarOpenHandler={props.sideBarOpenHandler}
             />
           </Can>
         </List>

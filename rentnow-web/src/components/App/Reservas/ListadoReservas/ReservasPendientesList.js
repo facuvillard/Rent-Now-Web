@@ -13,7 +13,7 @@ const ReservasPendientesList = () => {
 	const [openAlert, setOpenAlert] = useState(false);
 	const [alertProps, setAlertProps] = useState({})
 	const [loading, setLoading] = useState(false);
-	const {idComplejo} = useParams();
+	const { idComplejo } = useParams();
 
 	useEffect(() => {
 		if (refresh) {
@@ -85,33 +85,34 @@ const ReservasPendientesList = () => {
 		});
 	}
 
-	return (<>
+	return (
+		<>
 			<MaterialTable
 				title="Reservas pendientes de aprobación"
 				data={reservas}
 				columns={[
-					{title: 'ESPACIO', field: 'espacio.descripcion'},
-					{title: 'FECHA REGISTRO', field: 'fechaRegistroString', type: 'datetime'},
-					{title: 'FECHA INICIO', field: 'fechaInicioString', type: 'datetime'},
-					{title: 'FECHA FIN', field: 'fechaFinString', type: 'datetime'},
-					{title: 'APELLIDO', field: 'cliente.apellido'},
-					{title: 'NOMBRE', field: 'cliente.nombre'},
-					{title: 'TELEFONO', field: 'cliente.celular'},
+					{ title: 'ESPACIO', field: 'espacio.descripcion' },
+					{ title: 'FECHA REGISTRO', field: 'fechaRegistroString', type: 'datetime' },
+					{ title: 'FECHA INICIO', field: 'fechaInicioString', type: 'datetime' },
+					{ title: 'FECHA FIN', field: 'fechaFinString', type: 'datetime' },
+					{ title: 'APELLIDO', field: 'cliente.apellido' },
+					{ title: 'NOMBRE', field: 'cliente.nombre' },
+					{ title: 'TELEFONO', render: (rowData) => rowData.cliente.celular || rowData.cliente.numTelefono },
 				]}
 				actions={[
-						{
-							icon: 'check',
-							tooltip: 'Confirmar reserva',
-							onClick: onConfirmClick,
-							disabled: loading,
-						},
-						{
-							icon: 'cancel',
-							tooltip: 'Cancelar reserva',
-							onClick: onCancelClick,
-							disabled: loading,
-						}
-					]}
+					{
+						icon: 'check',
+						tooltip: 'Confirmar reserva',
+						onClick: onConfirmClick,
+						disabled: loading,
+					},
+					{
+						icon: 'cancel',
+						tooltip: 'Cancelar reserva',
+						onClick: onCancelClick,
+						disabled: loading,
+					}
+				]}
 				options={{
 					actionsColumnIndex: -1,
 					pageSize: 10,
@@ -125,7 +126,7 @@ const ReservasPendientesList = () => {
 					exportButton: true,
 				}}
 				localization={{
-					body: {emptyDataSourceMessage: '¡No existen reservas pendientes de aprobación!'},
+					body: { emptyDataSourceMessage: '¡No existen reservas pendientes de aprobación!' },
 					toolbar: {
 						exportTitle: 'Exportar como Excel',
 						exportName: 'Exportar como Excel',
@@ -143,14 +144,14 @@ const ReservasPendientesList = () => {
 						actions: 'ACCIONES'
 					}
 				}}
-			/>}
-		<AlertCustom
-			open={openAlert}
-			setOpen={setOpenAlert}
-			type={alertProps.type}
-			text={alertProps.text}
-		/>
-	</>)
+			/>
+			<AlertCustom
+				open={openAlert}
+				setOpen={setOpenAlert}
+				type={alertProps.type}
+				text={alertProps.text}
+			/>
+		</>)
 }
 
 
