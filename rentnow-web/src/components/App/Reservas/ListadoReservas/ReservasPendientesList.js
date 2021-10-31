@@ -17,7 +17,6 @@ const ReservasPendientesList = () => {
 	const { idComplejo } = useParams();
 	const [anchorEl, setAnchorEl] = useState(null);
 
-
 	useEffect(() => {
 		if (refresh) {
 			getAllReservasPendientesByIdComplejo(idComplejo, setReservas).then((response) => {

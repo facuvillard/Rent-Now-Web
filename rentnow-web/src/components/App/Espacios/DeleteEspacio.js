@@ -35,7 +35,7 @@ export default function DeleteEspacio(props) {
       ) : (
         <Grid container spacing={2} justify="space-evenly">
           <Grid item xs={12}>
-            <Typography>El espacio quedará eliminado y no se podrá utilizar en el sistema.</Typography>
+            <Typography>El espacio quedará eliminado y todas las reservas realizadas en el mismo van a quedar en estado Cancelada. Luego de esto el espacio no se podrá utilizar en el sistema. </Typography>
           </Grid>
           <Grid item xs={2}>
             <Button

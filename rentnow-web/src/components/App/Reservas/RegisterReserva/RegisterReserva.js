@@ -90,6 +90,7 @@ const RegisterReserva = ({ espacio, handleClickReservaRegistradaConExito }) => {
       apellido: "",
       numTelefono: "",
     },
+    estadoActual: "CONFIRMADA"
   });
 
   const { idComplejo } = useParams();
@@ -117,9 +118,7 @@ const RegisterReserva = ({ espacio, handleClickReservaRegistradaConExito }) => {
       duracion,
       esFijo,
       estaPagado,
-      monto:
-        Math.floor(duracion) * espacio.precioTurno +
-        (duracion - Math.floor(duracion)) * 2 * espacio.precioMedioTurno,
+      monto: duracion * espacio.precioTurno
     }));
   }, [duracion, fechaFin, fechaInicio, esFijo, estaPagado]);
 
@@ -156,29 +155,29 @@ const RegisterReserva = ({ espacio, handleClickReservaRegistradaConExito }) => {
     }
 
     getReservasFirstWeek().then((reservas) => {
-      let hoursToBlock = [];  
-      let hoursToBlockFin = [] 
+      let hoursToBlock = [];
+      let hoursToBlockFin = []
 
       reservas.forEach((reserva) => {
         if(reserva.estados[reserva.estados.length -1].estado === estados.cancelada){
           return
         }
 
-        let duracion = reserva.duracion; 
+        let duracion = reserva.duracion;
         let lastFecha = moment(reserva.fechaInicio);
-        
-        hoursToBlock.push(reserva.fechaInicio);  
+
+        hoursToBlock.push(reserva.fechaInicio);
         while (duracion > 0.5) {
           lastFecha = lastFecha.add(30, "minutes");
           hoursToBlock.push(lastFecha.toDate());
           hoursToBlockFin.push(lastFecha.toDate());
           duracion -= 0.5;
-          
+
         }
-        
-        hoursToBlockFin.push(reserva.fechaFin);  
+
+        hoursToBlockFin.push(reserva.fechaFin);
       });
-      
+
       setTimesToExclude(hoursToBlock);
       setTimesToExcludeFin(hoursToBlockFin);
     });
