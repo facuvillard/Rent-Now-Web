@@ -26,6 +26,7 @@ export async function registerReservaApi(reserva) {
 		fecha: new firebase.firestore.Timestamp.now(),
 		motivo: "",
 	});
+	reserva.estadoActual = "CONFIRMADA";
 
 	try {
 		await firebase
