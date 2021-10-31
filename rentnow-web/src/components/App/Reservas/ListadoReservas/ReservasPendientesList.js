@@ -107,11 +107,11 @@ const ReservasPendientesList = () => {
 				alignItems="center">
 				{
 					cantidadCreadas && cantidadSinConcurrencia &&
-					<div><strong>{cantidadCreadas - cantidadSinConcurrencia}</strong> de <strong>{cantidadCreadas}</strong></div>
+					<div><strong>{cantidadCreadas - cantidadSinConcurrencia}</strong> de <strong>{cantidadCreadas} reservas</strong></div>
 				}
 				{
 					cantidadCreadas && !cantidadSinConcurrencia &&
-					<div><strong>{cantidadCreadas}</strong>  de  <strong>{cantidadCreadas}</strong></div>
+					<div><strong>{cantidadCreadas}</strong> de <strong>{cantidadCreadas} reservas</strong></div>
 				}
 				{
 					!cantidadCreadas && !cantidadSinConcurrencia &&
