@@ -31,9 +31,9 @@ export async function registerReservaApi(reserva) {
 		await firebase
 			.firestore()
 			.collection("reservas")
-			.add({...reserva, dia, diaString, semana, mes, año, fechaRegistro, franjaHoraria, reservaApp: false});
+			.add({ ...reserva, dia, diaString, semana, mes, año, fechaRegistro, franjaHoraria, reservaApp: false });
 
-		return {status: "OK", message: "Se registró la reserva con exito"};
+		return { status: "OK", message: "Se registró la reserva con exito" };
 	} catch (err) {
 		return {
 			status: "ERROR",
@@ -98,7 +98,7 @@ export async function getReservasSixWeeksAndEspacioRealTime(
 				let reservas = [];
 
 				querySnapshot.forEach((reservaDoc) => {
-					reservas.push({...reservaDoc.data(), id: reservaDoc.id});
+					reservas.push({ ...reservaDoc.data(), id: reservaDoc.id });
 				});
 				runWhenChange(reservas);
 			});
