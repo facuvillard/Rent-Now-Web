@@ -115,7 +115,7 @@ const ReservasPendientesList = () => {
 				}
 				{
 					!cantidadCreadas && !cantidadSinConcurrencia &&
-					<div>Primer reserva del cliente</div>
+					<div>1er reserva del cliente</div>
 				}
 				<IconButton
 					size="small"
