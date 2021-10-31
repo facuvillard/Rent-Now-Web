@@ -1,4 +1,6 @@
 import firebase from 'firebase';
+import moment from "moment";
+import { updateReservaStateAndPayment } from "./reservas";
 
 export async function createEspacio(docRef, espacio) {
 	try {
@@ -66,6 +68,33 @@ export async function bajaEspacioApi(espacio, idComplejo) {
 					tipoEspacio: espacio.tipoEspacio,
 				}),
 			});
+		const resultReservas = await firebase
+			.firestore()
+			.collection('reservas')
+			.where('espacio.id', '==', espacio.id)
+			.where('estadoActual', 'in', ['CONFIRMADA', 'CREADA'])
+			.get();
+
+		const reservas = resultReservas.docs.map((r) => ({
+			id: r.id,
+			...r.data()
+		}))
+
+		reservas.map(async (reserva) => {
+			if(reserva.estadoActual === 'CONFIRMADA' || reserva.estadoActual === 'CREADA') {
+				const fechaActualizacion = new firebase.firestore.Timestamp.fromDate(moment().toDate());
+				reserva.estados.push({
+					estado: "CANCELADA",
+					fecha: fechaActualizacion,
+					motivo: "El espacio donde se iba a concretar la reserva fue dado de baja. Por favor comunicarse con el complejo."
+				})
+				const reservaToUpdate = {
+					estadoActual: "CANCELADA",
+					estados: reserva.estados
+				}
+				await updateReservaStateAndPayment(reservaToUpdate, reserva.id);
+			}
+		})
 		return {
 			status: 'OK',
 			message: 'El espacio ha sido dado de baja con éxito.',
