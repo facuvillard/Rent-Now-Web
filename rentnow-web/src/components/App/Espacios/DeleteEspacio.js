@@ -39,15 +39,6 @@ export default function DeleteEspacio(props) {
           </Grid>
           <Grid item xs={2}>
             <Button
-              color="primary"
-              variant="contained"
-              onClick={eliminarEspacio}
-            >
-              Si
-            </Button>
-          </Grid>
-          <Grid item xs={2}>
-            <Button
               variant="contained"
               onClick={() => {
                 props.setOpenModal(false);
@@ -55,6 +46,15 @@ export default function DeleteEspacio(props) {
               color="secondary"
             >
               No
+            </Button>
+          </Grid>
+          <Grid item xs={2}>
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={eliminarEspacio}
+            >
+              Si
             </Button>
           </Grid>
         </Grid>

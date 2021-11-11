@@ -21,8 +21,10 @@ import {
 } from "constants/espacios/constants";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import { ImageUploader } from "components/App/Complejos/RegisterComplejo/Steps/Fotos/ImageUploader";
+import { useHistory } from "react-router-dom";
 
 export default function RegisterEspacios() {
+  const history = useHistory();
   const { idComplejo } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
@@ -66,6 +68,7 @@ export default function RegisterEspacios() {
             setContentAlert("El espacio ha sido registrado con éxito");
             setSeverityAlert("success");
             setOpenAlert(true);
+            history.push(`/app/complejos/${idComplejo}/espacios`)
           } else {
             setIsLoading(false);
             setContentAlert("Error al registrar espacio");
@@ -244,16 +247,6 @@ export default function RegisterEspacios() {
                   justify="center"
                   alignItems="center"
                 >
-                  <LinkCustom to={"/app/complejos/" + idComplejo + "/espacios"}>
-                    <Button
-                      startIcon={<ArrowBackIcon />}
-                      variant="contained"
-                      color="primary"
-                      style={{ margin: "10px" }}
-                    >
-                      Volver
-                    </Button>
-                  </LinkCustom>
                   <Button
                     style={{ margin: "10px" }}
                     variant="contained"
@@ -262,6 +255,15 @@ export default function RegisterEspacios() {
                   >
                     Registrar
                   </Button>
+                  <LinkCustom to={"/app/complejos/" + idComplejo + "/espacios"}>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      style={{ margin: "10px" }}
+                    >
+                      Volver
+                    </Button>
+                  </LinkCustom>
                 </Grid>
               </Grid>
             </Form>
