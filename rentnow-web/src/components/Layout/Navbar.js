@@ -199,11 +199,11 @@ function Navbar(props) {
 							<ListItem button onClick={() => {
 								handleNotClick(not)
 							}} selected={not.leida === false ? true : false}>
+								{not.leida === false ? <PriorityHighIcon style={{marginRight:'5px'}} color="secondary"/> : null}
 								<ListItemText
 									primary={<Typography> {not.mensaje} en <b>{not.complejo.nombre}</b></Typography>}
 									secondary={`${not.espacio} → ${moment(not.fechaInicio.toDate()).format("DD/MM h:mm")} - ${moment(not.fechaFin.toDate()).format("h:mm")}`}
 								/>
-								{not.leida === false ? <PriorityHighIcon color="primary"/> : null}
 							</ListItem>
 						)
 						}
