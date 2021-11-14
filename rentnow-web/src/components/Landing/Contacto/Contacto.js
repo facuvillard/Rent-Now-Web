@@ -208,10 +208,10 @@ const Contacto = () => {
                       >
                         {provincias.length > 0
                           ? provincias.map((prov) => (
-                              <MenuItem key={prov.id} value={prov.nombre}>
-                                {prov.nombre}
-                              </MenuItem>
-                            ))
+                            <MenuItem key={prov.id} value={prov.nombre}>
+                              {prov.nombre}
+                            </MenuItem>
+                          ))
                           : null}
                       </Select>
                     </FormControl>
@@ -259,12 +259,16 @@ const Contacto = () => {
                       value={values.mensaje}
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid
+                    container
+                    direction="row"
+                    justify="center"
+                    alignItems="center"
+                  >
                     <Button
                       color="primary"
                       type="submit"
                       variant="contained"
-                      fullWidth
                     >
                       Enviar
                     </Button>

@@ -47,9 +47,9 @@ const Landing = () => {
         <Hero />
         <Features />
         <About />
-        <ComplejosAdheridos />
-        <FAQ />
+        {/* <ComplejosAdheridos /> */}
         <Contacto />
+        <FAQ />
         <Footer />  
         </ ThemeProvider>
     )

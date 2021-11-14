@@ -78,7 +78,7 @@ const Features = () => {
                     alt="usuarios"
                     className={classes.image}
                   />
-                  <Typography variant="h5" className={classes.title}>
+                  <Typography variant="h5" className={classes.title} align='center'>
                        <b>LLEGÁ A MUCHOS MAS CLIENTES</b>
                    </Typography>
                   <Typography variant="h6" align="center">
@@ -94,7 +94,7 @@ const Features = () => {
                     alt="calendario"
                     className={classes.image}
                   />
-                  <Typography variant="h5"  className={classes.title}>
+                  <Typography variant="h5"  className={classes.title} align='center'>
                         <b>MANTENÉ TU CALENDARIO MÁS ORGANIZADO</b>
                   </Typography>
                   <Typography variant="h6" align="center">
@@ -110,7 +110,7 @@ const Features = () => {
                     alt="comentarios"
                     className={classes.image}
                   />
-                  <Typography variant="h5"  className={classes.title}>
+                  <Typography variant="h5"  className={classes.title} align='center'>
                        <b>CONOCÉ VALORACIONES Y COMENTARIOS</b>
                     </Typography>
                   <Typography variant="h6" align="center">
@@ -126,7 +126,7 @@ const Features = () => {
                     alt="estadisticas"
                     className={classes.image}
                   />
-                  <Typography variant="h5"  className={classes.title}>
+                  <Typography variant="h5"  className={classes.title} align='center'>
                        <b>VISUALIZÁ ESTADISTICAS</b>
                    </Typography>
                   <Typography variant="h6" align="center">
@@ -143,7 +143,7 @@ const Features = () => {
                     alt="promociones"
                     className={classes.image}
                   />
-                  <Typography variant="h5" className={classes.title}>
+                  <Typography variant="h5" className={classes.title} align='center'>
                        <b>INCLUÍ PROMOCIONES</b>
                    </Typography>
                   <Typography variant="h6" align="center">
@@ -160,7 +160,7 @@ const Features = () => {
                     alt="facil"
                     className={classes.image}
                   />
-                  <Typography variant="h5" className={classes.title}>
+                  <Typography variant="h5" className={classes.title} align='center'>
                        <b>FÁCIL DE USAR</b>
                    </Typography>
                   <Typography variant="h6" align="center">
