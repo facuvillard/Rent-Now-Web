@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import MaterialTable from 'material-table';
 import {
 	Typography,
@@ -7,6 +7,8 @@ import {
 import { Rating } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 import { Alert, AlertTitle } from "@material-ui/lab";
+import { useParams } from "react-router-dom";
+import { getValoracionesByComplejoId } from "../../../api/valoraciones";
 
 const useStyles = makeStyles((theme) => ({
 	heading: {
@@ -30,41 +32,20 @@ const useStyles = makeStyles((theme) => ({
 	  },
 }));
 
-const valoraciones = [
-	{
-		puntaje: 5,
-		fecha: '10/8/2021',
-		comentario: 'Buenisimo el complejo, canchas bien cuidadas y ambiente muy sano',
-		cliente: {
-			idCliente: '123123asjdajdj',
-			nombre: 'Facundo Villard',
-		},
-		idReserva: '123128sjfaksdkjh234',
-	},
-	{
-		puntaje: 1,
-		fecha: '10/12/2021',
-		comentario: '',
-		cliente: {
-			idCliente: '123123asjdajdj',
-			nombre: 'Steven Spielberg',
-		},
-		idReserva: '123128sjfaksdkjh234',
-	},
-	{
-		puntaje: 3,
-		fecha: '10/11/2021',
-		comentario: 'Regular, tirando a bueno... ',
-		cliente: {
-			idCliente: '123123asjdajdj',
-			nombre: 'Roberto Motoneta',
-		},
-		idReserva: '123128sjfaksdkjh234',
-	},
-];
-
 export default function ValoracionesList() {
+	const [valoraciones, setValoraciones] = useState([]);
+	const { idComplejo } = useParams();
 	const classes = useStyles();
+
+	useEffect(() => {
+		getValoracionesByComplejoId(idComplejo).then(response => {
+			if(response.status === "OK") {
+				setValoraciones(response.data)
+			} else {
+				console.log(response.error)
+			}
+		})
+	},[])
 
 	const customRender = (value) => {
 		return <Rating readOnly value={value.puntaje} />;
@@ -78,6 +59,7 @@ export default function ValoracionesList() {
 				columns={[
 					{ title: 'FECHA', field: 'fecha', type: 'datetime' },
 					{ title: 'CLIENTE', field: 'cliente.nombre' },
+					{ title: 'APELLIDO', field: 'cliente.apellido' },
 					{
 						title: 'PUNTAJE',
 						field: 'puntaje',
@@ -121,7 +103,7 @@ export default function ValoracionesList() {
 					exportButton: true,
 				}}
 				localization={{
-					body: { emptyDataSourceMessage: '¡No existen reservas en la fecha seleccionada!' },
+					body: { emptyDataSourceMessage: '¡No existen valoraciones en este complejo!' },
 					grouping: {
 						placeholder: 'Arrastre alguna columna aquí para agrupar datos',
 						groupedBy: 'Agrupando por: ',
