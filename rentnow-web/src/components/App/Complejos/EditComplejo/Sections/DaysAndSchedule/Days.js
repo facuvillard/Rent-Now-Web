@@ -97,13 +97,13 @@ const Days = (props) => {
             },
             {
                 id: 4,
-                title: props.horarios.Miercoles.abre ? "Abierto" : "Cerrado",
-                resourceTitle: "Miercoles",
-                abre: props.horarios.Miercoles.abre,
-                start: new Date(`Sat Sep 12 2020 ${props.horarios.Miercoles.desde}`),
-                end: new Date(`Sat Sep 12 2020 ${props.horarios.Miercoles.hasta}`),
+                title: props.horarios.Miércoles.abre ? "Abierto" : "Cerrado",
+                resourceTitle: "Miércoles",
+                abre: props.horarios.Miércoles.abre,
+                start: new Date(`Sat Sep 12 2020 ${props.horarios.Miércoles.desde}`),
+                end: new Date(`Sat Sep 12 2020 ${props.horarios.Miércoles.hasta}`),
                 resourceId: 4,
-                hexColor: props.horarios.Miercoles.abre ? "4CAF50" : "F44336"
+                hexColor: props.horarios.Miércoles.abre ? "4CAF50" : "F44336"
             },
             {
                 id: 5,
@@ -127,13 +127,13 @@ const Days = (props) => {
             },
             {
                 id: 7,
-                title: props.horarios.Sabado.abre ? "Abierto" : "Cerrado",
-                resourceTitle: "Sabado",
-                abre: props.horarios.Sabado.abre,
-                start: new Date(`Sat Sep 12 2020 ${props.horarios.Sabado.desde}`),
-                end: new Date(`Sat Sep 12 2020 ${props.horarios.Sabado.hasta}`),
+                title: props.horarios.Sábado.abre ? "Abierto" : "Cerrado",
+                resourceTitle: "Sábado",
+                abre: props.horarios.Sábado.abre,
+                start: new Date(`Sat Sep 12 2020 ${props.horarios.Sábado.desde}`),
+                end: new Date(`Sat Sep 12 2020 ${props.horarios.Sábado.hasta}`),
                 resourceId: 7,
-                hexColor: props.horarios.Sabado.abre ? "4CAF50" : "F44336"
+                hexColor: props.horarios.Sábado.abre ? "4CAF50" : "F44336"
             },
             {
                 id: 8,
