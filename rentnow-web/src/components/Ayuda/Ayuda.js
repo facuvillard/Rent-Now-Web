@@ -40,8 +40,8 @@ export default function Ayuda(props) {
     const { motivo, descripcion } = values;
     const mensaje = { remitente: currentUser.email, motivo, descripcion };
     const formatedData = {
-      destinatario: "facuvillard@gmail.com",
-      asunto: "Ayuda con Rent Now",
+      destinatario: "contacto.rentnow@gmail.com",
+      asunto: `Ayuda con Rent now - Motivo: ${motivo}`,
       contenido: JSON.stringify(mensaje),
       adjuntos: null,
     };
