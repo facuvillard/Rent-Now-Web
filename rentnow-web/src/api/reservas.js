@@ -130,36 +130,44 @@ export async function updateReservaStateAndPayment(reserva, id) {
 	}
 }
 
-export async function getReservasComplejoHistorico(idComplejo) {
-	try {
-		const result = await firebase
-			.firestore()
-			.collection("reservas")
-			.where("complejo.id", "==", idComplejo)
-			.get();
+export async function getReservasComplejoHistorico(
+  idComplejo,
+  fechaDesde,
+  fechaHasta
+) {
+  try {
+    const fechaDesdeFB = firebase.firestore.Timestamp.fromDate(fechaDesde);
+    const fechaHastaFB = firebase.firestore.Timestamp.fromDate(fechaHasta);
+    const result = await firebase
+      .firestore()
+      .collection("reservas")
+      .where("complejo.id", "==", idComplejo)
+      .where("fechaInicio", ">=", fechaDesdeFB)
+      .where("fechaInicio", "<=", fechaHasta)
+      .get();
 
-		const reservas = result.docs.map((reservaDoc) => {
-			const reserva = reservaDoc.data();
-			return {
-				...reserva,
-				fechaInicio: reserva.fechaInicio.toDate(),
-				fechaFin: reserva.fechaFin.toDate(),
-			};
-		});
+    const reservas = result.docs.map((reservaDoc) => {
+      const reserva = reservaDoc.data();
+      return {
+        ...reserva,
+        fechaInicio: reserva.fechaInicio.toDate(),
+        fechaFin: reserva.fechaFin.toDate(),
+      };
+    });
 
-		return {
-			status: "OK",
-			message: "Se recuperaron las reservas correctamente",
-			data: reservas,
-		};
-	} catch (err) {
-		console.log(err);
-		return {
-			status: "ERROR",
-			message: "Se produjo un error al registrar la reserva",
-			error: err,
-		};
-	}
+    return {
+      status: "OK",
+      message: "Se recuperaron las reservas correctamente",
+      data: reservas,
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      status: "ERROR",
+      message: "Se produjo un error al registrar la reserva",
+      error: err,
+    };
+  }
 }
 
 export async function getReservasByMonthAndYear(fecha, idComplejo, runWhenChange) {
