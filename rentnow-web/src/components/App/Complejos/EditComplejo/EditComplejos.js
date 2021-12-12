@@ -13,6 +13,7 @@ import ImageVisualizer from "components/App/Complejos/EditComplejo/Sections/Imag
 import DeleteComplejo from "components/App/Complejos/EditComplejo/Sections/DeleteComplejoRequest/DeleteComplejo";
 import Location from "components/App/Complejos/EditComplejo/Sections/Location/Location"
 import Days from "components/App/Complejos/EditComplejo/Sections/DaysAndSchedule/Days"
+import ReservasParameters from "components/App/Complejos/EditComplejo/Sections/ReservasParameters/ReservasParameters";
 
 const useStyles = makeStyles((theme) => ({
   expansionPanel: {
@@ -153,6 +154,23 @@ const EditComplejos = () => {
                 <Grid item xs={12}>
                   <hr className={classes.divider} />
                   <ImageVisualizer fotos={complejo.fotos} />
+                </Grid>
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+            <ExpansionPanel className={classes.expansionPanel}>
+              <ExpansionPanelSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography variant="h5" className={classes.heading}>
+                  Reservas
+              </Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <Grid item xs={12}>
+                  <hr className={classes.divider} />
+                  <ReservasParameters parametrosReserva={complejo.parametrosReserva || {}}/>
                 </Grid>
               </ExpansionPanelDetails>
             </ExpansionPanel>
