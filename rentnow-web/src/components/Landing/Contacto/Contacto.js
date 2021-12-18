@@ -15,9 +15,10 @@ import {
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import imagenFondo from "../../../assets/img/Landing/fondo-image.png";
 import { getProvincesApi, getCitiesByProvincesApi } from "../../../api/geoApi";
-import { sendEmailApi } from "../../../api/misc";
+import { sendEmailWithHTMLApi } from "../../../api/misc";
 import { Formik, Form } from "formik";
 import AlertCustom from "../../utils/AlertCustom/AlertCustom";
+import { CONTACTO } from '../../../assets/html/contacto'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -86,10 +87,10 @@ const Contacto = () => {
     const formatedData = {
       destinatario: "contacto.rentnow@gmail.com",
       asunto: "Contacto rentnow",
-      contenido: JSON.stringify(data),
+      contenido: CONTACTO(data.nombres, data.apellido, data.email, data.provincia, data.ciudad, data.mensaje),
       adjuntos: null,
     };
-    const result = await sendEmailApi(formatedData);
+    const result = await sendEmailWithHTMLApi(formatedData);
     if (result.status === "OK") {
       setAlertCustomText(result.message);
       setAlertCustomType("success");
@@ -147,7 +148,7 @@ const Contacto = () => {
               provincia: "",
               ciudad: "",
               mensaje:
-                "Buenas tardes, Quiero comenzar a administrar mi complejo con RentNow!",
+                "¡Buenas tardes, quiero comenzar a administrar mi complejo con RentNow!",
             }}
             onSubmit={(data) => {
               setSending(true);

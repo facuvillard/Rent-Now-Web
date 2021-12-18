@@ -8,12 +8,15 @@ import {
   Radio,
   TextField,
   CircularProgress,
+  Container,
+  Paper,
 } from "@material-ui/core";
 import { Formik, Field, Form } from "formik";
 import LinkCustom from "components/utils/LinkCustom/LinkCustom";
 import AlertCustom from "components/utils/AlertCustom/AlertCustom";
-import { sendEmailApi } from "api/misc";
+import { sendEmailWithHTMLApi } from "api/misc";
 import { AuthContext } from "Auth/Auth";
+import { AYUDA } from '../../assets/html/ayuda'
 
 const useStyles = makeStyles((theme) => ({
   text: {
@@ -21,6 +24,16 @@ const useStyles = makeStyles((theme) => ({
   },
   grid: {
     marginBottom: theme.spacing(5),
+  },
+  paper: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    padding: theme.spacing(2),
+    [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
+      marginTop: theme.spacing(6),
+      marginBottom: theme.spacing(6),
+      padding: theme.spacing(3),
+    },
   },
 }));
 
@@ -42,7 +55,7 @@ export default function Ayuda(props) {
     const formatedData = {
       destinatario: "contacto.rentnow@gmail.com",
       asunto: `Ayuda con Rent now - Motivo: ${motivo}`,
-      contenido: JSON.stringify(mensaje),
+      contenido: AYUDA(mensaje.remitente, motivo, descripcion),
       adjuntos: null,
     };
     if (motivo === "" || descripcion === "") {
@@ -54,7 +67,7 @@ export default function Ayuda(props) {
       setOpen(true);
       setIsLoading(false);
     } else {
-      sendEmailApi(formatedData).then((resp) => {
+      sendEmailWithHTMLApi(formatedData).then((resp) => {
         if (resp.status === "OK") {
           setAlertParams({
             ...alertParams,
@@ -77,121 +90,125 @@ export default function Ayuda(props) {
   };
   return (
     <>
-      <Formik
-        initialValues={{
-          motivo: "",
-          descripcion: "",
-        }}
-        onSubmit={async (values) => {
-          handleSubmit(values);
-        }}
-      >
-        {({ values }) => (
-          <Form>
-            <Grid container>
-              <Grid item xs={12} className={classes.grid}>
-                <Typography className={classes.text}>
-                  Aquí podrás contactarnos y realizarnos consultas sobre todas
-                  las dudas que tengas con respecto a <b>Rent Now!</b>.
-                </Typography>
-                <Typography className={classes.text}>
-                  Deberás ingresar un motivo y detallar la consulta que quieras
-                  realizar. La misma será contestada dentro de las 24 o 48 hs al
-                  correo de email de tu usuario de Rent Now.
-                </Typography>
-                <RadioGroup>
-                  <Typography component={"label"} variant={"body1"}>
+      <Container component="main" maxWidth="md">
+        <Paper variant="outlined" className={classes.paper}>
+          <Formik
+            initialValues={{
+              motivo: "",
+              descripcion: "",
+            }}
+            onSubmit={async (values) => {
+              handleSubmit(values);
+            }}
+          >
+            {({ values }) => (
+              <Form>
+                <Grid container>
+                  <Grid item xs={12} className={classes.grid}>
+                    <Typography className={classes.text}>
+                      Aquí podrás contactarnos y realizarnos consultas sobre todas
+                      las dudas que tengas con respecto a <b>Rent Now</b>.
+                    </Typography>
+                    <Typography className={classes.text}>
+                      Deberás ingresar un motivo y detallar la consulta que quieras
+                      realizar. La misma será contestada dentro de las 24 o 48 hs al
+                      correo de email de tu usuario de Rent Now.
+                    </Typography>
+                    <RadioGroup>
+                      <Typography component={"label"} variant={"body1"}>
+                        <Field
+                          type="radio"
+                          name="motivo"
+                          value="Error en el sistema"
+                          required
+                          as={Radio}
+                          rows={6}
+                        />
+                        Error en el sistema
+                      </Typography>
+                      <Typography component={"label"} variant={"body1"}>
+                        <Field
+                          type="radio"
+                          name="motivo"
+                          value="Dudas respecto al sistema"
+                          required
+                          as={Radio}
+                        />
+                        Dudas respecto al sistema
+                      </Typography>
+                      <Typography component={"label"} variant={"body1"}>
+                        <Field
+                          type="radio"
+                          name="motivo"
+                          value="Alta de complejo"
+                          required
+                          as={Radio}
+                        />
+                        Quiero solicitar el alta de mi complejo
+                      </Typography>
+                      <Typography component={"label"} variant={"body1"}>
+                        <Field
+                          type="radio"
+                          name="motivo"
+                          value="Otro"
+                          required
+                          as={Radio}
+                        />
+                        Otro
+                      </Typography>
+                    </RadioGroup>
                     <Field
-                      type="radio"
-                      name="motivo"
-                      value="Error en el sistema"
-                      required
-                      as={Radio}
+                      name="descripcion"
+                      label="Explique aqui el motivo de su contacto"
+                      fullWidth
+                      as={TextField}
+                      multiline
                       rows={6}
-                    />
-                    Error en el sistema
-                  </Typography>
-                  <Typography component={"label"} variant={"body1"}>
-                    <Field
-                      type="radio"
-                      name="motivo"
-                      value="Dudas respecto al sistema"
+                      value={values.descripcion}
                       required
-                      as={Radio}
                     />
-                    Dudas respecto al sistema
-                  </Typography>
-                  <Typography component={"label"} variant={"body1"}>
-                    <Field
-                      type="radio"
-                      name="motivo"
-                      value="Alta de complejo"
-                      required
-                      as={Radio}
-                    />
-                    Quiero solicitar el alta de mi complejo
-                  </Typography>
-                  <Typography component={"label"} variant={"body1"}>
-                    <Field
-                      type="radio"
-                      name="motivo"
-                      value="Otro"
-                      required
-                      as={Radio}
-                    />
-                    Otro
-                  </Typography>
-                </RadioGroup>
-                <Field
-                  name="descripcion"
-                  label="Explique aqui el motivo de su contacto"
-                  fullWidth
-                  as={TextField}
-                  multiline
-                  rows={6}
-                  value={values.descripcion}
-                  required
-                />
-              </Grid>
-              <Grid
-                container
-                direction="row"
-                justify="center"
-                alignItems="center"
-              >
-                <Grid item xs={2}>
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    type="submit"
-                    disabled={isLoading}
+                  </Grid>
+                  <Grid
+                    container
+                    direction="row"
+                    justify="center"
+                    alignItems="center"
                   >
-                    {isLoading ? (
-                      <CircularProgress color="secondary" />
-                    ) : (
-                      "Enviar"
-                    )}
-                  </Button>
+                    <Grid item xs={2}>
+                      <LinkCustom to={"/app/complejos"}>
+                        <Button variant="contained" color="secondary">
+                          Volver
+                        </Button>
+                      </LinkCustom>
+                    </Grid>
+                    <Grid item xs={2}>
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        type="submit"
+                        disabled={isLoading}
+                      >
+                        {isLoading ? (
+                          <CircularProgress color="secondary" />
+                        ) : (
+                          "Enviar"
+                        )}
+                      </Button>
+                    </Grid>
+                  </Grid>
                 </Grid>
-                <Grid item xs={2}>
-                  <LinkCustom to={"/app/complejos"}>
-                    <Button variant="contained" color="secondary">
-                      Cancelar
-                    </Button>
-                  </LinkCustom>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Form>
-        )}
-      </Formik>
+              </Form>
+            )}
+          </Formik>
 
-      <AlertCustom
-        open={open}
-        type={alertParams.type}
-        text={alertParams.text}
-        setOpen={alertParams.setOpen}
-      />
+          <AlertCustom
+            open={open}
+            type={alertParams.type}
+            text={alertParams.text}
+            setOpen={alertParams.setOpen}
+          />
+        </Paper>
+      </Container>
     </>
   );
 }
