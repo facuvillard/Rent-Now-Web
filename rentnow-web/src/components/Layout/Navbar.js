@@ -202,7 +202,7 @@ function Navbar(props) {
 								{not.leida === false ? <PriorityHighIcon style={{marginRight:'5px'}} color="secondary"/> : null}
 								<ListItemText
 									primary={<Typography> {not.mensaje} en <b>{not.complejo.nombre}</b></Typography>}
-									secondary={`${not.espacio} → ${moment(not.fechaInicio.toDate()).format("DD/MM h:mm")} - ${moment(not.fechaFin.toDate()).format("h:mm")}`}
+									secondary={`${not.espacio} → ${moment(not.fechaInicio.toDate()).format("DD/MM HH:mm")} - ${moment(not.fechaFin.toDate()).format("HH:mm")}`}
 								/>
 							</ListItem>
 						)
