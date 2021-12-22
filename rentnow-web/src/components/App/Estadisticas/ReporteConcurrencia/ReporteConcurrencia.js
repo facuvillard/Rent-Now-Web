@@ -223,6 +223,7 @@ const ReporteConcurrencia = () => {
             },
           },
         }}
+        colors={{ scheme: 'pastel1' }}
         data={reservasByFranja}
         keys={tiposEspacio}
         indexBy="franjaHoraria"
@@ -398,7 +399,7 @@ const ReporteConcurrencia = () => {
             legendPosition: "middle",
             legendOffset: -40,
           }}
-          colors="YlOrRd"
+          colors={['#61cdbb', '#97e3d5', '#e8c1a0', '#f47560']}
           cellOpacity={0.8}
           cellBorderWidth={2}
           cellBorderColor={{ from: "color", modifiers: [["darker", 0.7]] }}
