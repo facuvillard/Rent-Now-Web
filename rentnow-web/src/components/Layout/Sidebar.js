@@ -110,7 +110,15 @@ const SideBarButton = (props) => {
   return (
     <Can I={props.permiso} a={props.elemento}>
       <Link to={props.ruta} className={classes.link}>
-        <ListItem button onClick={()=>{props.sideBarOpenHandler()}}>
+        <ListItem button onClick={
+          () => {
+            if(props.isSideBarOpen){
+              props.sideBarOpenHandler()
+            }
+            if (props.isCollapsable) {
+              props.collapsableState(false)
+            }
+          }}>
           <ListItemIcon>{props.icon}</ListItemIcon>
           <ListItemText primary={props.text} />
         </ListItem>
@@ -124,6 +132,7 @@ const Sidebar = (props) => {
   const [openReportes, setOpenReportes] = useState(false);
   const [openReservas, setOpenReservas] = useState(false);
   const [openEstadisticas, setOpenEstadisticas] = useState(false);
+  console.log(props)
 
   return (
     <Drawer
@@ -158,6 +167,8 @@ const Sidebar = (props) => {
             icon={<HomeIcon className={classes.link} />}
             text="Complejos"
             sideBarOpenHandler={props.sideBarOpenHandler}
+            isCollapsable={false}
+            isSideBarOpen={props.isSideBarOpen}
           />
           <SideBarButton
             permiso="admin"
@@ -166,6 +177,8 @@ const Sidebar = (props) => {
             icon={<GroupIcon className={classes.link} />}
             text="Usuarios"
             sideBarOpenHandler={props.sideBarOpenHandler}
+            isCollapsable={false}
+            isSideBarOpen={props.isSideBarOpen}
           />
           <Can I="admin" a="estadisticas">
             <ListItem
@@ -189,6 +202,9 @@ const Sidebar = (props) => {
                 icon={<BarChartIcon className={classes.link} />}
                 text="Ranking uso de aplicación"
                 sideBarOpenHandler={props.sideBarOpenHandler}
+                collapsableState={setOpenEstadisticas}
+                isCollapsable={true}
+                isSideBarOpen={props.isSideBarOpen}
               />
             </Collapse>
           </Can>
@@ -202,6 +218,8 @@ const Sidebar = (props) => {
               icon={<HomeIcon className={classes.link} />}
               text="Home"
               sideBarOpenHandler={props.sideBarOpenHandler}
+              isCollapsable={false}
+              isSideBarOpen={props.isSideBarOpen}
             />
           </Can>
           <Can I="read" a="reserva">
@@ -226,6 +244,9 @@ const Sidebar = (props) => {
                 icon={<TodayIcon className={classes.link} />}
                 text="Calendario"
                 sideBarOpenHandler={props.sideBarOpenHandler}
+                collapsableState={setOpenReservas}
+                isCollapsable={true}
+                isSideBarOpen={props.isSideBarOpen}
               />
               <SideBarButton
                 permiso="read"
@@ -234,6 +255,9 @@ const Sidebar = (props) => {
                 icon={<ListAltOutlined className={classes.link} />}
                 text="Listado de Reservas"
                 sideBarOpenHandler={props.sideBarOpenHandler}
+                collapsableState={setOpenReservas}
+                isCollapsable={true}
+                isSideBarOpen={props.isSideBarOpen}
               />
               <SideBarButton
                 permiso="read"
@@ -242,6 +266,9 @@ const Sidebar = (props) => {
                 icon={<HourglassFullOutlined className={classes.link} />}
                 text="Reservas pendientes"
                 sideBarOpenHandler={props.sideBarOpenHandler}
+                collapsableState={setOpenReservas}
+                isCollapsable={true}
+                isSideBarOpen={props.isSideBarOpen}
               />
             </Collapse>
           </Can>
@@ -253,6 +280,8 @@ const Sidebar = (props) => {
               icon={<SportsSoccerIcon className={classes.link} />}
               text="Administrar Espacios"
               sideBarOpenHandler={props.sideBarOpenHandler}
+              isCollapsable={false}
+              isSideBarOpen={props.isSideBarOpen}
             />
           </Can>
           <Can I="read" a="reporte">
@@ -278,6 +307,9 @@ const Sidebar = (props) => {
                   icon={<BlurLinearIcon className={classes.link} />}
                   text="Concurrencia"
                   sideBarOpenHandler={props.sideBarOpenHandler}
+                  collapsableState={setOpenReportes}
+                  isCollapsable={true}
+                  isSideBarOpen={props.isSideBarOpen}
                 />
               </List>
             </Collapse>
@@ -291,6 +323,8 @@ const Sidebar = (props) => {
               icon={<StarIcon className={classes.link} />}
               text="Valoraciones"
               sideBarOpenHandler={props.sideBarOpenHandler}
+              isCollapsable={false}
+              isSideBarOpen={props.isSideBarOpen}
             />
           </Can>
         </List>
@@ -304,6 +338,8 @@ const Sidebar = (props) => {
               icon={<Settings className={classes.link} />}
               text="Configuracion"
               sideBarOpenHandler={props.sideBarOpenHandler}
+              isCollapsable={false}
+              isSideBarOpen={props.isSideBarOpen}
             />
           </Can>
         </List>
