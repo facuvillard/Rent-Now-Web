@@ -61,11 +61,11 @@ export default function HomeComplejo() {
         setData(response.data);
         setDataPie([
           {
-            id: "Cliente de complejo",
+            id: "Cliente de Complejo",
             value: response.data.cantidadReservasWeb,
           },
           { 
-            id: "Cliente de aplicación",
+            id: "Cliente de Aplicación",
             value: response.data.cantidadReservasApp, 
           },
         ])

@@ -5,11 +5,11 @@ export default function ResponsiveBarChart({ data }) {
   return (
     <ResponsiveBar
       data={data}
-      keys={["cantidadReservasInconclusas", "cantidadReservasConcretadas"]}
+      keys={[ "Reservas Inconclusas", "Reservas Concretadas"]}
       indexBy="nombreEspacio"
       margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
       padding={0.8}
-      colors={{ scheme: "pastel2" }}
+      colors={[ '#FF6961', '#77DD77']}
       borderColor={{ from: "color", modifiers: [["darker", 1.6]] }}
       borderWidth={3}
       axisTop={null}

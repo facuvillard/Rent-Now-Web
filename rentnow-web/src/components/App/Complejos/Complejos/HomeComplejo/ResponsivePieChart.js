@@ -9,7 +9,7 @@ export default function ResponsivePieChart({ data /* see data tab */ }) {
       innerRadius={0}
       padAngle={0}
       cornerRadius={3}
-      colors={{ scheme: "pastel2" }}
+      colors={['#5d9b9b', '#FDFD96']}
       borderWidth={1}
       borderColor={{ from: "color", modifiers: [["darker", 2]] }}
       radialLabelsSkipAngle={10}

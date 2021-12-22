@@ -68,8 +68,8 @@ export async function getDatosHome(idComplejo, date) {
     espaciosResult.data.map((espacio) => {
       let item = {
         nombreEspacio: espacio.nombre,
-        cantidadReservasConcretadas: 0,
-        cantidadReservasInconclusas: 0,
+        "Reservas Concretadas": 0,
+        "Reservas Inconclusas": 0,
       };
       reservasResult.data.map((reserva) => {
   
@@ -77,14 +77,14 @@ export async function getDatosHome(idComplejo, date) {
           let index = reserva.estados.length - 1;
           if (reserva.estados[index].estado === "FINALIZADA") {
             cantidadConcretadas += 1;
-            item.cantidadReservasConcretadas += 1;
+            item["Reservas Concretadas"] += 1;
             reservaAppOWeb(reserva)
           } else {
             if (
               reserva.estados[index].estado === "SIN CONCURRENCIA" ||
               reserva.estados[index].estado === "CANCELADA"
             ) {
-              item.cantidadReservasInconclusas += 1;
+              item["Reservas Inconclusas"] += 1;
               cantidadInconclusas += 1;
               reservaAppOWeb(reserva)
             }
