@@ -1,2 +1,2 @@
 # Rent-Now
-Repositorio de la aplicación Rent Now para Proyecto Final 5K4 Grupo 7
+Repositorio de la aplicación web Rent Now para la administración de complejos deportivos.
